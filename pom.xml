@@ -55,7 +55,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>8.5.13</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/car_mob</url>
+                    <url>jdbc:postgresql://localhost:5433/car_mob</url>
                     <user>mustafa</user>
                     <password>password</password>
                 </configuration>
