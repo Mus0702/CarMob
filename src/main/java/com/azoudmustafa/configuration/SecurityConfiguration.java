@@ -27,44 +27,25 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors();
         http
-                .csrf();
-
-//                .csrf()
-//                .disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/register/**", "/login/**")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling()
                 .authenticationEntryPoint(customAuthEntryPoint);
 
         return http.build();
 
-//        http
-//                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-//                .and()
-//                .csrf().disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/register/**", "/login/**", "/airport/**", "/flight/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(customAuthEntryPoint)
-//                .accessDeniedHandler(new AccessDeniedHandlerImpl())
-//                .and()
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
     }
 
 }
