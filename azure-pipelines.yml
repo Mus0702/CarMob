@@ -15,9 +15,13 @@ pool:
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'backend/pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.17'
-    jdkArchitectureOption: 'x64'
-    goals: 'package'
+     mavenPomFile: 'backend/pom.xml'
+     goals: 'clean install'
+     publishJUnitResults: true
+     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+     javaHomeOption: 'JDKVersion'
+     jdkVersionOption: '1.17'
+     mavenVersionOption: 'Default'
+     mavenAuthenticateFeed: false
+     effectivePomSkip: false
+     sonarQubeRunAnalysis: false
