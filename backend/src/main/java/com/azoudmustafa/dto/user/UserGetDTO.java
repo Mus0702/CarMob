@@ -1,12 +1,10 @@
-package com.azoudmustafa.dto;
+package com.azoudmustafa.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-
-public record UserPostDTO(
+public record UserGetDTO(
         @JsonProperty("id")
         Integer id,
         @NotNull
@@ -18,15 +16,6 @@ public record UserPostDTO(
         @Email
         @NotNull
         @JsonProperty("email")
-        String email,
-        @NotNull
-        @JsonProperty("password")
-        String password,
-        @NotNull
-        @JsonProperty("birthdate")
-        LocalDate birthdate,
-        @JsonProperty("phoneNumber")
-        String phoneNumber
-
+        String email
 ) {
 }

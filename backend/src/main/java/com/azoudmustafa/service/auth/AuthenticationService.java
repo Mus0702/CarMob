@@ -7,7 +7,6 @@ import com.azoudmustafa.controller.auth.RegisterRequest;
 import com.azoudmustafa.enums.Role;
 import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.UserRepository;
-import com.azoudmustafa.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
