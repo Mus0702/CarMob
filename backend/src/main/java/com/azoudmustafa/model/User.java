@@ -3,6 +3,7 @@ package com.azoudmustafa.model;
 import com.azoudmustafa.enums.Role;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,7 @@ public class User implements UserDetails {
     private String lastname;
     @Column(name = "firstname")
     private String firstname;
+    @Email
     @Column(name = "email")
     private String email;
     @Column(name = "password")
