@@ -4,7 +4,9 @@ package com.azoudmustafa.service.auth;
 import com.azoudmustafa.controller.auth.AuthenticationRequest;
 import com.azoudmustafa.controller.auth.AuthenticationResponse;
 import com.azoudmustafa.controller.auth.RegisterRequest;
+import com.azoudmustafa.dto.user.UserPostDTO;
 import com.azoudmustafa.enums.Role;
+import com.azoudmustafa.mapper.user.UserMapper;
 import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final UserRepository userAppRepository;
+    private final UserMapper userMapper;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -26,16 +29,18 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
+        var userPostDTO = UserPostDTO.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .birthdate(request.getBirthdate())
+                .phoneNumber(request.getPhoneNumber())
                 .role(Role.ROLE_USER)
                 .build();
-        userAppRepository.save(user);
+        userAppRepository.save(userMapper.toEntity(userPostDTO));
 
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(userMapper.toEntity(userPostDTO));
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)

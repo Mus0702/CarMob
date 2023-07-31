@@ -4,6 +4,7 @@ import com.azoudmustafa.enums.Role;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,9 +25,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Size(min=3,max = 10,message = "taille entre 3 et 10")
     @Column(name = "lastname")
     private String lastname;
     @Column(name = "firstname")
+    @Size(min=3,max = 10,message = "{validation.name.size.too_short}")
     private String firstname;
     @Email
     @Column(name = "email")

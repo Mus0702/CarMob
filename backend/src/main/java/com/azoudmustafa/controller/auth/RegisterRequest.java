@@ -2,11 +2,14 @@ package com.azoudmustafa.controller.auth;
 
 
 import com.azoudmustafa.enums.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -22,4 +25,9 @@ public class RegisterRequest {
 
     @NotEmpty(message = "Password is required")
     private String password;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+    private LocalDate birthdate;
+
+    private String phoneNumber;
 }
