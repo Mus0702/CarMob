@@ -29,25 +29,6 @@ export default function Login() {
     }
   };
 
-  // function sendLoginRequest() {
-  //   const reqBody = {
-  //     email: email,
-  //     password: password,
-  //   };
-  //
-  //
-  //   fetch("http://localhost:8080/api/auth/login", {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     method: "post",
-  //     body: JSON.stringify(reqBody),
-  //   }).then((reponse) => {
-  //     if (reponse.status === 200)
-  //       return Promise.all([reponse.json(), reponse.headers]);
-  //   });
-  // }
-
   return (
     <form method="POST">
       <label>Email</label>
