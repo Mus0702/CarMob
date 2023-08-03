@@ -1,10 +1,11 @@
 import WhyUs from "../../components/scope/home/why-us/WhyUs.jsx";
 import Banner from "../../components/common/banner/Banner.jsx";
+import HomeImage from "../../assets/images/home-image2.svg";
 
 const HomePage = () => {
   return (
     <div>
-      <Banner title="Bienvenue chez CarMob" />
+      <Banner img={`url(${HomeImage})`} title="Bienvenue chez CarMob" />
       <WhyUs />
     </div>
   );

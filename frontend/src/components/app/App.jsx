@@ -8,7 +8,7 @@ import RegisterPage from "../../pages/register-page/RegisterPage.jsx";
 
 export default function Myapp() {
   return (
-    <div className="container">
+    <>
       {/*<Navigation/>*/}
       <BrowserRouter>
         <Nav />
@@ -19,6 +19,6 @@ export default function Myapp() {
           {/*<Route path="/people/:nationality?" element={<People/>}/>*/}
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }

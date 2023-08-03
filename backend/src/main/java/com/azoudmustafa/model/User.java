@@ -4,6 +4,8 @@ import com.azoudmustafa.enums.Role;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,22 +22,27 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="`user`")
+@Table(name = "`user`")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Size(min=3,max = 10,message = "taille entre 3 et 10")
+    @NotEmpty
+    @Size(min = 3, max = 50, message = "taille entre 3 et 10")
     @Column(name = "lastname")
     private String lastname;
+    @NotEmpty
+
     @Column(name = "firstname")
-    @Size(min=3,max = 10,message = "{validation.name.size.too_short}")
+    @Size(min = 3, max = 50, message = "{validation.name.size.too_short}")
     private String firstname;
     @Email
     @Column(name = "email")
     private String email;
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$")
     @Column(name = "password")
-    private  String password;
+    private String password;
     @Column(name = "birthdate")
     private LocalDate birthdate;
     @Column(name = "phone_number")
@@ -48,6 +55,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(getRole().name()));
     }
+
     @Override
     public String getPassword() {
         return password;
