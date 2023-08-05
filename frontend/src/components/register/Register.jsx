@@ -44,6 +44,7 @@ const Register = () => {
       const emailResponse = await isEmailExist(email);
       if (emailResponse.status === 200) {
         const registerResponse = await registerService(data);
+        localStorage.setItem("token", registerResponse.data.token);
         navigate("/");
         console.log({ response: registerResponse });
       } else if (emailResponse.status === 409) {
