@@ -19,23 +19,23 @@ import java.time.LocalDate;
 public class RegisterRequest {
     @JsonProperty("id")
     Integer id;
-    @NotNull
+    @Size(min = 3, max = 50, message = "Lastname must contain at least 3 characters ")
+    @NotNull(message = "Lastname is required")
     @JsonProperty("lastname")
-    @Size(min=3,max = 50,message = "Lastname must contain at least 3 characters ")
     String lastname;
-    @NotNull
+    @NotNull(message = "Firstname is required")
     @JsonProperty("firstname")
-    @Size(min=3,max = 50,message = "Firstname must contain max 50 characters ")
+    @Size(min = 3, max = 50, message = "Firstname must contain max 50 characters ")
     String firstname;
-    @Email
-    @NotNull
+    @Email(message = "Bad format")
+    @NotNull(message = "Email is required")
     @JsonProperty("email")
     String email;
-    @NotNull
+    @NotNull(message = "Password is required")
     @JsonProperty("password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,20}$")
     String password;
-    @NotNull
+    @NotNull(message = "Birthdate is required")
     @JsonProperty("birthdate")
     LocalDate birthdate;
     @JsonProperty("phoneNumber")

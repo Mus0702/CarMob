@@ -8,14 +8,12 @@ import com.azoudmustafa.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     private final UserMapper userMapper;
@@ -26,10 +24,18 @@ public class UserController {
     public ResponseEntity<UserGetDTO> getUserById(@PathVariable(value = "id") Integer id) {
         return new ResponseEntity<>(
                 userMapper.toGetDTO(userService.getById(id)
-                        ),
+                ),
                 HttpStatus.OK
-
         );
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<String> checkEmailExists(@RequestParam String email) {
+        if (userService.existsByEmail(email)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+        } else {
+            return ResponseEntity.ok("Email is available");
+        }
     }
 
 

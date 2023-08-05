@@ -15,7 +15,6 @@ export default function Login() {
     setError("");
     try {
       const response = await sendLoginRequest(credentials);
-      console.log({ response });
       setEmail("");
       setPassword("");
       navigate("/");
@@ -25,7 +24,6 @@ export default function Login() {
       } else {
         setError("error occurs");
       }
-      console.log(e);
     }
   };
 

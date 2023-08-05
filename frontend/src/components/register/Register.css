@@ -1,3 +1,6 @@
 .vh-100 {
   background-color: #eee;
 }
+label {
+  font-weight: bold;
+}

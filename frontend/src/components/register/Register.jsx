@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { registerService } from "../../service/auth.js";
+import "./Register.css";
+import { useNavigate } from "react-router-dom";
+import { registerService, isEmailExist } from "../../service/auth.js";
 import DatePicker from "react-date-picker";
 import dayjs from "dayjs";
+import { subYears } from "date-fns";
 import { useForm } from "react-hook-form";
+
 const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     mode: "onTouched",
   });
@@ -17,22 +21,36 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [birthdate, setBirthdate] = useState(new Date("1986-07-02"));
+  const [birthdate, setBirthdate] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
+  const today = new Date();
+  const maxDate = subYears(today, 18);
+  const minDate = new Date("01/01/1920");
+  const navigate = useNavigate();
 
   const onRegister = async () => {
-    const data = {
-      lastname: lastname,
-      firstname: firstname,
-      email: email,
-      password: password,
-      birthdate: dayjs(birthdate).format("YYYY-MM-DD"),
-      phoneNumber: phoneNumber,
-    };
-    console.log({ data });
+    setEmailExists(false);
     try {
-      const response = await registerService(data);
-      console.log({ response });
+      const data = {
+        lastname: lastname,
+        firstname: firstname,
+        email: email,
+        password: password,
+        birthdate: dayjs(birthdate).format("YYYY-MM-DD"),
+        phoneNumber: phoneNumber,
+      };
+      console.log({ data });
+      const emailResponse = await isEmailExist(email);
+      if (emailResponse.status === 200) {
+        const registerResponse = await registerService(data);
+        navigate("/");
+        console.log({ response: registerResponse });
+      } else if (emailResponse.status === 409) {
+        setEmailExists(true);
+      } else {
+        console.error("Error checking email existence");
+      }
     } catch (e) {
       console.log(e);
     }
@@ -144,28 +162,57 @@ const Register = () => {
                           <input
                             type="email"
                             id="form3Example3c"
-                            className="form-control"
+                            className={`form-control ${
+                              errors.email && "is-invalid"
+                            }`}
+                            {...register("email", {
+                              required: "Email is required",
+                              pattern: {
+                                value:
+                                  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "Invalid email address",
+                              },
+                            })}
+                            aria-invalid={errors.email ? "true" : "false"}
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                           />
+                          {errors.email && (
+                            <div className="invalid-feedback">
+                              {errors.email.message}
+                            </div>
+                          )}
+                          {emailExists && (
+                            <div className="invalid-feedback">
+                              Email already exists
+                            </div>
+                          )}
                         </div>
                       </div>
 
                       <div className="d-flex flex-row align-items-center mb-4">
                         <div className="form-outline flex-fill mb-0">
-                          <label
-                            className="form-label"
-                            htmlFor="form3Example3c"
-                          >
+                          <label className="form-label" htmlFor="birthdate">
                             Your Birthdate
                           </label>
                           <DatePicker
+                            id="birthdate"
                             showIcon
-                            className="date-picker-customer"
-                            selected={birthdate}
+                            className="form-control"
+                            calendarClassName="custom-calendar"
+                            clearIcon={null}
+                            format="dd/MM/yyyy"
+                            maxDate={maxDate}
+                            minDate={minDate}
+                            placeholder="DD/MM/YYYY"
                             value={birthdate}
                             onChange={(date) => setBirthdate(date)}
                           />
+                          {errors.birthdate && (
+                            <div className="invalid-feedback">
+                              {errors.birthdate.message}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -201,12 +248,39 @@ const Register = () => {
                           <input
                             type="password"
                             id="form3Example4c"
-                            className="form-control"
+                            className={`form-control ${
+                              errors.password && "is-invalid"
+                            }`}
+                            {...register("password", {
+                              required: "Password is required",
+                              minLength: {
+                                value: 8,
+                                message:
+                                  "Password must be at least 8 characters",
+                              },
+                              maxLength: {
+                                value: 20,
+                                message:
+                                  "Password must be at most 20 characters",
+                              },
+                              pattern: {
+                                value:
+                                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_=+-]).{8,20}$/,
+                                message:
+                                  "Password must contain at least one lowercase letter, one uppercase letter, one special character (!@#$%^&*_=+-), and be between 8 and 20 characters",
+                              },
+                            })}
+                            aria-invalid={errors.password ? "true" : "false"}
                             value={password}
                             onChange={(event) =>
                               setPassword(event.target.value)
                             }
                           />
+                          {errors.password && (
+                            <div className="invalid-feedback">
+                              {errors.password.message}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -222,12 +296,25 @@ const Register = () => {
                           <input
                             type="password"
                             id="form3Example4cd"
-                            className="form-control"
+                            className={`form-control ${
+                              errors.confirmPassword && "is-invalid"
+                            }`}
+                            {...register("confirmPassword", {
+                              required: "Confirm Password is required",
+                              validate: (value) =>
+                                value === password || "Passwords do not match",
+                            })}
                             value={confirmPassword}
                             onChange={(event) =>
                               setConfirmPassword(event.target.value)
                             }
                           />
+
+                          {errors.confirmPassword && (
+                            <div className="invalid-feedback">
+                              {errors.confirmPassword.message}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -235,6 +322,7 @@ const Register = () => {
                         <button
                           type="submit"
                           className="btn btn-primary btn-lg"
+                          disabled={!isValid}
                           onClick={onRegister}
                         >
                           Register
