@@ -4,7 +4,6 @@ import Banner from "../../components/common/banner/Banner.jsx";
 const LoginPage = () => {
   return (
     <>
-      <Banner title="Veuillez vous authentifier" />
       <Login />
     </>
   );

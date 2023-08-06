@@ -6,6 +6,7 @@ import DatePicker from "react-date-picker";
 import dayjs from "dayjs";
 import { subYears } from "date-fns";
 import { useForm } from "react-hook-form";
+import SignupImage from "../../assets/images/signup-image.jpg";
 
 const Register = () => {
   const {
@@ -333,7 +334,7 @@ const Register = () => {
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                     <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                      src={SignupImage}
                       className="img-fluid"
                       alt="Sample image"
                     />
