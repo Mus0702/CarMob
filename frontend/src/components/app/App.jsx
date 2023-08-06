@@ -5,7 +5,6 @@ import Nav from "../common/nav/Nav.jsx";
 import LoginPage from "../../pages/login-page/LoginPage.jsx";
 import HomePage from "../../pages/home-page/HomePage.jsx";
 import RegisterPage from "../../pages/register-page/RegisterPage.jsx";
-
 export default function Myapp() {
   return (
     <>

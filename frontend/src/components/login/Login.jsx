@@ -27,7 +27,9 @@ export default function Login() {
       const response = await sendLoginRequest(credentials);
       setEmail("");
       setPassword("");
+      console.log("reponse ", response);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
 
       navigate("/");
     } catch (e) {
