@@ -1,7 +1,7 @@
 package com.azoudmustafa.configuration;
 
 import com.azoudmustafa.enums.Role;
-import com.azoudmustafa.service.JwtService;
+import com.azoudmustafa.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

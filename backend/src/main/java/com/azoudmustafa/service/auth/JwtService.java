@@ -1,4 +1,4 @@
-package com.azoudmustafa.service;
+package com.azoudmustafa.service.auth;
 
 import com.azoudmustafa.model.User;
 import io.jsonwebtoken.Claims;
