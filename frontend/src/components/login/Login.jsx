@@ -30,8 +30,11 @@ export default function Login() {
       console.log("reponse ", response);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
-
-      navigate("/");
+      if (localStorage.getItem("role") === "ROLE_ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (e) {
       if (e?.response?.status === 401) {
         setError("Email or password incorrect");
@@ -99,7 +102,7 @@ export default function Login() {
                             className="form-label"
                             htmlFor="form3Example4c"
                           >
-                            Password
+                            Your Password
                           </label>
                           <input
                             type="password"
