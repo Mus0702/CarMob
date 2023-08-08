@@ -1,6 +1,7 @@
 package com.azoudmustafa.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,25 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //    private Address departureAddress;
-//    private Address arrivalAddress;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "departure_address_id")
+    private Address departureAddress;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "arrival_address_id")
+    private Address arrivalAddress;
+    @NotNull
     @Column(name = "departure_date")
     private LocalDate departureDate;
     @Column(name = "passenger_number")
     private int passengerNumber;
-
-    //    private Car car;
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
+    @NotNull
     @Column(name = "route_price")
-    private int routePrice;
+    private double routePrice;
 
 
 }
