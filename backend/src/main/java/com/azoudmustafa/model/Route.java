@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,11 +30,19 @@ public class Route {
     @NotNull
     @Column(name = "departure_date")
     private LocalDate departureDate;
-    @Column(name = "passenger_number")
-    private int passengerNumber;
+
+    @Column(name = "available_seat")
+    private int availableSeat;
     @ManyToOne
-    @JoinColumn(name = "car_id")
-    private Car car;
+    @JoinColumn(name = "driver_id")
+    private User driver;
+    @ManyToMany
+    @JoinTable(
+            name = "route_passenger",
+            joinColumns = @JoinColumn(name = "route_id"),
+            inverseJoinColumns = @JoinColumn(name = "passenger_id")
+    )
+    private Set<User> passengers;
     @NotNull
     @Column(name = "route_price")
     private double routePrice;

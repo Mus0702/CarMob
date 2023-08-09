@@ -3,14 +3,12 @@ package com.azoudmustafa.model;
 import com.azoudmustafa.enums.Role;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -32,7 +30,6 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastname;
     @NotEmpty
-
     @Column(name = "firstname")
     @Size(min = 3, max = 50, message = "{validation.name.size.too_short}")
     private String firstname;
@@ -50,8 +47,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    private Address homeAddress;
-//    private Address workAddress;
+    @OneToOne
+    private Car car;
+    @Transient
+    private boolean isDriver;
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override
