@@ -15,17 +15,6 @@ VALUES ('Toyota', 'Corolla', 5),
        ('Mazda', '3', 5),
        ('Kia', 'Forte', 4);
 
-INSERT INTO address (street, city, zip_code, country)
-VALUES ('Rue de la Loi 16', 'Brussels', '1000', 'Belgium'),
-       ('Avenue des Arts 10', 'Brussels', '1210', 'Belgium'),
-       ('Avenue Louise 123', 'Brussels', '1050', 'Belgium'),
-       ('Chaussée de Waterloo 100', 'Ixelles', '1050', 'Belgium'),
-       ('Rue du Midi 20', 'Brussels', '1000', 'Belgium'),
-       ('Rue Neuve 50', 'Brussels', '1000', 'Belgium'),
-       ('Avenue de Tervuren 200', 'Woluwe-Saint-Pierre', '1150', 'Belgium'),
-       ('Boulevard Anspach 5', 'Brussels', '1000', 'Belgium'),
-       ('Avenue Brugmann 80', 'Uccle', '1180', 'Belgium'),
-       ('Place Rogier 12', 'Brussels', '1210', 'Belgium');
 
 INSERT INTO "user" (lastname, firstname, email, password, birthdate, phone_number, car_id, role)
 VALUES ('Azoud', 'Mustafa', 'azoud@example.com', crypt('Mustafa@123', gen_salt('bf')), '1985-01-15', null, null, 'ROLE_ADMIN'),
@@ -39,25 +28,25 @@ VALUES ('Azoud', 'Mustafa', 'azoud@example.com', crypt('Mustafa@123', gen_salt('
        ('Depaepe', 'Jean-Michel', 'depaepe@example.com', crypt('Jeanmichel@123', gen_salt('bf')), '1978-12-30', null, 8, 'ROLE_USER'),
        ('Baland', 'Stéphanie', 'baland@example.com', crypt('Stephanie@123', gen_salt('bf')), '1980-02-22', null, NULL, 'ROLE_USER');
 
-INSERT INTO route (departure_address_id, arrival_address_id, departure_date, available_seat, driver_id, route_price)
-VALUES (1, 2, '2023-11-15', 3, 2, 20.0),
-       (2, 3, '2023-11-20', 4, 2, 25.0),
-       (4, 5, '2023-11-15', 2, 3, 15.0),
-       (3, 6, '2023-11-15', 1, 1, 10.0),
-       (1, 7, '2023-11-20', 3, 1, 20.0),
-       (2, 8, '2023-11-15', 2, 4, 15.0),
-       (6, 9, '2023-11-15', 4, 9, 25.0),
-       (5, 10, '2023-11-15', 3, 8, 20.0),
-       (4, 7, '2023-11-15', 2, 5, 15.0),
-       (3, 9, '2023-11-20', 1, 5, 10.0),
-       (1, 2, '2023-11-20', 3, 9, 20.0),
-       (2, 3, '2023-11-21', 4, 9, 25.0),
-       (4, 5, '2023-11-20', 2, 8, 15.0),
-       (3, 6, '2023-11-21', 1, 8, 10.0),
-       (1, 7, '2023-11-20', 3, 4, 20.0),
-       (2, 8, '2023-11-21', 2, 1, 15.0),
-       (6, 9, '2023-11-21', 4, 2, 25.0),
-       (5, 10, '2023-11-21', 3, 3, 20.0);
+INSERT INTO route (departure_address, arrival_address, departure_date, available_seat, driver_id, route_price)
+VALUES ('Rue de la Loi 16 1000 Bruxelles', 'Avenue des Arts 10 1210 Bruxelles', '2023-11-15', 3, 2, 20.0),
+       ('Avenue des Arts 10 1210 Bruxelles', 'Avenue Louise 123 1050 Bruxelles', '2023-11-20', 4, 2, 25.0),
+       ('Chaussée de Waterloo 100 1050 Bruxelles', 'Rue du Midi 20 1000 Bruxelles', '2023-11-15', 2, 3, 15.0),
+       ('Avenue Louise 123 1050 Bruxelles', 'Rue Neuve 50 1000 Bruxelles', '2023-11-15', 1, 1, 10.0),
+       ('Rue de la Loi 16 1000 Bruxelles', 'Avenue de Tervuren 200 1150 Bruxelles', '2023-11-20', 3, 1, 20.0),
+       ('Avenue des Arts 10 1210 Bruxelles', 'Boulevard Anspach 5 1000 Bruxelles', '2023-11-15', 2, 4, 15.0),
+       ('Rue mommaerts 50 1020 Bruxelles', 'Avenue Brugmann 80 1180 Bruxelles', '2023-11-15', 4, 9, 25.0),
+       ('Rue du Midi 20 1000 Bruxelles', 'Place Rogier 12 1210 Bruxelles', '2023-11-15', 3, 8, 20.0),
+       ('Chaussée de Waterloo 100 1050 Bruxelles', 'Avenue de Tervuren 200 1150 Bruxelles', '2023-11-15', 2, 5, 15.0),
+       ('Avenue Louise 123 1050 Bruxelles', 'Avenue Brugmann 80 1180 Bruxelles', '2023-11-20', 1, 5, 10.0),
+       ('Rue de la Loi 16 1000 Bruxelles', 'Avenue des Arts 10 1210 Bruxelles', '2023-11-20', 3, 9, 20.0),
+       ('Rue de la Loi 16 1000 Bruxelles', 'Avenue Louise 123 1050 Bruxelles', '2023-11-21', 4, 9, 25.0),
+       ('Chaussée de Waterloo 100 1050 Bruxelles', 'Rue du Midi 20 1000 Bruxelles', '2023-11-20', 2, 8, 15.0),
+       ('Avenue Louise 123 1050 Bruxelles', 'Rue mommaerts 50 1020 Bruxelles', '2023-11-21', 1, 8, 10.0),
+       ('Rue de la Loi 16 1000 Bruxelles', 'Avenue de Tervuren 200 1150 Bruxelles', '2023-11-20', 3, 4, 20.0),
+       ('Avenue des Arts 10 1210 Bruxelles', 'Boulevard Anspach 5 1000 Bruxelles', '2023-11-21', 2, 1, 15.0),
+       ('Rue mommaerts 50 1020 Bruxelles', 'Avenue Brugmann 80 1180 Bruxelles', '2023-11-21', 4, 2, 25.0),
+       ('Rue du Midi 20 1000 Bruxelles', 'Place Rogier 12 1210 Bruxelles', '2023-11-21', 3, 3, 20.0);
 
 
 -- Route Passenger

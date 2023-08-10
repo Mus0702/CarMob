@@ -21,15 +21,15 @@ public class RouteController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<RouteGetOverviewDTO>> searchRoutes(
-            @RequestParam(required = false) Integer departureAddressId,
-            @RequestParam(required = false) Integer arrivalAddressId,
+            @RequestParam(required = false) String departureAddress,
+            @RequestParam(required = false) String arrivalAddress,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
             @RequestParam(required = false) Integer numberOfSeats,
             Pageable pageable
     ) {
         Page<RouteGetOverviewDTO> routes = routeService.findAllBy(
-                departureAddressId,
-                arrivalAddressId,
+                departureAddress,
+                arrivalAddress,
                 departureDate,
                 numberOfSeats,
                 pageable
