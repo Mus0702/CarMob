@@ -1,8 +1,9 @@
 services:
   db:
-    container_name: postgres
-    image: postgres
+    container_name: postgres2
+    image: kartoza/postgis:15-3.3
     environment:
+      - POSTGRES_DB=car_mob
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - PGDATA:/data/postgres

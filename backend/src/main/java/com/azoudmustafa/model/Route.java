@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -46,6 +47,7 @@ public class Route {
     @NotNull
     @Column(name = "route_price")
     private double routePrice;
+    private Point location;
 
 
 }
