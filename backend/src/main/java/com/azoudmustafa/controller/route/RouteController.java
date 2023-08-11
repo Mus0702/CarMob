@@ -6,6 +6,7 @@ import com.azoudmustafa.repository.RouteRepository;
 import com.azoudmustafa.service.route.RouteService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,11 @@ public class RouteController {
             @RequestParam(required = false) String arrivalAddress,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
             @RequestParam(required = false) Integer numberOfSeats,
-            Pageable pageable
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+
     ) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<RouteGetOverviewDTO> routes = routeService.findAllBy(
                 departureAddress,
                 arrivalAddress,
