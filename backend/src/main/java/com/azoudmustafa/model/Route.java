@@ -51,8 +51,7 @@ public class Route {
     @NotNull
     @Column(name = "route_price")
     private double routePrice;
-    @Column(name = "departure_address_coordinates", columnDefinition = "geometry(Point, 4326)")
-    private Point departureCoordinates;
+
 
     @Column(name = "departure_location", columnDefinition = "POINT")
     @NotNull

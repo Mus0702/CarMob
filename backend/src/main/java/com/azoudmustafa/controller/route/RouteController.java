@@ -1,6 +1,8 @@
 package com.azoudmustafa.controller.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.model.Route;
+import com.azoudmustafa.repository.RouteRepository;
 import com.azoudmustafa.service.route.RouteService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,6 @@ import java.time.LocalDate;
 @RequestMapping("/route")
 @CrossOrigin(origins = "http://localhost:5173")
 public class RouteController {
-
     private final RouteService routeService;
 
     @GetMapping("/search")

@@ -1,7 +1,6 @@
 package com.azoudmustafa.service.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
-import com.azoudmustafa.model.Route;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
