@@ -7,5 +7,9 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 
 public interface RouteService {
-    Page<RouteGetOverviewDTO> findAllBy(String departureAddress, String arrivalAddress, LocalDate departureDate, Integer availableSeat, Pageable pageable);
+    Page<RouteGetOverviewDTO> findAllBy(String departureAddress,
+                                        String arrivalAddress,
+                                        LocalDate departureDate,
+                                        Integer availableSeat,
+                                        Pageable pageable);
 }

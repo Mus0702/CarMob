@@ -33,6 +33,7 @@ CREATE TABLE route
     driver_id          INT,
     route_price        DOUBLE PRECISION NOT NULL,
     departure_location geography(Point, 4326),
+    arrival_location geography(Point, 4326),
 
     FOREIGN KEY (driver_id) REFERENCES "user" (id)
 );

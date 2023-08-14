@@ -22,12 +22,20 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Page<RouteGetOverviewDTO> findAllBy(String selectedDepartureAddress,
-                                               String arrivalAddress,
+                                               String selectedArrivalAddress,
                                                LocalDate departureDate,
                                                Integer availableSeat,
                                                Pageable pageable) {
-        LatLng results = googleGeocodingService.getLatLngFromAddress(selectedDepartureAddress);
-        Page<Route> routes = routeRepository.findAllBy(results.lat, results.lng, arrivalAddress, departureDate, availableSeat, pageable);
+
+        LatLng departureResults = googleGeocodingService.getLatLngFromAddress(selectedDepartureAddress);
+        LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(selectedArrivalAddress);
+
+        Page<Route> routes = routeRepository.findAllBy(departureResults.lat,
+                departureResults.lng,
+                arrivalResults.lat, arrivalResults.lng,
+                departureDate,
+                availableSeat,
+                pageable);
 
         return routes.map(routeMapper::toDTO);
     }

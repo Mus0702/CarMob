@@ -13,16 +13,19 @@ import java.time.LocalDate;
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Integer> {
     @Query(value = "SELECT * FROM route r " +
-            "WHERE r.arrival_address = :userArrivalAddress " +
-            "AND ST_DWithin(r.departure_location, " +
+            "WHERE ST_DWithin(r.departure_location, " +
             "ST_SetSRID(ST_MakePoint(:selectDepartureAddressLong, :selectedDepartureAddressLat), 4326), " +
+            "5000) " +
+            "AND ST_DWithin(r.arrival_location, " +
+            "ST_SetSRID(ST_MakePoint(:selectedArrivalAddressLong, :selectedArrivalAddressLat), 4326), " +
             "3000) " +
             "AND r.departure_date = :departureDate " +
             "AND r.available_seat >= :availableSeat", nativeQuery = true)
     Page<Route> findAllBy(
             @Param("selectedDepartureAddressLat") Double selectedDepartureAddressLat,
             @Param("selectDepartureAddressLong") Double selectDepartureAddressLong,
-            @Param("userArrivalAddress") String userArrivalAddress,
+            @Param("selectedArrivalAddressLat") Double selectedArrivalAddressLat,
+            @Param("selectedArrivalAddressLong") Double selectedArrivalAddressLong,
             @Param("departureDate") LocalDate departureDate,
             @Param("availableSeat") Integer availableSeat,
             Pageable pageable
