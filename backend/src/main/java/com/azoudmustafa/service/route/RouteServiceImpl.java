@@ -30,8 +30,8 @@ public class RouteServiceImpl implements RouteService {
         LatLng departureResults = googleGeocodingService.getLatLngFromAddress(selectedDepartureAddress);
         LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(selectedArrivalAddress);
 
-        Page<Route> routes = routeRepository.findAllBy(departureResults.lat,
-                departureResults.lng,
+        Page<Route> routes = routeRepository.findAllBy(
+                departureResults.lat, departureResults.lng,
                 arrivalResults.lat, arrivalResults.lng,
                 departureDate,
                 availableSeat,

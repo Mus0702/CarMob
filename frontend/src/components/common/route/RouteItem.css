@@ -1,0 +1,18 @@
+.btn-success {
+  background-color: #80ed99;
+}
+
+.btn-custom {
+  border: 0;
+  padding: 10px 20px;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.btn-custom-success {
+  background-color: #80ed99;
+  transition: background-color 0.3s ease-in-out;
+}
+.btn-custom-success:hover {
+  background-color: lawngreen;
+}
