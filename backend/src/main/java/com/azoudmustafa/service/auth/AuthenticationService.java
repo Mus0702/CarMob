@@ -42,8 +42,12 @@ public class AuthenticationService {
 
         var jwtToken = jwtService.generateToken(userMapper.toEntity(userPostDTO));
 
+        var role = userPostDTO.role();
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .email(request.getEmail())
+                .role(role)
                 .build();
     }
 
@@ -58,6 +62,7 @@ public class AuthenticationService {
                 .builder()
                 .token(jwtToken)
                 .role(role)
+                .email(request.getEmail())
                 .build();
 
     }

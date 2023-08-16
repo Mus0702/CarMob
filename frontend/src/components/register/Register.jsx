@@ -46,6 +46,8 @@ const Register = () => {
       if (emailResponse.status === 200) {
         const registerResponse = await registerService(data);
         localStorage.setItem("token", registerResponse.data.token);
+        localStorage.setItem("role", registerResponse.data.role);
+        localStorage.setItem("email", registerResponse.data.email);
         navigate("/");
         console.log({ response: registerResponse });
       } else if (emailResponse.status === 409) {

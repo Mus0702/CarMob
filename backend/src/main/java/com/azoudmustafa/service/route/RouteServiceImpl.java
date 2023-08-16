@@ -4,6 +4,7 @@ import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
 import com.azoudmustafa.mapper.route.RouteMapper;
 import com.azoudmustafa.model.Route;
 import com.azoudmustafa.repository.RouteRepository;
+import com.azoudmustafa.service.geocoding.GoogleDistanceService;
 import com.azoudmustafa.service.geocoding.GoogleGeocodingService;
 import com.google.maps.model.LatLng;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class RouteServiceImpl implements RouteService {
     private final RouteRepository routeRepository;
     private final RouteMapper routeMapper;
     private final GoogleGeocodingService googleGeocodingService;
+    private final GoogleDistanceService googleDistanceService;
 
     @Override
     public Page<RouteGetOverviewDTO> findAllBy(String selectedDepartureAddress,
@@ -37,7 +39,21 @@ public class RouteServiceImpl implements RouteService {
                 availableSeat,
                 pageable);
 
-        return routes.map(routeMapper::toDTO);
+      //  return routes.map(routeMapper::toDTO);
+        return routes.map(route -> {
+            RouteGetOverviewDTO dto = routeMapper.toDTO(route);
+            try {
+                long distanceInMeters = googleDistanceService.getDistanceBetweenAddresses(
+                        selectedDepartureAddress,
+                        route.getDepartureAddress() // Adresse de départ de la Route
+                );
+               // dto.setDistance(distanceInMeters);
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Gérez les exceptions comme vous le souhaitez.
+            }
+            return dto;
+        });
     }
 
 

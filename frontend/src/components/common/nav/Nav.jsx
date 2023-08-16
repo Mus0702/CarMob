@@ -1,13 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../assets/images/logo.png";
 import "./Nav.css";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../../context/AuthContext.jsx";
+import { useAuth } from "../../../hooks/useAuth.jsx";
 
 const Nav = () => {
-  const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const onRedirect = () => {
     navigate("/");
@@ -16,6 +14,9 @@ const Nav = () => {
   const onLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("email");
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
     navigate("/login");
   };
 
