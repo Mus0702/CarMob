@@ -15,7 +15,7 @@ public class GoogleGeocodingService {
 
     private final String API_KEY = Dotenv.load().get("GOOGLE_MAP_API_KEY");
 
-    @Cacheable(value = "geocodingResults", key = "#address")
+    @Cacheable(value = "geocodingResults", key = "{#address}")
     public LatLng getLatLngFromAddress(String address) {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey(API_KEY)

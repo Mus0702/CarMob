@@ -47,7 +47,7 @@ VALUES ('Rue de la Loi 16, 1000 Bruxelles', 'Aéroport de Bruxelles', '2023-11-1
         ST_SetSRID(ST_MakePoint(4.459823699999999, 50.4625654), 4326)),
        ('Chaussée de Waterloo 100, 1050 Bruxelles', 'Gare du nord, 1000 Bruxelles', '2023-11-15', 2, 3, 15.0,
         ST_SetSRID(ST_MakePoint(4.3449674, 50.8291325), 4326), ST_SetSRID(ST_MakePoint(4.3608795, 50.8603166), 4326)),
-       ('Avenue Louise 123, 1000 Bruxelles', 'Aéroport de Bruxelles', '2023-11-15', 1, 1, 10.0,
+       ('Avenue Louise 123, 1000 Bruxelles', 'Aéroport de Bruxelles', '2023-11-15', 1, 5, 10.0,
         ST_SetSRID(ST_MakePoint(4.360377, 50.8301058), 4326),
         ST_SetSRID(ST_MakePoint(4.485941899999999, 50.9002379), 4326)),
        ('Rue de la Loi 16, 1000 Bruxelles', 'Chaussée de gand 1150, 1082 Bruxelles', '2023-11-20', 3,5 , 20.0,

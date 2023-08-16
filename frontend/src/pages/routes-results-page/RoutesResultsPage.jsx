@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import RoutesList from "../../components/common/route/RoutesList.jsx";
 import Loader from "../../components/common/loader/Loader.jsx";
 
-//url = http://localhost:5173/route-results?departureAddress=Avenue%20Louise%202,%201000%20Bruxelles&arrivalAddress=Chauss%C3%A9e%20de%20Gand%20500&departureDate=2023-11-20&numberOfSeats=1
+//test url = http://localhost:5173/route-results?departureAddress=Avenue%20Louise%202,%201000%20Bruxelles&arrivalAddress=Ar%C3%A9roport%20de%20Bruxelles&departureDate=2023-11-15&numberOfSeats=1
 
 const content = [
   {
@@ -46,7 +46,11 @@ const RoutesResultsPage = () => {
         departureDate: searchParams.get("departureDate"),
         numberOfSeats: searchParams.get("numberOfSeats"),
       });
-      setRoutes(response.data.content);
+      const sortedRoutes = response.data.content.sort(
+        (a, b) => a.distance - b.distance,
+      );
+
+      setRoutes(sortedRoutes);
       setIsLoading(false);
 
       console.log({ response });

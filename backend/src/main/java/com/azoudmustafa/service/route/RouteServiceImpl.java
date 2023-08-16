@@ -43,14 +43,14 @@ public class RouteServiceImpl implements RouteService {
         return routes.map(route -> {
             RouteGetOverviewDTO dto = routeMapper.toDTO(route);
             try {
-                long distanceInMeters = googleDistanceService.getDistanceBetweenAddresses(
+                double distanceInMeters = googleDistanceService.getDistanceBetweenAddresses(
                         selectedDepartureAddress,
-                        route.getDepartureAddress() // Adresse de départ de la Route
+                        route.getDepartureAddress()
                 );
-               // dto.setDistance(distanceInMeters);
+                dto.setDistance(distanceInMeters);
             } catch (Exception e) {
                 e.printStackTrace();
-                // Gérez les exceptions comme vous le souhaitez.
+
             }
             return dto;
         });

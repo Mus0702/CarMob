@@ -2,6 +2,7 @@ package com.azoudmustafa.service.caching;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,10 +19,10 @@ public class CacheInspectorService {
 
     public Set<Object> getKeysFromCache(String cacheName) {
         try {
-            Cache cache = cacheManager.getCache(cacheName);
-            if (cache != null && cache.getNativeCache() instanceof com.github.benmanes.caffeine.cache.Cache) {
+            CaffeineCache cache =(CaffeineCache) cacheManager.getCache(cacheName);
+            if (cache != null) {
                 com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache =
-                        (com.github.benmanes.caffeine.cache.Cache<Object, Object>) cache.getNativeCache();
+                        cache.getNativeCache();
                 return nativeCache.asMap().keySet();
             }
         } catch (Exception e) {

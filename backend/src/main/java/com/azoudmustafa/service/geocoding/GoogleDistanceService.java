@@ -1,23 +1,20 @@
 package com.azoudmustafa.service.geocoding;
 
-import org.springframework.stereotype.Service;
-
-
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DistanceMatrix;
-import org.springframework.beans.factory.annotation.Value;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GoogleDistanceService {
 
-//    @Value("${google.api.key}")
-    private String apiKey;
+    Dotenv dotenv = Dotenv.load();
+    private final String API_KEY = Dotenv.load().get("GOOGLE_MAP_API_KEY");
 
     public long getDistanceBetweenAddresses(String origin, String destination) throws Exception {
         GeoApiContext context = new GeoApiContext.Builder()
-                .apiKey(apiKey)
+                .apiKey(API_KEY)
                 .build();
 
         DistanceMatrix distanceMatrix = DistanceMatrixApi.newRequest(context)
