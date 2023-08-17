@@ -23,12 +23,12 @@ public class RouteController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<RouteGetOverviewDTO>> searchRoutes(
-            @RequestParam(required = false) String departureAddress,
-            @RequestParam(required = false) String arrivalAddress,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
-            @RequestParam(required = false) Integer numberOfSeats,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam String departureAddress,
+            @RequestParam String arrivalAddress,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
+            @RequestParam Integer numberOfSeats,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "1") Integer size
 
     ) {
         Pageable pageable = PageRequest.of(page, size);

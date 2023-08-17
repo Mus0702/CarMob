@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { subYears } from "date-fns";
 import { useForm } from "react-hook-form";
 import SignupImage from "../../assets/images/signup-image.jpg";
+import { useAuth } from "../../hooks/useAuth.jsx";
 
 const Register = () => {
   const {
@@ -28,6 +29,7 @@ const Register = () => {
   const today = new Date();
   const maxDate = subYears(today, 18);
   const minDate = new Date("01/01/1920");
+  const { setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const onRegister = async () => {
@@ -48,6 +50,8 @@ const Register = () => {
         localStorage.setItem("token", registerResponse.data.token);
         localStorage.setItem("role", registerResponse.data.role);
         localStorage.setItem("email", registerResponse.data.email);
+        localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true);
         navigate("/");
         console.log({ response: registerResponse });
       } else if (emailResponse.status === 409) {
@@ -83,7 +87,7 @@ const Register = () => {
                             className="form-label"
                             htmlFor="form3Example3c"
                           >
-                            Your Lastname
+                            Lastname
                           </label>
                           <input
                             type="text"
@@ -120,9 +124,9 @@ const Register = () => {
                         </div>
                       </div>
 
-                      <div className="form-outline flex-fill mb-0">
+                      <div className="form-outline flex-fill mb-4">
                         <label className="form-label" htmlFor="form3Example3c">
-                          Your Firstname
+                          Firstname
                         </label>
                         <input
                           type="text"
@@ -161,7 +165,7 @@ const Register = () => {
                             className="form-label"
                             htmlFor="form3Example3c"
                           >
-                            Your Email
+                            Email
                           </label>
                           <input
                             type="email"
@@ -197,7 +201,7 @@ const Register = () => {
                       <div className="d-flex flex-row align-items-center mb-4">
                         <div className="form-outline flex-fill mb-0">
                           <label className="form-label" htmlFor="birthdate">
-                            Your Birthdate
+                            Birthdate
                           </label>
                           <DatePicker
                             id="birthdate"
@@ -226,7 +230,7 @@ const Register = () => {
                             className="form-label"
                             htmlFor="form3Example3c"
                           >
-                            Your Phone number
+                            Phone number
                           </label>
                           <input
                             type="text"

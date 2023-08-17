@@ -7,6 +7,7 @@ export const getSearchRoutes = async (params) => {
       arrivalAddress: params.arrivalAddress,
       departureDate: params.departureDate,
       numberOfSeats: params.numberOfSeats,
+      page: params.page,
     },
   });
 };
