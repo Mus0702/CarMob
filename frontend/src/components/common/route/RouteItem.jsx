@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import "./RouteItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const RouteItem = ({ route }) => {
   return (
@@ -23,9 +24,12 @@ const RouteItem = ({ route }) => {
           <div className="text-color bg-white border-0 fw-bold pb-1">
             <p>Driver name : {route.driver.firstname}</p>
           </div>
-          <a href="#" className="btn-custom btn-custom-success">
+          <Link
+            to={`/routeDetails/${route.id}`}
+            className="btn-custom btn-custom-success"
+          >
             Details
-          </a>
+          </Link>
         </div>
       </div>
     </div>
