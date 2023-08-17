@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const RouteItem = ({ route }) => {
   return (
     <div>
-      <div className=" text-center fw-bold bg-white">
+      <div className=" text-center fw-bold bg-white mb-3">
         {route.distance} meters from your departure address{" "}
       </div>
       <div className="card text-center mb-3 shadow-lg border-0 py-4">

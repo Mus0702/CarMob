@@ -40,6 +40,7 @@ const RoutesResultsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   const fetchRouteResults = async (page = 1) => {
     try {
@@ -50,8 +51,14 @@ const RoutesResultsPage = () => {
         numberOfSeats: searchParams.get("numberOfSeats"),
         page: currentPage - 1,
       });
-      setRoutes(response.data.content);
+
+      const sortedRoutes = response.data.content.sort(
+        (a, b) => a.distance - b.distance,
+      );
+
+      setRoutes(sortedRoutes);
       setTotalElements(response.data.totalElements);
+      setTotalPages(response.data.totalPages);
       setIsLoading(false);
       console.log({ response });
     } catch (e) {
@@ -80,7 +87,7 @@ const RoutesResultsPage = () => {
           <RoutesList routes={routes} />
           <PaginationButtons
             currentPage={currentPage}
-            totalPages={totalElements}
+            totalPages={totalPages}
             onPageChange={handlePageChange}
           />
         </>

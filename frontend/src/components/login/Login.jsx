@@ -72,7 +72,7 @@ export default function Login() {
                             className="form-label"
                             htmlFor="form3Example3c"
                           >
-                            Your Email
+                            Email
                           </label>
                           <input
                             type="email"
@@ -107,7 +107,7 @@ export default function Login() {
                             className="form-label"
                             htmlFor="form3Example4c"
                           >
-                            Your Password
+                            Password
                           </label>
                           <input
                             type="password"
