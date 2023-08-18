@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Getter
 @Setter
 public class RouteGetOverviewDTO {
@@ -13,6 +15,7 @@ public class RouteGetOverviewDTO {
     private String departureAddress;
     private String arrivalAddress;
     private LocalDate departureDate;
+    private LocalTime departureTime;
     private UserGetWithNamesDTO driver;
     private Double distance;
 
