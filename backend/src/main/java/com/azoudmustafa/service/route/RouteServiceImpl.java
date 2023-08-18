@@ -4,6 +4,9 @@ import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
 import com.azoudmustafa.mapper.route.RouteMapper;
 import com.azoudmustafa.model.Route;
 import com.azoudmustafa.repository.RouteRepository;
+import com.azoudmustafa.service.geocoding.GoogleDistanceService;
+import com.azoudmustafa.service.geocoding.GoogleGeocodingService;
+import com.google.maps.model.LatLng;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +19,42 @@ import java.time.LocalDate;
 public class RouteServiceImpl implements RouteService {
     private final RouteRepository routeRepository;
     private final RouteMapper routeMapper;
-
+    private final GoogleGeocodingService googleGeocodingService;
+    private final GoogleDistanceService googleDistanceService;
 
     @Override
-    public Page<RouteGetOverviewDTO> findAllBy(Integer departureAddressId,
-                                               Integer arrivalAddressId,
+    public Page<RouteGetOverviewDTO> findAllBy(String selectedDepartureAddress,
+                                               String selectedArrivalAddress,
                                                LocalDate departureDate,
                                                Integer availableSeat,
                                                Pageable pageable) {
-        Page<Route> routes= routeRepository.findAllBy(departureAddressId, arrivalAddressId, departureDate, availableSeat, pageable);
 
-        return routes.map(routeMapper::toDTO);
+        LatLng departureResults = googleGeocodingService.getLatLngFromAddress(selectedDepartureAddress);
+        LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(selectedArrivalAddress);
+
+        Page<Route> routes = routeRepository.findAllBy(
+                departureResults.lat, departureResults.lng,
+                arrivalResults.lat, arrivalResults.lng,
+                departureDate,
+                availableSeat,
+                pageable);
+
+      //  return routes.map(routeMapper::toDTO);
+        return routes.map(route -> {
+            RouteGetOverviewDTO dto = routeMapper.toDTO(route);
+            try {
+                double distanceInMeters = googleDistanceService.getDistanceBetweenAddresses(
+                        selectedDepartureAddress,
+                        route.getDepartureAddress()
+                );
+                dto.setDistance(distanceInMeters);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+            return dto;
+        });
     }
+
+
 }

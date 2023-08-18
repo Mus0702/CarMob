@@ -3,9 +3,11 @@ import { sendLoginRequest } from "../../service/auth.js";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import LoginImage from "../../assets/images/login-image.jpg";
+import { useAuth } from "../../hooks/useAuth.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,6 +32,9 @@ export default function Login() {
       console.log("reponse ", response);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("isLoggedIn", "true");
+      setIsLoggedIn(true);
       if (localStorage.getItem("role") === "ROLE_ADMIN") {
         navigate("/admin");
       } else {
@@ -67,7 +72,7 @@ export default function Login() {
                             className="form-label"
                             htmlFor="form3Example3c"
                           >
-                            Your Email
+                            Email
                           </label>
                           <input
                             type="email"
@@ -102,7 +107,7 @@ export default function Login() {
                             className="form-label"
                             htmlFor="form3Example4c"
                           >
-                            Your Password
+                            Password
                           </label>
                           <input
                             type="password"

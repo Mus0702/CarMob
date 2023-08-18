@@ -20,17 +20,21 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "departure_address_id")
-    private Address departureAddress;
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "arrival_address_id")
-    private Address arrivalAddress;
+//    @NotNull
+//    @ManyToOne
+//    @JoinColumn(name = "departure_address_id")
+//    private Address departureAddress;
+    //    @NotNull
+//    @ManyToOne
+//    @JoinColumn(name = "arrival_address_id")
+//    private Address arrivalAddress;
     @NotNull
     @Column(name = "departure_date")
     private LocalDate departureDate;
+    @Column(name = "departure_address")
+    private String departureAddress;
+    @Column(name = "arrival_address")
+    private String arrivalAddress;
 
     @Column(name = "available_seat")
     private int availableSeat;
@@ -47,7 +51,16 @@ public class Route {
     @NotNull
     @Column(name = "route_price")
     private double routePrice;
-    private Point location;
+
+
+    @Column(name = "departure_location", columnDefinition = "geography(Point, 4326)")
+    @NotNull
+    private Point departureLocation;
+
+    @Column(name = "arrival_location", columnDefinition = "geography(Point, 4326)")
+    @NotNull
+    private Point arrivalLocation;
+
 
 
 }
