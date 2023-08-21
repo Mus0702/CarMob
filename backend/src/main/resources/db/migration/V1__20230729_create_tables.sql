@@ -26,14 +26,15 @@ CREATE TABLE "user"
 CREATE TABLE route
 (
     id                 SERIAL PRIMARY KEY,
-    departure_address  varchar(255)     NOT NULL,
-    arrival_address    varchar(255)     NOT NULL,
-    departure_date     DATE             NOT NULL,
-    available_seat     INT              NOT NULL,
+    departure_address  varchar(255)           NOT NULL,
+    arrival_address    varchar(255)           NOT NULL,
+    departure_date     DATE                   NOT NULL,
+    departure_time     TIME WITHOUT TIME ZONE NOT NULL,
+    available_seat     INT                    NOT NULL,
     driver_id          INT,
-    route_price        DOUBLE PRECISION NOT NULL,
+    route_price        DOUBLE PRECISION       NOT NULL,
     departure_location geography(Point, 4326),
-    arrival_location geography(Point, 4326),
+    arrival_location   geography(Point, 4326),
 
     FOREIGN KEY (driver_id) REFERENCES "user" (id)
 );

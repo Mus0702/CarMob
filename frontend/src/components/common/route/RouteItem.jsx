@@ -3,8 +3,17 @@ import "./RouteItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 const RouteItem = ({ route }) => {
+  const formatTime = (timeString) => {
+    if (timeString) {
+      const [hour, minute] = timeString.split(":");
+      return `${hour}:${minute}`;
+    }
+    return "";
+  };
+
   return (
     <div>
       <div className=" text-center fw-bold bg-white mb-3">
@@ -12,7 +21,9 @@ const RouteItem = ({ route }) => {
       </div>
       <div className="card text-center mb-3 shadow-lg border-0 py-4">
         <div className="card-body">
-          <h5 className="text-color fw-bold">{route.departureDate}</h5>
+          <h5 className="text-color fw-bold">
+            {dayjs(route.departureDate).format("DD-MM-YYYY")}
+          </h5>
           <div className="d-flex align-items-center justify-content-center fw-bold">
             <p className="card-text text-color">{route.departureAddress}</p>
             <FontAwesomeIcon
@@ -20,6 +31,9 @@ const RouteItem = ({ route }) => {
               className="mx-2 mb-3 text-color"
             />
             <p className="text-color">{route.arrivalAddress}</p>
+          </div>
+          <div className="text-color bg-white border-0 fw-bold pb-1">
+            <p>Departure at {formatTime(route.departureTime)}</p>
           </div>
           <div className="text-color bg-white border-0 fw-bold pb-1">
             <p>Driver name : {route.driver.firstname}</p>

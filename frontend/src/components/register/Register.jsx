@@ -2,7 +2,8 @@ import { useState } from "react";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
 import { registerService, isEmailExist } from "../../service/auth.js";
-import DatePicker from "react-date-picker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 import { subYears } from "date-fns";
 import { useForm } from "react-hook-form";
@@ -207,7 +208,6 @@ const Register = () => {
                             id="birthdate"
                             showIcon
                             className="form-control"
-                            calendarClassName="custom-calendar"
                             clearIcon={null}
                             format="dd/MM/yyyy"
                             maxDate={maxDate}

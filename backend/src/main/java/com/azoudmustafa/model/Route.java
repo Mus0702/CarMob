@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Getter
@@ -31,6 +32,9 @@ public class Route {
     @NotNull
     @Column(name = "departure_date")
     private LocalDate departureDate;
+    @NotNull
+    @Column(name = "departure_time")
+    private LocalTime departureTime;
     @Column(name = "departure_address")
     private String departureAddress;
     @Column(name = "arrival_address")
