@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter, Outlet } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 import "./App.css";
 import Nav from "../common/nav/Nav.jsx";
@@ -11,6 +11,7 @@ import ProfilePage from "../../pages/auth-pages/ProfilePage.jsx";
 import RequiredAuth from "../protected-pages/RequiredAuth.jsx";
 import RestrictedPage from "../../pages/restricted-page/RestrictedPage.jsx";
 import RequiredAdminRole from "../protected-pages/RequiredAdminRole.jsx";
+import RouteDetails from "../common/route/route-details/RouteDetails.jsx";
 export default function Myapp() {
   return (
     <>
@@ -24,7 +25,9 @@ export default function Myapp() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
           <Route path="/route-results" element={<RoutesResultsPage />} />
+          <Route path="/routeDetails/:routeId" element={<RouteDetails />} />
           <Route element={<RequiredAuth />}>
             <Route path="/profile" element={<ProfilePage />} />
           </Route>

@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**","user/check-email","route/search")
+                .requestMatchers("/auth/**","user/check-email","route/search","/getLatLng")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -40,6 +40,8 @@ const RouteItem = ({ route }) => {
           </div>
           <Link
             to={`/routeDetails/${route.id}`}
+            state={{ route: route }}
+            key={route.id}
             className="btn-custom btn-custom-success"
           >
             Details
@@ -51,7 +53,6 @@ const RouteItem = ({ route }) => {
 };
 
 export default RouteItem;
-
 RouteItem.propTypes = {
   route: PropTypes.object,
 };
