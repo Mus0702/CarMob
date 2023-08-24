@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Integer> {
@@ -30,4 +31,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             @Param("availableSeat") Integer availableSeat,
             Pageable pageable
     );
+
+    Optional<Route> findById(Integer id);
 }

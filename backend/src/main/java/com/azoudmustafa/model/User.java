@@ -43,10 +43,14 @@ public class User implements UserDetails {
     private LocalDate birthdate;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Min(0)
+    @Max(5)
+    private Double rating;
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "car_id")
     private Car car;
     @Transient
     private boolean isDriver;

@@ -1,7 +1,7 @@
 package com.azoudmustafa.mapper;
 
 import com.azoudmustafa.dto.user.UserPostDTO;
-import com.azoudmustafa.mapper.user.UserDTOImpl;
+import com.azoudmustafa.mapper.user.UserMapper;
 import com.azoudmustafa.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,8 @@ class UserDTOImplTest {
     private UserPostDTO mockUserDTO;
 
     @InjectMocks
-    private UserDTOImpl userDTOimpl;
+    private UserMapper userMapper;
+
 
     @Test
     void testToEntity() {
@@ -29,7 +30,7 @@ class UserDTOImplTest {
         when(mockUserDTO.firstname()).thenReturn("Mustafa");
         when(mockUserDTO.password()).thenReturn("mustafa");
 
-        User user = userDTOimpl.toEntity(mockUserDTO);
+        User user = userMapper.toEntity(mockUserDTO);
 
         assertEquals(1, user.getId());
         assertEquals("Azoud", user.getLastname());
@@ -46,7 +47,7 @@ class UserDTOImplTest {
         user.setFirstname("Mustafa");
         user.setPassword("mustafa");
 
-        UserPostDTO userDTO = userDTOimpl.toPostDTO(user);
+        UserPostDTO userDTO = userMapper.toPostDTO(user);
 
         assertEquals(1, userDTO.id());
         assertEquals("Azoud", userDTO.lastname());

@@ -1,8 +1,11 @@
 package com.azoudmustafa.service.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.dto.route.RouteWithCarAndUserDTO;
 import com.azoudmustafa.mapper.route.RouteMapper;
+import com.azoudmustafa.model.Car;
 import com.azoudmustafa.model.Route;
+import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.RouteRepository;
 import com.azoudmustafa.service.geocoding.GoogleDistanceService;
 import com.azoudmustafa.service.geocoding.GoogleGeocodingService;
@@ -11,8 +14,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -39,7 +44,6 @@ public class RouteServiceImpl implements RouteService {
                 availableSeat,
                 pageable);
 
-      //  return routes.map(routeMapper::toDTO);
         return routes.map(route -> {
             RouteGetOverviewDTO dto = routeMapper.toDTO(route);
             try {
@@ -54,6 +58,12 @@ public class RouteServiceImpl implements RouteService {
             }
             return dto;
         });
+    }
+
+    @Override
+    public RouteWithCarAndUserDTO findById(Integer id) {
+        Route route = routeRepository.findById(id).orElse(null);
+        return routeMapper.routeEntityToDTO(route);
     }
 
 

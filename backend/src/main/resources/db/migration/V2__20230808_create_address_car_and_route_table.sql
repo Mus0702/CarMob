@@ -4,42 +4,42 @@ CREATE INDEX idx_route_departure_location ON route USING GIST (departure_locatio
 
 
 
-INSERT INTO car (brand, model, number_available_seat)
-VALUES ('Toyota', 'Corolla', 5),
-       ('Honda', 'Civic', 4),
-       ('Ford', 'Focus', 4),
-       ('Volkswagen', 'Golf', 5),
-       ('Renault', 'Clio', 5),
-       ('Hyundai', 'Elantra', 4),
-       ('Nissan', 'Sentra', 4),
-       ('Chevrolet', 'Cruze', 5),
-       ('Mazda', '3', 5),
-       ('Kia', 'Forte', 4);
+INSERT INTO car (brand, model, color,number_available_seat)
+VALUES ('Toyota', 'Corolla','Light Red', 5),
+       ('Honda', 'Civic','White', 4),
+       ('Ford', 'Focus','Black', 4),
+       ('Volkswagen', 'Golf','Light Gray', 5),
+       ('Renault', 'Clio','Midnight Blue', 5),
+       ('Hyundai', 'Elantra', 'Silver grey',4),
+       ('Nissan', 'Sentra','Green', 4),
+       ('Chevrolet', 'Cruze','Brown', 5),
+       ('Mazda', '3','Dark Grey' ,5),
+       ('Kia', 'Forte','Yellow', 4);
 
 
-INSERT INTO "user" (lastname, firstname, email, password, birthdate, phone_number, car_id, role)
-VALUES ('Azoud', 'Mustafa', 'azoud@example.com', crypt('Mustafa@123', gen_salt('bf')), '1985-01-15', null, null,
+INSERT INTO "user" (lastname, firstname, email, password, birthdate, phone_number,rating, car_id, role)
+VALUES ('Azoud', 'Mustafa', 'azoud@example.com', crypt('Mustafa@123', gen_salt('bf')), '1985-01-15', null,null, null,
         'ROLE_ADMIN'),
-       ('Samiha', 'Draa', 'draa@example.com', crypt('Samiha@123', gen_salt('bf')), '1982-10-22', null, 2, 'ROLE_USER'),
-       ('Tahtah', 'Nasseira', 'tahtah@example.com', crypt('Nasseira@123', gen_salt('bf')), '1990-02-15', null, 3,
+       ('Samiha', 'Draa', 'draa@example.com', crypt('Samiha@123', gen_salt('bf')), '1982-10-22', null,4.2, 2, 'ROLE_USER'),
+       ('Tahtah', 'Nasseira', 'tahtah@example.com', crypt('Nasseira@123', gen_salt('bf')), '1990-02-15', null,4.2, 3,
         'ROLE_USER'),
-       ('Verhaegen', 'Boris', 'verhaegen@example.com', crypt('Boris@123', gen_salt('bf')), '1984-03-03', null, 9,
+       ('Verhaegen', 'Boris', 'verhaegen@example.com', crypt('Boris@123', gen_salt('bf')), '1984-03-03', null,4.6, 9,
         'ROLE_USER'),
-       ('Penelle', 'Benoît', 'penelle@example.com', crypt('Benoit@123', gen_salt('bf')), '1983-11-25', null, NULL,
+       ('Penelle', 'Benoît', 'penelle@example.com', crypt('Benoit@123', gen_salt('bf')), '1983-11-25', null,4.7, 10,
         'ROLE_USER'),
-       ('Lacroix', 'Bruno', 'lacroix@example.com', crypt('Bruno@123', gen_salt('bf')), '1978-07-12', null, 1,
+       ('Lacroix', 'Bruno', 'lacroix@example.com', crypt('Bruno@123', gen_salt('bf')), '1978-07-12', null,4.9, 1,
         'ROLE_USER'),
-       ('Pigeolet', 'Xavier', 'pigeolet@example.com', crypt('Xavier@123', gen_salt('bf')), '1991-09-08', null, 4,
+       ('Pigeolet', 'Xavier', 'pigeolet@example.com', crypt('Xavier@123', gen_salt('bf')), '1991-09-08', null, 4.5,4,
         'ROLE_USER'),
-       ('Michel', 'Marc', 'michel@example.com', crypt('Marc@123', gen_salt('bf')), '1988-04-18', null, 5, 'ROLE_USER'),
-       ('Depaepe', 'Jean-Michel', 'depaepe@example.com', crypt('Jeanmichel@123', gen_salt('bf')), '1978-12-30', null, 8,
+       ('Michel', 'Marc', 'michel@example.com', crypt('Marc@123', gen_salt('bf')), '1988-04-18', null, 4.5,5, 'ROLE_USER'),
+       ('Depaepe', 'Jean-Michel', 'depaepe@example.com', crypt('Jeanmichel@123', gen_salt('bf')), '1978-12-30', null, 4.9,8,
         'ROLE_USER'),
-       ('Baland', 'Stéphanie', 'baland@example.com', crypt('Stephanie@123', gen_salt('bf')), '1980-02-22', null, NULL,
+       ('Baland', 'Stéphanie', 'baland@example.com', crypt('Stephanie@123', gen_salt('bf')), '1980-02-22', null,null, NULL,
         'ROLE_USER');
 
 INSERT INTO route (departure_address, arrival_address, departure_date,departure_time, available_seat, driver_id, route_price,
                    departure_location, arrival_location)
-VALUES ('Rue de la Loi 16, 1000 Bruxelles', 'Aéroport de Bruxelles', '2023-11-15','10:00', 3, 2, 20.0,
+VALUES ('Rue de la Loi 16, 1000 Bruxelles', 'Aéroport de Bruxelles', '2023-11-15','10:00', 3, 2, 20,
         ST_SetSRID(ST_MakePoint(4.3663459, 50.8464734), 4326),
         ST_SetSRID(ST_MakePoint(4.485941899999999, 50.9002379), 4326)),
        ('Avenue des Arts 10, 1210 Bruxelles', 'Aéroport de charleroi', '2023-11-20','19:45', 4, 2, 25.0,
@@ -54,13 +54,13 @@ VALUES ('Rue de la Loi 16, 1000 Bruxelles', 'Aéroport de Bruxelles', '2023-11-1
         ST_SetSRID(ST_MakePoint(4.3663459, 50.8464734), 4326), ST_SetSRID(ST_MakePoint(4.2978247, 50.8647702), 4326)),
        ('Avenue des Arts 10, 1210 Bruxelles', 'Boulevard Anspach 5, 1000 Bruxelles', '2023-11-15','15:15', 2, 4, 15.0,
         ST_SetSRID(ST_MakePoint(4.3698678, 50.8480114), 4326), ST_SetSRID(ST_MakePoint(4.3513328, 50.8503206), 4326)),
-       ('Rue mommaerts 50, 1080 Bruxelles', 'Aéroport de charleroi', '2023-11-15','08:35', 4, 9, 25.0,
+       ('Rue mommaerts 50, 1080 Bruxelles', 'Aéroport de charleroi', '2023-11-15','08:35', 4, 6, 25.0,
         ST_SetSRID(ST_MakePoint(4.3394731, 50.8596544), 4326),
         ST_SetSRID(ST_MakePoint(4.459823699999999, 50.4625654), 4326)),
         ('Rue du Midi 20, 1000 Bruxelles', 'Gare de Tubize, 1480 Tubize', '2023-11-15','16:50', 3, 8, 20.0,
          ST_SetSRID(ST_MakePoint(4.350917, 50.84724259999999), 4326),
          ST_SetSRID(ST_MakePoint(4.20573, 50.69171), 4326)),
-        ('Chaussée de Waterloo 100, 1060 Bruxelles', 'Plage Ostende, 8400 Oostende', '2023-11-15','09:00', 2, 5, 15.0,
+        ('Chaussée de Waterloo 100, 1060 Bruxelles', 'Plage Ostende, 8400 Oostende', '2023-11-15','09:00', 2, 9, 15.0,
          ST_SetSRID(ST_MakePoint(4.3449674, 50.8291325), 4326),
          ST_SetSRID(ST_MakePoint(2.9161003, 51.23530539999999), 4326)),
         ('Avenue Louise 123, 1050 Bruxelles', 'Hopital Brugmann, 1020 Bruxelles', '2023-11-20','09:25', 1, 5, 10.0,

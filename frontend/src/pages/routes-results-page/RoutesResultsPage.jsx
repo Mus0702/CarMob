@@ -51,6 +51,8 @@ const RoutesResultsPage = () => {
         numberOfSeats: searchParams.get("numberOfSeats"),
         page: currentPage - 1,
       });
+      const numberOfSelectedSeats = searchParams.get("numberOfSeats");
+      localStorage.setItem("numberOfSelectedSeats", numberOfSelectedSeats);
 
       const sortedRoutes = response.data.content.sort(
         (a, b) => a.distance - b.distance,

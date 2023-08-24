@@ -1,5 +1,6 @@
 package com.azoudmustafa.service.user;
 
+import com.azoudmustafa.dto.user.UserGetDTO;
 import com.azoudmustafa.model.User;
 
 public interface UserService {

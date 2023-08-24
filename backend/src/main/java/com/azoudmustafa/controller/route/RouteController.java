@@ -1,6 +1,7 @@
 package com.azoudmustafa.controller.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.dto.route.RouteWithCarAndUserDTO;
 import com.azoudmustafa.model.Route;
 import com.azoudmustafa.repository.RouteRepository;
 import com.azoudmustafa.service.route.RouteService;
@@ -9,10 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -41,5 +45,10 @@ public class RouteController {
         );
 
         return ResponseEntity.ok(routes);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RouteWithCarAndUserDTO> getById(@PathVariable Integer id) {
+        return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }
 }
