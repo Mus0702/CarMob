@@ -1,12 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../../../hooks/useAuth.jsx";
+import "./RouteDetails.css";
+
 import {
   DirectionsRenderer,
   GoogleMap,
   LoadScript,
 } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faComments,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import dayjs from "dayjs";
 
 const RouteDetails = () => {
@@ -18,6 +25,8 @@ const RouteDetails = () => {
 
   const numberOfSelectedSeats = localStorage.getItem("numberOfSelectedSeats");
   const [priceToDisplay, setPriceToDisplay] = new useState(0);
+
+  const { isLoggedIn } = new useAuth();
 
   const fetchDirections = async () => {
     if (routeDetail) {
@@ -53,6 +62,12 @@ const RouteDetails = () => {
     return <div>No route details provided.</div>;
   }
 
+  function handleChat() {
+    if (isLoggedIn) {
+    } else {
+    }
+  }
+
   return (
     <div className="container mt-5 text-color fw-bold">
       <h1 className="text-center mb-4 w-100">
@@ -67,17 +82,13 @@ const RouteDetails = () => {
           {routeDetail.arrivalAddress}
         </p>
         <p className="">
-          Driver:{" "}
-          <strong>
-            {routeDetail.driver.firstname} {routeDetail.driver.lastname}
-          </strong>
+          Driver: <strong>{routeDetail.driver.firstname}</strong>
         </p>
         <p className="border-bottom border-3 py-3 w-50">
           <FontAwesomeIcon icon={faStar} style={{ color: "#FFFF33" }} />{" "}
           <strong>{routeDetail.driver.rating} / 5</strong>
         </p>
         <p className="border-bottom border-3 py-3 w-50">
-          Car:{" "}
           <strong>
             {routeDetail.driver.car.brand} {routeDetail.driver.car.model}{" "}
             {routeDetail.driver.car.color}
@@ -87,6 +98,25 @@ const RouteDetails = () => {
           Total Price for {numberOfSelectedSeats} passenger(s) :{" "}
           <strong>{priceToDisplay}€</strong>
         </p>
+        <p className="border-bottom border-3 py-3 w-50">
+          <FontAwesomeIcon
+            icon={faComments}
+            size="lg"
+            style={{ color: "#0d5c63" }}
+            className=""
+          />
+          <button className="btn" onClick={handleChat}>
+            Contact {routeDetail.driver.firstname}
+          </button>
+        </p>
+
+        <p> Passagers:</p>
+        <ul className="border-bottom border-3 py-3 w-50">
+          {routeDetail.passengersDTO.map((passenger, index) => (
+            <li key={index}>{passenger.firstname}</li>
+          ))}
+        </ul>
+
         <Link
           to={"payment-success"}
           //  state={{ route: route }}

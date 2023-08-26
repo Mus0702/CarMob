@@ -17,6 +17,7 @@ public interface RouteMapper {
     Route toEntity(RouteGetOverviewDTO routeGetOverviewDTO);
 
     @Mapping(source = "driver", target = "driver", qualifiedByName = "toGetWithNamesDTO")
+    @Mapping(source = "passengers", target = "passengersDTO")
     RouteGetOverviewDTO toDTO(Route entity);
 
 

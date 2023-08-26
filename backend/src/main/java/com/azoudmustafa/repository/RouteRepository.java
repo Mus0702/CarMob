@@ -13,15 +13,16 @@ import java.util.Optional;
 
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Integer> {
-    @Query(value = "SELECT * FROM route r " +
-            "WHERE ST_DWithin(r.departure_location, " +
-            "ST_SetSRID(ST_MakePoint(:selectDepartureAddressLong, :selectedDepartureAddressLat), 4326), " +
-            "5000) " +
-            "AND ST_DWithin(r.arrival_location, " +
-            "ST_SetSRID(ST_MakePoint(:selectedArrivalAddressLong, :selectedArrivalAddressLat), 4326), " +
-            "3000) " +
-            "AND r.departure_date = :departureDate " +
-            "AND r.available_seat >= :availableSeat", nativeQuery = true)
+    @Query("SELECT r FROM Route r " +
+            "JOIN FETCH r.passengers " +
+            "WHERE FUNCTION('ST_DWithin', r.departureLocation, " +
+            "FUNCTION('ST_SetSRID', FUNCTION('ST_MakePoint', :selectDepartureAddressLong, :selectedDepartureAddressLat), 4326), " +
+            "5000) = TRUE " +
+            "AND FUNCTION('ST_DWithin', r.arrivalLocation, " +
+            "FUNCTION('ST_SetSRID', FUNCTION('ST_MakePoint', :selectedArrivalAddressLong, :selectedArrivalAddressLat), 4326), " +
+            "3000) = TRUE " +
+            "AND r.departureDate = :departureDate " +
+            "AND r.availableSeat >= :availableSeat")
     Page<Route> findAllBy(
             @Param("selectedDepartureAddressLat") Double selectedDepartureAddressLat,
             @Param("selectDepartureAddressLong") Double selectDepartureAddressLong,

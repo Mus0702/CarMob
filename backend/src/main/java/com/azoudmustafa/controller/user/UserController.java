@@ -3,7 +3,6 @@ package com.azoudmustafa.controller.user;
 
 import com.azoudmustafa.dto.user.UserGetDTO;
 import com.azoudmustafa.mapper.user.UserMapper;
-import com.azoudmustafa.model.User;
 import com.azoudmustafa.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

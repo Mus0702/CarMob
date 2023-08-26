@@ -3,6 +3,7 @@ package com.azoudmustafa.mapper.user;
 import com.azoudmustafa.dto.user.UserGetDTO;
 import com.azoudmustafa.dto.user.UserGetWithNamesDTO;
 import com.azoudmustafa.dto.user.UserPostDTO;
+import com.azoudmustafa.dto.user.UserWithFirstnameDTO;
 import com.azoudmustafa.mapper.car.CarMapper;
 import com.azoudmustafa.model.User;
 import org.mapstruct.Mapper;
@@ -30,5 +31,6 @@ public interface UserMapper {
     @Named("toGetWithNamesDTO")
     UserGetWithNamesDTO toGetWithNamesDTO(User entity);
 
+    UserWithFirstnameDTO toGetWithFirstnameDTO(User entity);
 
 }
