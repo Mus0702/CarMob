@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../../hooks/useAuth.jsx";
+import { useNavigate } from "react-router-dom";
+
 import "./RouteDetails.css";
 
 import {
@@ -24,9 +26,10 @@ const RouteDetails = () => {
   const [directions, setDirections] = useState(null);
 
   const numberOfSelectedSeats = localStorage.getItem("numberOfSelectedSeats");
-  const [priceToDisplay, setPriceToDisplay] = new useState(0);
+  const [priceToDisplay, setPriceToDisplay] = useState(0);
 
-  const { isLoggedIn } = new useAuth();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const fetchDirections = async () => {
     if (routeDetail) {
@@ -64,7 +67,10 @@ const RouteDetails = () => {
 
   function handleChat() {
     if (isLoggedIn) {
+      navigate(`/chat/${routeDetail.id}`);
     } else {
+      localStorage.setItem("redirectToChat", routeDetail.id);
+      navigate("/login");
     }
   }
 

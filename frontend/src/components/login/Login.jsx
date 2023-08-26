@@ -11,6 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const redirectToChat = localStorage.getItem("redirectToChat");
   const {
     register,
     handleSubmit,
@@ -27,6 +28,7 @@ export default function Login() {
 
     try {
       const response = await sendLoginRequest(credentials);
+
       setEmail("");
       setPassword("");
       console.log("reponse ", response);
@@ -37,6 +39,9 @@ export default function Login() {
       setIsLoggedIn(true);
       if (localStorage.getItem("role") === "ROLE_ADMIN") {
         navigate("/admin");
+      } else if (redirectToChat) {
+        navigate(`/chat/${redirectToChat}`);
+        localStorage.removeItem("redirectToChat");
       } else {
         navigate("/");
       }

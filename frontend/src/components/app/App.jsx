@@ -12,6 +12,7 @@ import RequiredAuth from "../protected-pages/RequiredAuth.jsx";
 import RestrictedPage from "../../pages/restricted-page/RestrictedPage.jsx";
 import RequiredAdminRole from "../protected-pages/RequiredAdminRole.jsx";
 import RouteDetails from "../common/route/route-details/RouteDetails.jsx";
+import ChatPage from "../../pages/chat-page/ChatPage.jsx";
 export default function Myapp() {
   return (
     <>
@@ -28,6 +29,9 @@ export default function Myapp() {
 
           <Route path="/route-results" element={<RoutesResultsPage />} />
           <Route path="/routeDetails/:routeId" element={<RouteDetails />} />
+          <Route element={<RequiredAuth />}>
+            <Route path="/chat/:routeId" element={<ChatPage />} />
+          </Route>
           <Route element={<RequiredAuth />}>
             <Route path="/profile" element={<ProfilePage />} />
           </Route>

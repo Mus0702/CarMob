@@ -59,9 +59,9 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public RouteWithCarAndUserDTO findById(Integer id) {
+    public RouteGetOverviewDTO findById(Integer id) {
         Route route = routeRepository.findById(id).orElse(null);
-        return routeMapper.routeEntityToDTO(route);
+        return routeMapper.toDTO(route);
     }
 
 

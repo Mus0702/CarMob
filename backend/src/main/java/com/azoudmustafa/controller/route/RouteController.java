@@ -50,7 +50,7 @@ public class RouteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RouteWithCarAndUserDTO> getById(@PathVariable Integer id) {
+    public ResponseEntity<RouteGetOverviewDTO> getById(@PathVariable Integer id) {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }
 
