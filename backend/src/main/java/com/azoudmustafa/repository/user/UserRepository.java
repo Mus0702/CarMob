@@ -1,4 +1,4 @@
-package com.azoudmustafa.repository;
+package com.azoudmustafa.repository.user;
 
 import com.azoudmustafa.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
 package com.azoudmustafa.configuration;
 
-import com.azoudmustafa.repository.UserRepository;
+import com.azoudmustafa.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

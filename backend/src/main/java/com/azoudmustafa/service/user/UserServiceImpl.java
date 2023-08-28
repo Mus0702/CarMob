@@ -1,7 +1,7 @@
 package com.azoudmustafa.service.user;
 
 import com.azoudmustafa.model.User;
-import com.azoudmustafa.repository.UserRepository;
+import com.azoudmustafa.repository.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
