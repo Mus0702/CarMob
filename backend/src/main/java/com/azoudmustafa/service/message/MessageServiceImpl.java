@@ -1,5 +1,7 @@
 package com.azoudmustafa.service.message;
 
+import com.azoudmustafa.dto.message.MessageDTO;
+import com.azoudmustafa.mapper.message.MessageMapper;
 import com.azoudmustafa.model.Message;
 import com.azoudmustafa.repository.message.MessageRepository;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,9 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 
 
-    public Message save(Message message) {
-        return messageRepository.save(message);
+    public Message save(MessageDTO messageDTO) {
+        Message messageEntity = MessageMapper.INSTANCE.messageDtoToMessage(messageDTO);
+        return messageRepository.save(messageEntity);
     }
+
 }

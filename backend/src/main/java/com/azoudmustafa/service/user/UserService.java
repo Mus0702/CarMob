@@ -6,5 +6,6 @@ import com.azoudmustafa.model.User;
 public interface UserService {
     User save(User user);
     User getById(Integer id);
+    UserGetDTO getByMail(String mail);
     boolean existsByEmail(String email);
 }

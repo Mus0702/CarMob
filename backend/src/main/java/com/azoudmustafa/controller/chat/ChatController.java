@@ -1,5 +1,7 @@
 package com.azoudmustafa.controller.chat;
 
+import com.azoudmustafa.dto.message.MessageDTO;
+import com.azoudmustafa.mapper.message.MessageMapper;
 import com.azoudmustafa.model.Message;
 import com.azoudmustafa.service.message.MessageService;
 import lombok.AllArgsConstructor;
@@ -18,15 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ChatController {
     private final MessageService messageService;
-
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/chat")
-    public Message sendMessage(@Payload Message chatMessage) {
-        Message savedMessage = messageService.save(chatMessage);
+    public Message sendMessage(@Payload MessageDTO chatMessageDTO) {
+        Message savedMessage = messageService.save(chatMessageDTO);
         simpMessagingTemplate.convertAndSendToUser(
-                chatMessage.getReceiver().getId().toString(),
-                "/queue/messages",
+                chatMessageDTO.getReceiverId().toString(),
+                "/user/private",
                 savedMessage
         );
         return savedMessage;

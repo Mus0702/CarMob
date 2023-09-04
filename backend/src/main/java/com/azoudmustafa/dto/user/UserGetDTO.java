@@ -13,9 +13,9 @@ import lombok.Setter;
 public class UserGetDTO {
 
     private Integer id;
-    private String lastname;
-    private String firstname;
-
-    private String email;
-    private CarDTO car;
+//    private String lastname;
+//    private String firstname;
+//
+//    private String email;
+//    private CarDTO car;
 }

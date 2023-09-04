@@ -1,5 +1,7 @@
 package com.azoudmustafa.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,16 +20,17 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
     @Column(nullable = false)
     private String content;
-    @Column(nullable = false, updatable = false)
+
     private LocalTime timestamp;
+
 
 
 }

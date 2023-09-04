@@ -16,6 +16,7 @@ const Nav = () => {
     localStorage.removeItem("role");
     localStorage.removeItem("email");
     localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("connectedUserId");
     setIsLoggedIn(false);
     navigate("/login");
   };

@@ -65,6 +65,8 @@ public class Route {
     @NotNull
     private Point arrivalLocation;
 
-
+    public Route(Integer id) {
+        this.id = id;
+    }
 
 }

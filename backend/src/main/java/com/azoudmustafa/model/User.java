@@ -1,6 +1,7 @@
 package com.azoudmustafa.model;
 
 import com.azoudmustafa.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -48,18 +49,28 @@ public class User implements UserDetails {
     @Max(5)
     private Double rating;
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "car_id")
     private Car car;
     @Transient
     private boolean isDriver;
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(getRole().name()));
+        if( getRole() != null){
+            return List.of(new SimpleGrantedAuthority(getRole().name()));
+
+        }else {
+            return List.of();
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import LoginImage from "../../assets/images/login-image.jpg";
 import { useAuth } from "../../hooks/useAuth.jsx";
+import { getUserByMail } from "../../service/user.js";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -28,22 +29,27 @@ export default function Login() {
 
     try {
       const response = await sendLoginRequest(credentials);
-
       setEmail("");
       setPassword("");
       console.log("reponse ", response);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
-      localStorage.setItem("email", response.data.email);
-      localStorage.setItem("isLoggedIn", "true");
-      setIsLoggedIn(true);
-      if (localStorage.getItem("role") === "ROLE_ADMIN") {
-        navigate("/admin");
-      } else if (redirectToChat) {
-        navigate(`/chat/${redirectToChat}`);
-        localStorage.removeItem("redirectToChat");
-      } else {
-        navigate("/");
+      if (response && response.data) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true);
+        const userConnected = await getUserByMail(response.data.email);
+        sessionStorage.setItem("connectedUserId", userConnected.data.id);
+        console.log({ userConnected });
+
+        if (localStorage.getItem("role") === "ROLE_ADMIN") {
+          navigate("/admin");
+        } else if (redirectToChat) {
+          navigate(`/chat/${redirectToChat}`);
+          localStorage.removeItem("redirectToChat");
+        } else {
+          navigate("/");
+        }
       }
     } catch (e) {
       if (e?.response?.status === 401) {

@@ -45,7 +45,7 @@ CREATE TABLE message
 (
     id SERIAL PRIMARY KEY ,
     content TEXT NOT NULL ,
-    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     sender_id INT NOT NULL ,
     receiver_id INT NOT NULL ,
     route_id INT NOT NULL ,
