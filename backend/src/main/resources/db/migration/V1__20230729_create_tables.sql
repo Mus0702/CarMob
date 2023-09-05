@@ -48,3 +48,16 @@ CREATE TABLE route_passenger
     FOREIGN KEY (route_id) REFERENCES route (id),
     FOREIGN KEY (passenger_id) REFERENCES "user" (id)
 );
+CREATE TABLE booking
+(
+    id             SERIAL PRIMARY KEY,
+    passenger_id   INT NOT NULL,
+    route_id       INT NOT NULL,
+    booking_date   DATE,
+    reserved_seats INT NOT NULL,
+    driver_id      INT NOT NULL,
+    status         varchar(24),
+    FOREIGN KEY (passenger_id) REFERENCES "user" (id),
+    FOREIGN KEY (route_id) REFERENCES route (id),
+    FOREIGN KEY (driver_id) REFERENCES "user" (id)
+);

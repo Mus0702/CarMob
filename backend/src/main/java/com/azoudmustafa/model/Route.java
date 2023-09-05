@@ -21,14 +21,6 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @NotNull
-//    @ManyToOne
-//    @JoinColumn(name = "departure_address_id")
-//    private Address departureAddress;
-    //    @NotNull
-//    @ManyToOne
-//    @JoinColumn(name = "arrival_address_id")
-//    private Address arrivalAddress;
     @NotNull
     @Column(name = "departure_date")
     private LocalDate departureDate;
