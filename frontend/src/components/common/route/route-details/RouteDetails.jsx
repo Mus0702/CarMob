@@ -68,6 +68,11 @@ const RouteDetails = () => {
     }
   }
 
+  const onBook = async () => {
+    const boooking = {
+      route_id: routeDetail.id,
+    };
+  };
   return (
     <div className="container mt-5 text-color fw-bold">
       <h1 className="text-center mb-4 w-100">
@@ -122,22 +127,23 @@ const RouteDetails = () => {
           //  state={{ route: route }}
           //  key={route.id}
           className="btn-custom btn-custom-success"
+          onClick={onBook}
         >
           Pay {priceToDisplay}€
         </Link>
 
-        <LoadScript
-          googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}
-        >
-          <GoogleMap
-            mapContainerStyle={{ width: "50%", height: "200px" }}
-            center={{ lat: 50.8503, lng: 4.3517 }}
-            zoom={10}
-            ref={mapRef}
-          >
-            {directions && <DirectionsRenderer directions={directions} />}
-          </GoogleMap>
-        </LoadScript>
+        {/*<LoadScript*/}
+        {/*  googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}*/}
+        {/*>*/}
+        {/*  <GoogleMap*/}
+        {/*    mapContainerStyle={{ width: "50%", height: "200px" }}*/}
+        {/*    center={{ lat: 50.8503, lng: 4.3517 }}*/}
+        {/*    zoom={10}*/}
+        {/*    ref={mapRef}*/}
+        {/*  >*/}
+        {/*    {directions && <DirectionsRenderer directions={directions} />}*/}
+        {/*  </GoogleMap>*/}
+        {/*</LoadScript>*/}
       </div>
     </div>
   );
