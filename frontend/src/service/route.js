@@ -11,3 +11,10 @@ export const getSearchRoutes = async (params) => {
     },
   });
 };
+
+export const getRouteById = async (id) => {
+  const token = localStorage.getItem("token");
+  return await fetchAjax.get(`/route/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

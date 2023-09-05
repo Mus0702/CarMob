@@ -14,5 +14,5 @@ public interface RouteService {
                                         Integer availableSeat,
                                         Pageable pageable);
 
-    RouteWithCarAndUserDTO findById(Integer id);
+    RouteGetOverviewDTO findById(Integer id);
 }

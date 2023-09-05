@@ -1,11 +1,10 @@
 package com.azoudmustafa.service.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
-import com.azoudmustafa.dto.route.RouteWithCarAndUserDTO;
 import com.azoudmustafa.mapper.route.RouteMapper;
 import com.azoudmustafa.mapper.user.UserMapper;
 import com.azoudmustafa.model.Route;
-import com.azoudmustafa.repository.RouteRepository;
+import com.azoudmustafa.repository.route.RouteRepository;
 import com.azoudmustafa.service.geocoding.GoogleDistanceService;
 import com.azoudmustafa.service.geocoding.GoogleGeocodingService;
 import com.google.maps.model.LatLng;
@@ -59,9 +58,9 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public RouteWithCarAndUserDTO findById(Integer id) {
+    public RouteGetOverviewDTO findById(Integer id) {
         Route route = routeRepository.findById(id).orElse(null);
-        return routeMapper.routeEntityToDTO(route);
+        return routeMapper.toDTO(route);
     }
 
 

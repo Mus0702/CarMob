@@ -40,6 +40,21 @@ CREATE TABLE route
 
     FOREIGN KEY (driver_id) REFERENCES "user" (id)
 );
+
+CREATE TABLE message
+(
+    id SERIAL PRIMARY KEY ,
+    content TEXT NOT NULL ,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sender_id INT NOT NULL ,
+    receiver_id INT NOT NULL ,
+    route_id INT NOT NULL ,
+    FOREIGN KEY (sender_id) REFERENCES "user" (id),
+    FOREIGN KEY (receiver_id) REFERENCES "user" (id),
+    FOREIGN KEY (route_id) REFERENCES route (id)
+);
+
+
 CREATE TABLE route_passenger
 (
     route_id     INT NOT NULL,

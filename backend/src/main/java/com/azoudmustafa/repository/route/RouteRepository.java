@@ -1,4 +1,4 @@
-package com.azoudmustafa.repository;
+package com.azoudmustafa.repository.route;
 
 import com.azoudmustafa.model.Route;
 import org.springframework.data.domain.Page;

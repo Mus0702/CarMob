@@ -22,7 +22,6 @@ public interface UserMapper {
 
     User toEntity(UserGetDTO userDTO);
 
-    @Mapping(source = "car", target = "car", qualifiedByName = "carToDTO")
     UserGetDTO toGetDTO(User entity);
 
     User toGetEntity(UserGetWithNamesDTO userDTO);
