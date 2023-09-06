@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../../hooks/useAuth.jsx";
 import { createBooking } from "../../../../service/booking.js";
 import { getRouteByIdNotAuth } from "../../../../service/route.js";
@@ -14,6 +14,12 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import dayjs from "dayjs";
+
+import {
+  DirectionsRenderer,
+  GoogleMap,
+  LoadScript,
+} from "@react-google-maps/api";
 
 const RouteDetails = () => {
   const [routeDetail, setRouteDetail] = useState();
@@ -165,14 +171,6 @@ const RouteDetails = () => {
           {" "}
           Pay {priceToDisplay}€
         </button>
-
-        {/*<Link*/}
-        {/*  to={"payment-success"}*/}
-        {/*  className="btn btn-success"*/}
-        {/*  state={{ route: routeDetail }}*/}
-        {/*  key={routeDetail.id}*/}
-        {/*  onClick={onBook}*/}
-        {/*>Pay {priceToDisplay}€</Link>*/}
 
         {/*<LoadScript*/}
         {/*  googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}*/}

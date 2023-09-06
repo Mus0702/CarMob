@@ -1,4 +1,3 @@
-import React from "react";
 import PaymentSuccess from "../../components/payment-success/PaymentSuccess.jsx";
 const PaymentSuccessPage = () => {
   return (
