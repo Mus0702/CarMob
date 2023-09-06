@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../../hooks/useAuth.jsx";
-import { useNavigate } from "react-router-dom";
+import { createBooking } from "../../../../service/booking.js";
+import { getRouteByIdNotAuth } from "../../../../service/route.js";
 
 import "./RouteDetails.css";
-
-import {
-  DirectionsRenderer,
-  GoogleMap,
-  LoadScript,
-} from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -19,8 +16,8 @@ import {
 import dayjs from "dayjs";
 
 const RouteDetails = () => {
-  const location = useLocation();
-  const routeDetail = location.state?.route;
+  const [routeDetail, setRouteDetail] = useState();
+  const { routeId } = useParams();
 
   const mapRef = useRef(null);
   const [directions, setDirections] = useState(null);
@@ -30,13 +27,21 @@ const RouteDetails = () => {
 
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const userConnectedId = sessionStorage.getItem("connectedUserId");
 
   const fetchDirections = async () => {
-    if (routeDetail) {
-      console.log({ routeDetail });
-      const totalPrice = numberOfSelectedSeats * routeDetail.routePrice;
-      console.log({ totalPrice });
+    try {
+      console.log("l id est " + routeId);
+      const response = await getRouteByIdNotAuth(routeId);
+      const totalPrice = numberOfSelectedSeats * response.data.routePrice;
       setPriceToDisplay(totalPrice);
+
+      console.log({ response });
+      setRouteDetail(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+    if (routeDetail) {
       const DirectionsService = new window.google.maps.DirectionsService();
 
       await DirectionsService.route(
@@ -59,7 +64,7 @@ const RouteDetails = () => {
 
   useEffect(() => {
     fetchDirections();
-  }, [routeDetail]);
+  }, [routeId]);
 
   if (!routeDetail) {
     return <div>No route details provided.</div>;
@@ -67,7 +72,13 @@ const RouteDetails = () => {
 
   function handleChat() {
     if (isLoggedIn) {
-      navigate(`/chat/${routeDetail.id}`);
+      if (userConnectedId == routeDetail.driver.id) {
+        toast.error("You cannot use the chat feature as you are the driver.", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+      } else {
+        navigate(`/chat/${routeDetail.id}`);
+      }
     } else {
       localStorage.setItem("redirectToChat", routeDetail.id);
       navigate("/login");
@@ -75,10 +86,33 @@ const RouteDetails = () => {
   }
 
   const onBook = async () => {
-    const boooking = {
-      route_id: routeDetail.id,
+    const booking = {
+      routeId: routeDetail.id,
+      passengerId: +userConnectedId,
+      driverId: routeDetail.driver.id,
+      reservedSeats: +numberOfSelectedSeats,
+      status: "CONFIRMED",
     };
+    if (isLoggedIn) {
+      if (userConnectedId == routeDetail.driver.id) {
+        toast.error("You cannot book this trip as you are the driver.", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+      } else {
+        try {
+          const response = await createBooking(booking);
+          console.log({ response });
+          navigate("/payment-success");
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    } else {
+      localStorage.setItem("redirectedToRouteDetails", routeDetail.id);
+      navigate("/login");
+    }
   };
+
   return (
     <div className="container mt-5 text-color fw-bold">
       <h1 className="text-center mb-4 w-100">
@@ -127,16 +161,18 @@ const RouteDetails = () => {
             <li key={index}>{passenger.firstname}</li>
           ))}
         </ul>
-
-        <Link
-          to={"payment-success"}
-          //  state={{ route: route }}
-          //  key={route.id}
-          className="btn-custom btn-custom-success"
-          onClick={onBook}
-        >
+        <button className="btn-custom btn-custom-success" onClick={onBook}>
+          {" "}
           Pay {priceToDisplay}€
-        </Link>
+        </button>
+
+        {/*<Link*/}
+        {/*  to={"payment-success"}*/}
+        {/*  className="btn btn-success"*/}
+        {/*  state={{ route: routeDetail }}*/}
+        {/*  key={routeDetail.id}*/}
+        {/*  onClick={onBook}*/}
+        {/*>Pay {priceToDisplay}€</Link>*/}
 
         {/*<LoadScript*/}
         {/*  googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}*/}

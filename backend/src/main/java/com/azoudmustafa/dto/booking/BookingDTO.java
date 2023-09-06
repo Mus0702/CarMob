@@ -18,6 +18,5 @@ public class BookingDTO {
     private Integer passengerId;
     private Integer driverId;
     private Integer reservedSeats;
-    private LocalDate bookingDate;
     private PaymentStatus status;
 }

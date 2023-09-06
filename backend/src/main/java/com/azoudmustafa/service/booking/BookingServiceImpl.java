@@ -7,8 +7,8 @@ import com.azoudmustafa.model.Booking;
 import com.azoudmustafa.model.Route;
 import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.BookingRepository;
-import com.azoudmustafa.repository.RouteRepository;
-import com.azoudmustafa.repository.UserRepository;
+import com.azoudmustafa.repository.route.RouteRepository;
+import com.azoudmustafa.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,7 +51,6 @@ public class BookingServiceImpl implements BookingService {
                 .driver(driver)
                 .reservedSeats(bookingDTO.getReservedSeats())
                 .status(bookingDTO.getStatus())
-                .bookingDate(bookingDTO.getBookingDate())
                 .build();
 
         Booking savedBbooking = bookingRepository.save(booking);

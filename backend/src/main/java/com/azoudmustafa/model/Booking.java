@@ -32,4 +32,9 @@ public class Booking {
     private LocalDate bookingDate;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
+    @PrePersist
+    public void prePersist(){
+        this.bookingDate = LocalDate.now();
+    }
 }

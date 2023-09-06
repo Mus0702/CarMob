@@ -11,6 +11,9 @@ export const getSearchRoutes = async (params) => {
     },
   });
 };
+export const getRouteByIdNotAuth = async (id) => {
+  return await fetchAjax.get(`/route/notAuth/${id}`);
+};
 
 export const getRouteById = async (id) => {
   const token = localStorage.getItem("token");

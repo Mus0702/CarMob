@@ -13,6 +13,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const redirectToChat = localStorage.getItem("redirectToChat");
+  const redirectedToRouteDetails = localStorage.getItem(
+    "redirectedToRouteDetails",
+  );
   const {
     register,
     handleSubmit,
@@ -26,27 +29,32 @@ export default function Login() {
       email: email,
       password: password,
     };
-
+    const setLocalStorageItem = (response) => {
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("isLoggedIn", "true");
+    };
     try {
       const response = await sendLoginRequest(credentials);
       setEmail("");
       setPassword("");
       console.log("reponse ", response);
       if (response && response.data) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("email", response.data.email);
-        localStorage.setItem("isLoggedIn", "true");
+        setLocalStorageItem(response);
         setIsLoggedIn(true);
+
         const userConnected = await getUserByMail(response.data.email);
         sessionStorage.setItem("connectedUserId", userConnected.data.id);
-        console.log({ userConnected });
 
         if (localStorage.getItem("role") === "ROLE_ADMIN") {
           navigate("/admin");
         } else if (redirectToChat) {
           navigate(`/chat/${redirectToChat}`);
           localStorage.removeItem("redirectToChat");
+        } else if (redirectedToRouteDetails) {
+          navigate(`/routeDetails/${redirectedToRouteDetails}`);
+          localStorage.removeItem("redirectedToRouteDetails");
         } else {
           navigate("/");
         }
@@ -152,7 +160,6 @@ export default function Login() {
                           type="submit"
                           className="btn btn-primary btn-lg"
                           disabled={!isValid}
-                          onClick={onLogin}
                         >
                           Login
                         </button>

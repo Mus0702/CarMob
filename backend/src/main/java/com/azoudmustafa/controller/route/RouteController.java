@@ -46,5 +46,9 @@ public class RouteController {
     public ResponseEntity<RouteGetOverviewDTO> getById(@PathVariable Integer id) {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }
+    @GetMapping("/notAuth/{id}")
+    public ResponseEntity<RouteGetOverviewDTO> getByIdNotAuth(@PathVariable Integer id) {
+        return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
+    }
 
 }
