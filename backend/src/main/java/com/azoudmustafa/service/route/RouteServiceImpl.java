@@ -1,14 +1,21 @@
 package com.azoudmustafa.service.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.dto.route.RoutePostDTO;
+import com.azoudmustafa.exceptionHandler.BadRequestException;
 import com.azoudmustafa.mapper.route.RouteMapper;
 import com.azoudmustafa.mapper.user.UserMapper;
 import com.azoudmustafa.model.Route;
+import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.route.RouteRepository;
+import com.azoudmustafa.repository.user.UserRepository;
 import com.azoudmustafa.service.geocoding.GoogleDistanceService;
 import com.azoudmustafa.service.geocoding.GoogleGeocodingService;
 import com.google.maps.model.LatLng;
 import lombok.AllArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +27,7 @@ import java.time.LocalDate;
 public class RouteServiceImpl implements RouteService {
     private final RouteRepository routeRepository;
     private final RouteMapper routeMapper;
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final GoogleGeocodingService googleGeocodingService;
     private final GoogleDistanceService googleDistanceService;
 
@@ -55,6 +62,33 @@ public class RouteServiceImpl implements RouteService {
             }
             return dto;
         });
+    }
+
+    public RoutePostDTO save(RoutePostDTO dto) {
+        Route route = RouteMapper.INSTANCE.routePostDTOToEntity(dto);
+        User driver = userRepository.findById(dto.getDriverId()).orElseThrow(null);
+
+        if (dto.getAvailableSeat() > driver.getCar().getNumberAvailableSeat()) {
+            throw new BadRequestException("The route number of available seats cannot exceed the car number of available seats");
+
+        }
+
+        route.setDriver(driver);
+
+
+        GeometryFactory geometryFactory = new GeometryFactory();// permet de convertir des coord en Point car dans la classe Route c'est des Point qu il y a
+
+        LatLng departureResults = googleGeocodingService.getLatLngFromAddress(dto.getDepartureAddress());
+        Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
+
+        LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(dto.getArrivalAddress());
+        Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
+
+        route.setDepartureLocation(departuPoint);
+        route.setArrivalLocation(arrivalPoint);
+
+         routeRepository.save(route);
+         return dto;
     }
 
     @Override

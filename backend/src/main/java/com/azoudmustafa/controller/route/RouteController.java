@@ -1,7 +1,10 @@
 package com.azoudmustafa.controller.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.dto.route.RoutePostDTO;
+import com.azoudmustafa.model.Route;
 import com.azoudmustafa.service.route.RouteService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,9 +49,16 @@ public class RouteController {
     public ResponseEntity<RouteGetOverviewDTO> getById(@PathVariable Integer id) {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }
+
     @GetMapping("/notAuth/{id}")
     public ResponseEntity<RouteGetOverviewDTO> getByIdNotAuth(@PathVariable Integer id) {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<RoutePostDTO> createOrUpdate(@Valid @RequestBody RoutePostDTO dto) {
+        return new ResponseEntity<>(routeService.save(dto), HttpStatus.CREATED);
+
     }
 
 }

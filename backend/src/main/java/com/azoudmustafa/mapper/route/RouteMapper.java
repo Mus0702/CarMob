@@ -1,6 +1,7 @@
 package com.azoudmustafa.mapper.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.dto.route.RoutePostDTO;
 import com.azoudmustafa.dto.route.RouteWithCarAndUserDTO;
 import com.azoudmustafa.dto.user.UserPostDTO;
 import com.azoudmustafa.mapper.user.UserMapper;
@@ -25,4 +26,8 @@ public interface RouteMapper {
 
     @Mapping(source = "driver", target = "driver", qualifiedByName = "toGetWithNamesDTO")
     RouteWithCarAndUserDTO routeEntityToDTO(Route entity);
+
+    Route routePostDTOToEntity(RoutePostDTO routePostDTO);
+
+    RoutePostDTO RouteEntityToRoutePostDTO(Route entity);
 }

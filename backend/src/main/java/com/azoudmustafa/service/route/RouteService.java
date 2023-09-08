@@ -1,7 +1,9 @@
 package com.azoudmustafa.service.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
+import com.azoudmustafa.dto.route.RoutePostDTO;
 import com.azoudmustafa.dto.route.RouteWithCarAndUserDTO;
+import com.azoudmustafa.model.Route;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,4 +17,6 @@ public interface RouteService {
                                         Pageable pageable);
 
     RouteGetOverviewDTO findById(Integer id);
+
+    RoutePostDTO save(RoutePostDTO dto);
 }

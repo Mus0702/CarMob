@@ -78,13 +78,13 @@ const RouteDetails = () => {
 
   function handleChat() {
     if (isLoggedIn) {
-      if (userConnectedId == routeDetail.driver.id) {
-        toast.error("You cannot use the chat feature as you are the driver.", {
-          position: toast.POSITION.BOTTOM_CENTER,
-        });
-      } else {
-        navigate(`/chat/${routeDetail.id}`);
-      }
+      // if (userConnectedId == routeDetail.driver.id) {
+      //   toast.error("You cannot use the chat feature as you are the driver.", {
+      //     position: toast.POSITION.BOTTOM_CENTER,
+      //   });
+      // } else {
+      navigate(`/chat/${routeDetail.id}`);
+      // }
     } else {
       localStorage.setItem("redirectToChat", routeDetail.id);
       navigate("/login");
