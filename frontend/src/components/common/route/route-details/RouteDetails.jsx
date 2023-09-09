@@ -161,7 +161,7 @@ const RouteDetails = () => {
           </button>
         </p>
 
-        <p> Passagers:</p>
+        <p> Passengers:</p>
         <ul className="border-bottom border-3 py-3 w-50">
           {routeDetail.passengersDTO.map((passenger, index) => (
             <li key={index}>{passenger.firstname}</li>

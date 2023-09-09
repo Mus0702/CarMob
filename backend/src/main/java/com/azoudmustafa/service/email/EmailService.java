@@ -1,4 +1,4 @@
-package com.azoudmustafa.service;
+package com.azoudmustafa.service.email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,6 +13,7 @@ public class EmailService {
 
     public void sendRatingEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("azoud@hotmail.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);

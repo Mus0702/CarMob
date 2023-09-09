@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,9 +33,13 @@ public class Booking {
     private LocalDate bookingDate;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+    @Column(name = "is_notified")
+    private Boolean isNotified;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.bookingDate = LocalDate.now();
     }
+
+
 }

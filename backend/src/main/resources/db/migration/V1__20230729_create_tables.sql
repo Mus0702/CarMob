@@ -43,12 +43,12 @@ CREATE TABLE route
 
 CREATE TABLE message
 (
-    id SERIAL PRIMARY KEY ,
-    content TEXT NOT NULL ,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    sender_id INT NOT NULL ,
-    receiver_id INT NOT NULL ,
-    route_id INT NOT NULL ,
+    id          SERIAL PRIMARY KEY,
+    content     TEXT NOT NULL,
+    timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sender_id   INT  NOT NULL,
+    receiver_id INT  NOT NULL,
+    route_id    INT  NOT NULL,
     FOREIGN KEY (sender_id) REFERENCES "user" (id),
     FOREIGN KEY (receiver_id) REFERENCES "user" (id),
     FOREIGN KEY (route_id) REFERENCES route (id)
@@ -72,7 +72,21 @@ CREATE TABLE booking
     reserved_seats INT NOT NULL,
     driver_id      INT NOT NULL,
     status         varchar(24),
+    is_notified    BOOLEAN,
     FOREIGN KEY (passenger_id) REFERENCES "user" (id),
     FOREIGN KEY (route_id) REFERENCES route (id),
     FOREIGN KEY (driver_id) REFERENCES "user" (id)
+);
+
+CREATE TABLE rating
+(
+    id           SERIAL PRIMARY KEY,
+    driver_id    INT NOT NULL,
+    passenger_id INT NOT NULL,
+    route_id     INT NOT NULL,
+    rating       INT NOT NULL,
+    FOREIGN KEY (driver_id) REFERENCES "user" (id),
+    FOREIGN KEY (passenger_id) REFERENCES "user" (id),
+    FOREIGN KEY (route_id) REFERENCES route (id)
+
 );

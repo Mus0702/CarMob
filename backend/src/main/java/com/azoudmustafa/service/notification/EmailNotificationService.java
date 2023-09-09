@@ -1,10 +1,7 @@
 package com.azoudmustafa.service.notification;
 
 import com.azoudmustafa.model.Booking;
-import com.azoudmustafa.model.Route;
-import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.BookingRepository;
-import com.azoudmustafa.service.booking.BookingServiceImpl;
 import com.azoudmustafa.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class NotificationService {
+public class EmailNotificationService {
 
     @Autowired
     private BookingRepository bookingRepository;

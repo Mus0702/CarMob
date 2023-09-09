@@ -51,6 +51,7 @@ public class BookingServiceImpl implements BookingService {
                 .driver(driver)
                 .reservedSeats(bookingDTO.getReservedSeats())
                 .status(bookingDTO.getStatus())
+                .isNotified(false)
                 .build();
 
         Booking savedBbooking = bookingRepository.save(booking);
