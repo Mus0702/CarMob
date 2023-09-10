@@ -51,7 +51,7 @@ const Register = () => {
         localStorage.setItem("token", registerResponse.data.token);
         localStorage.setItem("role", registerResponse.data.role);
         localStorage.setItem("email", registerResponse.data.email);
-        localStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("isLoggedIn", "true");
         setIsLoggedIn(true);
         navigate("/");
         console.log({ response: registerResponse });

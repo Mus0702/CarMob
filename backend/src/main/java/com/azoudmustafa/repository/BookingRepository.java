@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Integer> {
 
-    @Query("SELECT b FROM Booking b WHERE b.isNotified = false and b.route.departureAddress<:currentDate")
+    @Query("SELECT b FROM Booking b WHERE b.isNotified = false and b.route.departureDate<:currentDate")
     List<Booking> findBookingsToNotify(@Param("currentDate") LocalDate currentDate);
 }

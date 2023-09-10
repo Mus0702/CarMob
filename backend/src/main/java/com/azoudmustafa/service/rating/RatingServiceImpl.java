@@ -9,6 +9,8 @@ import com.azoudmustafa.repository.rating.RatingRepository;
 import com.azoudmustafa.repository.route.RouteRepository;
 import com.azoudmustafa.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public RatingDTO save(RatingDTO dto) {
+        User userConnected=getUserConnected();
 
         User driver = userRepository.findById(dto.getDriverId())
                 .orElseThrow(null);
@@ -35,7 +38,7 @@ public class RatingServiceImpl implements RatingService {
         Optional<Rating> existingRating = ratingRepository.findByPassengerAndRoute(passenger, route);
 
         if (existingRating.isPresent()) {
-            throw new BadRequestException("Rating for this specific route and passenger already exist");
+            throw new BadRequestException("you've already rated this driver for this specific route.");
         }
 
         Rating savedRating = Rating.builder()
@@ -44,17 +47,21 @@ public class RatingServiceImpl implements RatingService {
                 .route(route)
                 .rating(dto.getRating())
                 .build();
-        if (!savedRating.getRoute().getPassengers().contains(passenger)) {
-            throw new BadRequestException("Passenger is not part of the passengers of this specific route");
 
+        if(userConnected.getId().equals(savedRating.getDriver().getId())){
+            throw new BadRequestException("You cannot rate yourself as a driver on this route.");
         }
+
+        if (!savedRating.getRoute().getPassengers().contains(passenger)) {
+            throw new BadRequestException("You are not a passenger on this route.");
+        }
+
         if (savedRating != null) {
             ratingRepository.save(savedRating);
         } else {
             throw new BadRequestException("Rating object is null");
         }
         setDriverAverageRating(driver);
-
 
         return dto;
     }
@@ -72,4 +79,12 @@ public class RatingServiceImpl implements RatingService {
         }
 
     }
+
+    private User getUserConnected(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        Optional<User> currentUser = userRepository.findByEmail(currentUserName);
+        return currentUser.orElseThrow(null);
+    }
+
 }

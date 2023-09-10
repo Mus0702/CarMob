@@ -19,7 +19,7 @@ VALUES ('Toyota', 'Corolla', 'Light Red', 5),
 
 
 INSERT INTO "user" (lastname, firstname, email, password, birthdate, phone_number, rating, car_id, role)
-VALUES ('Azoud', 'Mustafa', 'azoud@example.com', crypt('Mustafa@123', gen_salt('bf')), '1985-01-15', null,null, null,
+VALUES ('Azoud', 'Mustafa', 'azoud@hotmail.com', crypt('Mustafa@123', gen_salt('bf')), '1985-01-15', null,null, null,
         'ROLE_ADMIN'),
        ('Mettioui', 'Meriam', 'Mettioui.meriam@hotmail.com', crypt('Meriam@123', gen_salt('bf')), '1982-10-22', null,null, 2, 'ROLE_USER'),
        ('Tahtah', 'Nasseira', 'tahtah@example.com', crypt('Nasseira@123', gen_salt('bf')), '1990-02-15', null,null, 3,

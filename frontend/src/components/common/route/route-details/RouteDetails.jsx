@@ -108,7 +108,9 @@ const RouteDetails = () => {
         try {
           const response = await createBooking(booking);
           console.log({ response });
-          navigate("/payment-success");
+          navigate("/message-success", {
+            state: { message: "Your payment was successful" },
+          });
         } catch (e) {
           console.log(e);
         }
