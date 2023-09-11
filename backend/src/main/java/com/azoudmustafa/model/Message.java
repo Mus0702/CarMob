@@ -1,5 +1,6 @@
 package com.azoudmustafa.model;
 
+import com.azoudmustafa.enums.SenderType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -28,8 +29,10 @@ public class Message {
     private User receiver;
     @Column(nullable = false)
     private String content;
+//    @Enumerated(EnumType.STRING)
+//    private SenderType senderType;
 
-    private LocalTime timestamp;
+//    private LocalTime timestamp;
 
 
 

@@ -3,23 +3,17 @@ import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client/dist/sockjs";
 
 const serverUrl = `${API_URL}/chat`;
-const socket = new SockJS("http://localhost:8080/api/chat/");
 let stompClient = null;
 
 export const connect = (userId, onMessageReceived) => {
-  if (stompClient) {
-    disconnect();
-  }
-
-  stompClient = Stomp.over(() => new SockJS("http://localhost:8080/api/chat"));
+  stompClient = Stomp.over(() => new SockJS(serverUrl));
   stompClient.onStompError = (error) => {
     console.error("Erreur STOMP :", error);
   };
 
   const onConnect = () => {
     stompClient.subscribe(`/user/${userId}/private`, (message) => {
-      const receivedMessage = JSON.parse(message.body.content);
-      console.log("reveived message");
+      console.log({ message });
       onMessageReceived(JSON.parse(message.body));
     });
   };

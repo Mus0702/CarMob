@@ -3,6 +3,7 @@ package com.azoudmustafa.mapper.route;
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
 import com.azoudmustafa.dto.route.RoutePostDTO;
 import com.azoudmustafa.dto.route.RouteWithCarAndUserDTO;
+import com.azoudmustafa.dto.route.RouteWithDriverDTO;
 import com.azoudmustafa.dto.user.UserPostDTO;
 import com.azoudmustafa.mapper.user.UserMapper;
 import com.azoudmustafa.model.Route;
@@ -30,4 +31,9 @@ public interface RouteMapper {
     Route routePostDTOToEntity(RoutePostDTO routePostDTO);
 
     RoutePostDTO RouteEntityToRoutePostDTO(Route entity);
+
+
+    Route toEntityWithDriver(RouteWithDriverDTO dto);
+    RouteWithDriverDTO toRouteDriverDTO(Route entity);
+    Route toEntityDriverDTO(RouteWithDriverDTO dto);
 }
