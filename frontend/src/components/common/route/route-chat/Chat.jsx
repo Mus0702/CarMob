@@ -61,7 +61,7 @@ const Chat = () => {
     } else {
       if (Number(userConnectedId) === route.driver.id) {
         receiver = +localStorage.getItem("lastSenderId");
-        localStorage.setItem("lastSenderId", route.driver.id.toString());
+        //localStorage.setItem("lastSenderId", route.driver.id.toString());
       } else {
         receiver = route.driver.id;
         localStorage.setItem("lastSenderId", userConnectedId);
