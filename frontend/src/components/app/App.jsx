@@ -15,6 +15,13 @@ import RouteDetails from "../common/route/route-details/RouteDetails.jsx";
 import ChatPage from "../../pages/chat-page/ChatPage.jsx";
 import MessageSuccessPage from "../../pages/message-success-page/MessageSuccessPage.jsx";
 import RatingPage from "../../pages/rating-page/RatingPage.jsx";
+import RouteForm from "../add-route/route-form/RouteForm.jsx";
+import DepartureAddress from "../add-route/departure-address/DepartureAddress.jsx";
+import ArrivalAddress from "../add-route/arrival-address/ArrivalAddress.jsx";
+import DepartureDate from "../add-route/DepartureDate.jsx";
+import DepartureTIme from "../add-route/DepartureTIme.jsx";
+import AvailableSeats from "../add-route/AvailableSeats.jsx";
+import RoutePrice from "../add-route/RoutePrice.jsx";
 export default function Myapp() {
   return (
     <>
@@ -39,6 +46,43 @@ export default function Myapp() {
           {/*<Route element={<RequiredAuth />}>*/}
           <Route path="/rating/:routeId" element={<RatingPage />} />
           {/*</Route>*/}
+          <Route element={<RequiredAuth />}>
+            <Route path="/add-route" element={<RouteForm />} />
+          </Route>
+
+          <Route element={<RequiredAuth />}>
+            <Route
+              path="/add-route/departure-address"
+              element={<DepartureAddress />}
+            />
+          </Route>
+          <Route element={<RequiredAuth />}>
+            <Route
+              path="/add-route/arrival-address"
+              element={<ArrivalAddress />}
+            />
+          </Route>
+          <Route element={<RequiredAuth />}>
+            <Route
+              path="/add-route/departure-date"
+              element={<DepartureDate />}
+            />
+          </Route>
+          <Route element={<RequiredAuth />}>
+            <Route
+              path="/add-route/departure-time"
+              element={<DepartureTIme />}
+            />
+          </Route>
+          <Route element={<RequiredAuth />}>
+            <Route
+              path="/add-route/available-seats"
+              element={<AvailableSeats />}
+            />
+          </Route>
+          <Route element={<RequiredAuth />}>
+            <Route path="/add-route/route-price" element={<RoutePrice />} />
+          </Route>
           <Route element={<RequiredAuth />}>
             <Route path="/profile" element={<ProfilePage />} />
           </Route>

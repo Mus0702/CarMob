@@ -21,7 +21,7 @@ public interface UserMapper {
     UserPostDTO toPostDTO(User entity);
 
     User toEntity(UserGetDTO userDTO);
-
+    @Mapping(source = "car", target = "car", qualifiedByName = "carToDTO")
     UserGetDTO toGetDTO(User entity);
 
     User toGetEntity(UserGetWithNamesDTO userDTO);

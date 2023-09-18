@@ -20,10 +20,8 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserGetDTO> getUserByMail(@PathVariable(value = "id") Integer id) {
-        return new ResponseEntity<>(
-                userMapper.toGetDTO(userService.getById(id)
-                ),
+    public ResponseEntity<UserGetDTO> getUserById(@PathVariable(value = "id") Integer id) {
+        return new ResponseEntity<>(userService.getById(id),
                 HttpStatus.OK
         );
     }

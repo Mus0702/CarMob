@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Integer> {
     @Query("SELECT r FROM Route r " +
-            "JOIN FETCH r.passengers " +
+            "LEFT JOIN FETCH r.passengers " +
             "WHERE FUNCTION('ST_DWithin', r.departureLocation, " +
             "FUNCTION('ST_SetSRID', FUNCTION('ST_MakePoint', :selectDepartureAddressLong, :selectedDepartureAddressLat), 4326), " +
             "5000) = TRUE " +

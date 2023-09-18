@@ -21,9 +21,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(Integer id) {
-        return userRepository.findById(id).orElseThrow(()
+    public UserGetDTO getById(Integer id) {
+        User user= userRepository.findById(id).orElseThrow(()
                 -> new EntityNotFoundException("User with id " + id + " not found"));
+
+        return userMapper.toGetDTO(user);
     }
 
     @Override

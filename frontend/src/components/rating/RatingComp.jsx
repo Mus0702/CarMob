@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { Rating } from "react-simple-star-rating";
 import { useNavigate, useParams } from "react-router-dom";
 import { getRouteById } from "../../service/route.js";
 import { useAuth } from "../../hooks/useAuth.jsx";
@@ -7,16 +7,14 @@ import Loader from "../common/loader/Loader.jsx";
 import { createRating } from "../../service/rating.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Rating.css";
 
-const Rating = () => {
+const RatingComp = () => {
   const [route, setRoute] = useState();
   const { routeId } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [ratingValue, setRatingValue] = useState("1");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [ratingValue, setRatingValue] = useState(0);
   const userConnectedId = sessionStorage.getItem("connectedUserId");
 
   const fetchRoute = async () => {
@@ -41,13 +39,19 @@ const Rating = () => {
     fetchRoute();
   }, [routeId]);
 
+  // Catch Rating value
+  const handleRating = (rate) => {
+    setRatingValue(rate);
+    console.log(typeof rate);
+  };
+
   const onRate = async () => {
     console.log({ route });
     const rating = {
       routeId: routeId,
       passengerId: userConnectedId,
       driverId: route.driver.id,
-      rating: Number(ratingValue),
+      rating: ratingValue,
     };
     try {
       const response = await createRating(rating);
@@ -61,7 +65,7 @@ const Rating = () => {
       const errorMessage = e.response.data || "Something went wrong!";
       console.log({ errorMessage });
       toast.error(errorMessage, {
-        position: toast.POSITION.BOTTOM_CENTER,
+        position: toast.POSITION.TOP_CENTER,
       });
       navigate("/");
     }
@@ -74,14 +78,7 @@ const Rating = () => {
       ) : (
         <div className="text-center text-color">
           {route && <h2> Please rate the driver {route.driver.firstname}</h2>}
-          <input
-            type="number"
-            className="form-control"
-            min={1}
-            max={5}
-            value={ratingValue}
-            onChange={(event) => setRatingValue(event.target.value)}
-          />
+          <Rating onClick={handleRating} initialValue={ratingValue} />
 
           <div className="mt-2 align-items-center">
             <button className="btn btn-success" onClick={onRate}>
@@ -94,4 +91,4 @@ const Rating = () => {
   );
 };
 
-export default Rating;
+export default RatingComp;

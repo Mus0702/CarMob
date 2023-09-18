@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -76,19 +77,24 @@ public class RouteServiceImpl implements RouteService {
         route.setDriver(driver);
 
 
-        GeometryFactory geometryFactory = new GeometryFactory();// permet de convertir des coord en Point car dans la classe Route c'est des Point qu il y a
+        int srid = 4326;
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), srid);
 
         LatLng departureResults = googleGeocodingService.getLatLngFromAddress(dto.getDepartureAddress());
         Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
-
+        if (departureResults == null) {
+            throw new BadRequestException("the departure address you've specified doesn't exist");
+        }
         LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(dto.getArrivalAddress());
         Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
-
+        if (arrivalResults == null) {
+            throw new BadRequestException("the arrival address you've specified doesn't exist");
+        }
         route.setDepartureLocation(departuPoint);
         route.setArrivalLocation(arrivalPoint);
 
-         routeRepository.save(route);
-         return dto;
+        routeRepository.save(route);
+        return dto;
     }
 
     @Override

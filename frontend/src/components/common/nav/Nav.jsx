@@ -2,10 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../assets/images/logo.png";
 import "./Nav.css";
 import { useAuth } from "../../../hooks/useAuth.jsx";
+import {
+  faArrowRightFromBracket,
+  faArrowRightToBracket,
+  faCirclePlus,
+  faUser,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Nav = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const userConnect = JSON.parse(sessionStorage.getItem("userConnected"));
 
   const onRedirect = () => {
     navigate("/");
@@ -17,6 +26,7 @@ const Nav = () => {
     localStorage.removeItem("email");
     sessionStorage.removeItem("isLoggedIn");
     sessionStorage.removeItem("connectedUserId");
+    sessionStorage.removeItem("userConnected");
     setIsLoggedIn(false);
     navigate("/login");
   };
@@ -51,27 +61,81 @@ const Nav = () => {
           </ul>
           <ul className="navbar-nav">
             {isLoggedIn ? (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <button className="btn btn-link nav-link" onClick={onLogout}>
-                    Logout
-                  </button>
-                </li>
-              </>
+              userConnect && userConnect.car ? (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/add-route">
+                      <FontAwesomeIcon
+                        icon={faCirclePlus}
+                        style={{ color: "#1f5129" }}
+                      />{" "}
+                      Publish a route
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        style={{ color: "#1f5129", marginBottom: "2px" }}
+                      />{" "}
+                      Profile
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className="btn btn-link nav-link"
+                      onClick={onLogout}
+                    >
+                      <FontAwesomeIcon
+                        icon={faArrowRightFromBracket}
+                        style={{ color: "#1f5129" }}
+                      />{" "}
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        style={{ color: "#1f5129", marginBottom: "2px" }}
+                      />{" "}
+                      Profile Profile
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className="btn btn-link nav-link"
+                      onClick={onLogout}
+                    >
+                      <FontAwesomeIcon
+                        icon={faArrowRightFromBracket}
+                        style={{ color: "#2e511f" }}
+                      />{" "}
+                      Logout
+                    </button>
+                  </li>
+                </>
+              )
             ) : (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
+                    <FontAwesomeIcon
+                      icon={faArrowRightToBracket}
+                      style={{ color: "#2e511f" }}
+                    />{" "}
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/register">
+                    <FontAwesomeIcon
+                      icon={faUserPlus}
+                      style={{ color: "#2e511f", marginBottom: "1px" }}
+                    />{" "}
                     Signup
                   </Link>
                 </li>

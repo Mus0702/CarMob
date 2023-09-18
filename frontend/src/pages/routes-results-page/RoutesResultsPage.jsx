@@ -7,35 +7,8 @@ import { useEffect, useState } from "react";
 import RoutesList from "../../components/common/route/RoutesList.jsx";
 import Loader from "../../components/common/loader/Loader.jsx";
 
-//test url = http://localhost:5173/route-results?departureAddress=Avenue%20Louise%202,%201000%20Bruxelles&arrivalAddress=Ar%C3%A9roport%20de%20Bruxelles&departureDate=2023-11-15&numberOfSeats=1
-
-// const content = [
-//   {
-//     id: 1,
-//     departureAddress: "Boulevard e. bockstal 256",
-//     arrivalAddress: "Charleroi",
-//     departureDate: "27/10/2023",
-//     numberOfSeats: 2,
-//     driver: {
-//       lastname: "Azoud",
-//       firstname: "Muss",
-//     },
-//   },
-//   {
-//     id: 2,
-//     departureAddress: "Boulevard Souverain 256",
-//     arrivalAddress: "Aeroport de Bruxelles",
-//     departureDate: "27/10/2023",
-//     numberOfSeats: 2,
-//     driver: {
-//       lastname: "John",
-//       firstname: "Doe",
-//     },
-//   },
-// ];
 const RoutesResultsPage = () => {
   const [searchParams] = useSearchParams();
-  // const [routes, setRoutes] = useState([content]);
   const [routes, setRoutes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);

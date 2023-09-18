@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendLoginRequest } from "../../service/auth.js";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import LoginImage from "../../assets/images/login-image.jpg";
 import { useAuth } from "../../hooks/useAuth.jsx";
 import { getUserByMail } from "../../service/user.js";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,7 +26,21 @@ export default function Login() {
   } = useForm({
     mode: "onTouched",
   });
-
+  useEffect(() => {
+    if (redirectToChat) {
+      toast.warning("You must be logged in to use Chat.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (redirectToRating) {
+      toast.warning("You must be logged in to rate a driver.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (redirectedToRouteDetails) {
+      toast.warning("You must be logged in to use the payment system.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }, [redirectToChat]);
   const onLogin = async () => {
     const credentials = {
       email: email,
@@ -48,6 +63,10 @@ export default function Login() {
 
         const userConnected = await getUserByMail(response.data.email);
         sessionStorage.setItem("connectedUserId", userConnected.data.id);
+        sessionStorage.setItem(
+          "userConnected",
+          JSON.stringify(userConnected.data),
+        );
 
         if (localStorage.getItem("role") === "ROLE_ADMIN") {
           navigate("/admin");

@@ -62,7 +62,7 @@ const SearchRoute = () => {
         >
           <input
             type="text"
-            className="form-control w-100"
+            className="form-control w-auto"
             placeholder="Departure address"
           />
         </StandaloneSearchBox>
@@ -74,7 +74,7 @@ const SearchRoute = () => {
         >
           <input
             type="text"
-            className="form-control w-100"
+            className="form-control w-auto"
             placeholder="Arrival address"
           />
         </StandaloneSearchBox>
@@ -90,7 +90,7 @@ const SearchRoute = () => {
 
         <input
           type="number"
-          className="form-control w-auto"
+          className="form-control w-auto ms-2 me-2"
           value={selectedNumberSeats}
           onChange={(event) => setSelectedNumberSeats(event.target.value)}
           placeholder="number of passengers"

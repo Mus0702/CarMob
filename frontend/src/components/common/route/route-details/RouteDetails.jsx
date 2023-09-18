@@ -78,11 +78,6 @@ const RouteDetails = () => {
 
   function handleChat() {
     if (isLoggedIn) {
-      // if (userConnectedId == routeDetail.driver.id) {
-      //   toast.error("You cannot use the chat feature as you are the driver.", {
-      //     position: toast.POSITION.BOTTOM_CENTER,
-      //   });
-      // } else {
       navigate(`/chat/${routeDetail.id}`);
       // }
     } else {
@@ -139,7 +134,7 @@ const RouteDetails = () => {
         </p>
         <p className="border-bottom border-3 py-3 w-50">
           <FontAwesomeIcon icon={faStar} style={{ color: "#FFFF33" }} />{" "}
-          <strong>{routeDetail.driver.rating} / 5</strong>
+          <strong>{routeDetail.driver.rating.toFixed(1)} / 5</strong>
         </p>
         <p className="border-bottom border-3 py-3 w-50">
           <strong>
@@ -149,7 +144,7 @@ const RouteDetails = () => {
         </p>
         <p className="border-bottom border-3 py-3 w-50">
           Total Price for {numberOfSelectedSeats} passenger(s) :{" "}
-          <strong>{priceToDisplay}€</strong>
+          <strong>€{priceToDisplay.toFixed(2)}</strong>
         </p>
         <p className="border-bottom border-3 py-3 w-50">
           <FontAwesomeIcon
@@ -162,16 +157,22 @@ const RouteDetails = () => {
             Contact {routeDetail.driver.firstname}
           </button>
         </p>
+        {routeDetail.passengersDTO.length > 0 ? (
+          <>
+            <p> Passengers:</p>
+            <ul className="border-bottom border-3 pb-3 w-50">
+              {routeDetail.passengersDTO.map((passenger, index) => (
+                <li key={index}>{passenger.firstname}</li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div className="mb-2">No passsengers yet</div>
+        )}
 
-        <p> Passengers:</p>
-        <ul className="border-bottom border-3 py-3 w-50">
-          {routeDetail.passengersDTO.map((passenger, index) => (
-            <li key={index}>{passenger.firstname}</li>
-          ))}
-        </ul>
         <button className="btn-custom btn-custom-success" onClick={onBook}>
           {" "}
-          Pay {priceToDisplay}€
+          Pay €{priceToDisplay.toFixed(2)}
         </button>
 
         {/*<LoadScript*/}
