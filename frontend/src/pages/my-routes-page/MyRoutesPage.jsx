@@ -25,15 +25,21 @@ const MyRoutesPage = () => {
       setDriverRoutes(driverRoutes);
       setPassengerRoutes(passengerRoutes);
       setIsLoading(false);
-      // setRoutes(response.data);
-      console.log("reponse ", response.data);
     } catch (e) {
       console.log(e);
     }
   };
+
+  const isFutureRoute = (route) => {
+    const currentDate = new Date();
+    const routeDate = new Date(route.departureDate);
+    routeDate.setHours(...route.departureTime.split(":"));
+
+    return routeDate > currentDate;
+  };
   useEffect(() => {
     fetchMyRoutes();
-  }, [+userConnectedId]);
+  }, []);
   return (
     <>
       {isLoading ? (
