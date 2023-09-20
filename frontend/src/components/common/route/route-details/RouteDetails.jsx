@@ -133,8 +133,14 @@ const RouteDetails = () => {
           Driver: <strong>{routeDetail.driver.firstname}</strong>
         </p>
         <p className="border-bottom border-3 py-3 w-50">
-          <FontAwesomeIcon icon={faStar} style={{ color: "#FFFF33" }} />{" "}
-          <strong>{routeDetail.driver.rating.toFixed(1)} / 5</strong>
+          {routeDetail.driver.rating !== null ? (
+            <>
+              <FontAwesomeIcon icon={faStar} style={{ color: "#FFFF33" }} />{" "}
+              <strong>{routeDetail.driver.rating.toFixed(1)} / 5</strong>
+            </>
+          ) : (
+            "Driver has not been rated yet."
+          )}
         </p>
         <p className="border-bottom border-3 py-3 w-50">
           <strong>

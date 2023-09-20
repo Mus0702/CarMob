@@ -22,6 +22,7 @@ import DepartureDate from "../add-route/DepartureDate.jsx";
 import DepartureTIme from "../add-route/DepartureTIme.jsx";
 import AvailableSeats from "../add-route/AvailableSeats.jsx";
 import RoutePrice from "../add-route/RoutePrice.jsx";
+import MyRoutesPage from "../../pages/my-routes-page/MyRoutesPage.jsx";
 export default function Myapp() {
   return (
     <>
@@ -50,38 +51,41 @@ export default function Myapp() {
             <Route path="/add-route" element={<RouteForm />} />
           </Route>
 
+          {/*<Route element={<RequiredAuth />}>*/}
+          {/*  <Route*/}
+          {/*    path="/add-route/departure-address"*/}
+          {/*    element={<DepartureAddress />}*/}
+          {/*  />*/}
+          {/*</Route>*/}
+          {/*<Route element={<RequiredAuth />}>*/}
+          {/*  <Route*/}
+          {/*    path="/add-route/arrival-address"*/}
+          {/*    element={<ArrivalAddress />}*/}
+          {/*  />*/}
+          {/*</Route>*/}
+          {/*<Route element={<RequiredAuth />}>*/}
+          {/*  <Route*/}
+          {/*    path="/add-route/departure-date"*/}
+          {/*    element={<DepartureDate />}*/}
+          {/*  />*/}
+          {/*</Route>*/}
+          {/*<Route element={<RequiredAuth />}>*/}
+          {/*  <Route*/}
+          {/*    path="/add-route/departure-time"*/}
+          {/*    element={<DepartureTIme />}*/}
+          {/*  />*/}
+          {/*</Route>*/}
+          {/*<Route element={<RequiredAuth />}>*/}
+          {/*  <Route*/}
+          {/*    path="/add-route/available-seats"*/}
+          {/*    element={<AvailableSeats />}*/}
+          {/*  />*/}
+          {/*</Route>*/}
+          {/*<Route element={<RequiredAuth />}>*/}
+          {/*  <Route path="/add-route/route-price" element={<RoutePrice />} />*/}
+          {/*</Route>*/}
           <Route element={<RequiredAuth />}>
-            <Route
-              path="/add-route/departure-address"
-              element={<DepartureAddress />}
-            />
-          </Route>
-          <Route element={<RequiredAuth />}>
-            <Route
-              path="/add-route/arrival-address"
-              element={<ArrivalAddress />}
-            />
-          </Route>
-          <Route element={<RequiredAuth />}>
-            <Route
-              path="/add-route/departure-date"
-              element={<DepartureDate />}
-            />
-          </Route>
-          <Route element={<RequiredAuth />}>
-            <Route
-              path="/add-route/departure-time"
-              element={<DepartureTIme />}
-            />
-          </Route>
-          <Route element={<RequiredAuth />}>
-            <Route
-              path="/add-route/available-seats"
-              element={<AvailableSeats />}
-            />
-          </Route>
-          <Route element={<RequiredAuth />}>
-            <Route path="/add-route/route-price" element={<RoutePrice />} />
+            <Route path="/my-routes" element={<MyRoutesPage />} />
           </Route>
           <Route element={<RequiredAuth />}>
             <Route path="/profile" element={<ProfilePage />} />

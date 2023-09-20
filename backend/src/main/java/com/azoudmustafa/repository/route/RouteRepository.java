@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,4 +35,7 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
     );
 
     Optional<Route> findById(Integer id);
+
+    @Query("SELECT r FROM Route r LEFT JOIN r.passengers p WHERE r.driver.id = :userId OR p.id = :userId")
+    List<Route> findAllByUserId(@Param("userId") Integer userId);
 }

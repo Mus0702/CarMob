@@ -2,18 +2,14 @@ package com.azoudmustafa.dto.route;
 
 import com.azoudmustafa.dto.user.UserGetWithNamesDTO;
 import com.azoudmustafa.dto.user.UserWithFirstnameDTO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 @AllArgsConstructor
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 public class RouteGetOverviewDTO {
 

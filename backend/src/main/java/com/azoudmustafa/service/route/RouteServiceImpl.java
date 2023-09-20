@@ -22,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -97,6 +99,13 @@ public class RouteServiceImpl implements RouteService {
         return dto;
     }
 
+    public List<RouteGetOverviewDTO> getRoutesForUser(Integer userId) {
+        List<Route> routes = routeRepository.findAllByUserId(userId);
+
+        return routes.stream()
+                .map(routeMapper::toDTO)
+                .collect(Collectors.toList());
+    }
     @Override
     public RouteGetOverviewDTO findById(Integer id) {
         Route route = routeRepository.findById(id).orElse(null);

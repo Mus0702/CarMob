@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -54,7 +55,11 @@ public class RouteController {
     public ResponseEntity<RouteGetOverviewDTO> getByIdNotAuth(@PathVariable Integer id) {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }
-
+    @GetMapping("/routes/{userId}")
+    public ResponseEntity<List<RouteGetOverviewDTO>> getRoutesForUser(@PathVariable Integer userId) {
+        List<RouteGetOverviewDTO> routes = routeService.getRoutesForUser(userId);
+        return new ResponseEntity<>(routes, HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<RoutePostDTO> createOrUpdate(@Valid @RequestBody RoutePostDTO dto) {
         return new ResponseEntity<>(routeService.save(dto), HttpStatus.CREATED);
