@@ -64,6 +64,11 @@ const Nav = () => {
               userConnect && userConnect.car ? (
                 <>
                   <li className="nav-item">
+                    <Link className="nav-link" to="/my-routes">
+                      My routes
+                    </Link>
+                  </li>
+                  <li className="nav-item">
                     <Link className="nav-link" to="/add-route">
                       <FontAwesomeIcon
                         icon={faCirclePlus}
@@ -97,12 +102,17 @@ const Nav = () => {
               ) : (
                 <>
                   <li className="nav-item">
+                    <Link className="nav-link" to="/my-routes">
+                      My routes
+                    </Link>
+                  </li>
+                  <li className="nav-item">
                     <Link className="nav-link" to="/profile">
                       <FontAwesomeIcon
                         icon={faUser}
                         style={{ color: "#1f5129", marginBottom: "2px" }}
                       />{" "}
-                      Profile Profile
+                      Profile
                     </Link>
                   </li>
                   <li className="nav-item">

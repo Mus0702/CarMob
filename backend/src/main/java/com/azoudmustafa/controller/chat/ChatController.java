@@ -30,13 +30,9 @@ public class ChatController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
-    Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-
     @MessageMapping("/chat")
     public Message sendMessage(@Payload MessageDTO chatMessageDTO) {
-        logger.info("message recu " + chatMessageDTO.toString());
         Message savedMessage = messageService.save(chatMessageDTO);
-        logger.info("message envoyé " + savedMessage.toString());
 
         simpMessagingTemplate.convertAndSend("/user/" + chatMessageDTO.getReceiverId().toString() + "/private", savedMessage);
         return savedMessage;

@@ -31,16 +31,16 @@ const DepartureAddress = ({ nextStep, handleChange, values }) => {
         </h1>
       </div>
       <div className="d-flex justify-content-center ml-5">
-        {/*<StandaloneSearchBox*/}
-        {/*  onLoad={(ref) => (departureSearchBoxRef.current = ref)}*/}
-        {/*  onPlacesChanged={onDeparturePlacesChanged}*/}
-        {/*>*/}
-        {/*  <input*/}
-        {/*    type="text"*/}
-        {/*    className="form-control w-100"*/}
-        {/*    placeholder="Departure address"*/}
-        {/*  />*/}
-        {/*</StandaloneSearchBox>*/}
+        <StandaloneSearchBox
+          onLoad={(ref) => (departureSearchBoxRef.current = ref)}
+          onPlacesChanged={onDeparturePlacesChanged}
+        >
+          <input
+            type="text"
+            className="form-control w-100"
+            placeholder="Departure address"
+          />
+        </StandaloneSearchBox>
 
         <input
           type="text"

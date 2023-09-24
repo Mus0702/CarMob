@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import RouteItem from "./RouteItem.jsx";
 
-const RoutesList = ({ routes }) => {
+const RoutesList = ({ routes, buttonView, isInFuture, isDriver }) => {
   return (
     <div className="container mt-3">
       {routes.length === 0 ? (
@@ -10,13 +10,21 @@ const RoutesList = ({ routes }) => {
           <h1>No routes to display.</h1>
         </div>
       ) : (
-        routes.map((route) => <RouteItem route={route} key={route.id} />)
+        <div className="row">
+          {routes.map((route) => (
+            <div key={route.id} className="col-md-4">
+              <RouteItem
+                route={route}
+                key={route.id}
+                buttonView={buttonView}
+                isInFuture={isInFuture}
+                isDriver={isDriver}
+              />
+            </div>
+          ))}
+        </div>
       )}
     </div>
-    // <div className="container mt-3">
-    //   {routes.length > 0 &&
-    //     routes.map((route) => <RouteItem route={route} key={route.id} />)}
-    // </div>
   );
 };
 

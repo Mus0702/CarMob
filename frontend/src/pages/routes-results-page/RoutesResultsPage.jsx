@@ -59,7 +59,12 @@ const RoutesResultsPage = () => {
         <>
           {" "}
           <SearchBanner resultSize={totalElements} />
-          <RoutesList routes={routes} />
+          <RoutesList
+            routes={routes}
+            buttonView="default"
+            isDriver={true}
+            isInFuture={true}
+          />
           <PaginationButtons
             currentPage={currentPage}
             totalPages={totalPages}

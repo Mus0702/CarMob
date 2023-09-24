@@ -5,7 +5,10 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 
-const RouteItem = ({ route }) => {
+import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
+import { useState } from "react";
+const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
+  const [showModal, setShowModal] = useState(false);
   const formatTime = (timeString) => {
     if (timeString) {
       const [hour, minute] = timeString.split(":");
@@ -13,7 +16,10 @@ const RouteItem = ({ route }) => {
     }
     return "";
   };
-
+  let isUpComming;
+  if (buttonView === "MyRoutes") {
+    isUpComming = isInFuture(route);
+  }
   return (
     <div>
       {route.distance !== null && (
@@ -38,14 +44,58 @@ const RouteItem = ({ route }) => {
           {/*<div className="text-color bg-white border-0 fw-bold pb-1">*/}
           {/*  <p>Driver name : {route.driver.firstname}</p>*/}
           {/*</div>*/}
-          <Link
-            to={`/routeDetails/${route.id}`}
-            state={{ route: route }}
-            key={route.id}
-            className="btn-custom btn-custom-success"
-          >
-            Details
-          </Link>
+          {/*<Link*/}
+          {/*  to={`/routeDetails/${route.id}`}*/}
+          {/*  state={{ route: route }}*/}
+          {/*  key={route.id}*/}
+          {/*  className="btn-custom btn-custom-success"*/}
+          {/*>*/}
+          {/*  Details*/}
+          {/*</Link>*/}
+          {buttonView !== "MyRoutes" && (
+            <Link
+              to={`/routeDetails/${route.id}`}
+              state={{ route: route }}
+              key={route.id}
+              className="btn-custom btn-custom-success"
+            >
+              Details
+            </Link>
+          )}
+
+          {buttonView === "MyRoutes" && isUpComming && (
+            <>
+              {isDriver && (
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="btn btn-primary mx-1"
+                >
+                  Modify
+                </button>
+                // <Link
+                //   to={`/modifyRoute/${route.id}`}
+                //   className="btn btn-primary mx-1"
+                // >
+                //   Modify
+                // </Link>
+              )}
+              <ModifyRouteModal
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                routeDetails={route}
+              />
+              <Link
+                to={`/deleteRoute/${route.id}`}
+                className="btn btn-danger mx-1"
+              >
+                Delete
+              </Link>
+            </>
+          )}
+
+          {buttonView === "MyRoutes" && !isUpComming && (
+            <em className="text-color text-muted">Completed</em>
+          )}
         </div>
       </div>
     </div>
