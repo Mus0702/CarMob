@@ -27,9 +27,9 @@ public interface RouteMapper {
 
     @Mapping(source = "driver", target = "driver", qualifiedByName = "toGetWithNamesDTO")
     RouteWithCarAndUserDTO routeEntityToDTO(Route entity);
-
     Route routePostDTOToEntity(RoutePostDTO routePostDTO);
-
+    @Mapping(source = "passengers", target = "passengersDTO")
+    @Mapping(source = "driver.id", target = "driverId")
     RoutePostDTO RouteEntityToRoutePostDTO(Route entity);
 
 

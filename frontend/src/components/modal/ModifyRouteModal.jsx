@@ -17,12 +17,16 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
   const arrivalSearchBoxRef = useRef(null);
 
   const [formData, setFormData] = useState({
+    id: routeDetails.id,
     departureAddress: routeDetails.departureAddress,
     arrivalAddress: routeDetails.arrivalAddress,
     departureDate: routeDetails.departureDate,
     departureTime: routeDetails.departureTime,
+    driverId: routeDetails.driverId,
+    availableSeat: routeDetails.availableSeat,
     routePrice: routeDetails.routePrice,
   });
+  const userConnected = JSON.parse(sessionStorage.getItem("userConnected"));
 
   const today = new Date().toISOString().split("T")[0];
   const onDeparturePlacesChanged = () => {
@@ -109,6 +113,19 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
               onChange={handleChange}
             />
           </Form.Group>
+          {routeDetails.passengersDTO.length === 0 && (
+            <Form.Group className="mb-3">
+              <Form.Label>AvailableSeat</Form.Label>
+              <Form.Control
+                type="number"
+                name="availableSeat"
+                value={formData.availableSeat}
+                max={userConnected.car.numberAvailableSeat}
+                min={1}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          )}
 
           <Form.Group className="mb-3">
             <Form.Label>Route Price</Form.Label>
@@ -117,7 +134,6 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
               name="routePrice"
               value={formData.routePrice}
               onChange={handleChange}
-              step="0.01"
             />
           </Form.Group>
         </Form>

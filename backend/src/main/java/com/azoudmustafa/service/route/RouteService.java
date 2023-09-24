@@ -20,5 +20,5 @@ public interface RouteService {
     RouteGetOverviewDTO findById(Integer id);
 
     RoutePostDTO save(RoutePostDTO dto);
-    List<RouteGetOverviewDTO> getRoutesForUser(Integer userId);
+    List<RoutePostDTO> getRoutesForUser(Integer userId);
 }

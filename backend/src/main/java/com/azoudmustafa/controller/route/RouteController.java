@@ -56,8 +56,8 @@ public class RouteController {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }
     @GetMapping("/routes/{userId}")
-    public ResponseEntity<List<RouteGetOverviewDTO>> getRoutesForUser(@PathVariable Integer userId) {
-        List<RouteGetOverviewDTO> routes = routeService.getRoutesForUser(userId);
+    public ResponseEntity<List<RoutePostDTO>> getRoutesForUser(@PathVariable Integer userId) {
+        List<RoutePostDTO> routes = routeService.getRoutesForUser(userId);
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }
     @PostMapping

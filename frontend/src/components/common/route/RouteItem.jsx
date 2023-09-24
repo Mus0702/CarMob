@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import { saveRoute } from "../../../service/route.js";
 
 import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
 import { useState } from "react";
+import { toast } from "react-toastify";
 const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
   const [showModal, setShowModal] = useState(false);
   const formatTime = (timeString) => {
@@ -20,6 +22,18 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
   if (buttonView === "MyRoutes") {
     isUpComming = isInFuture(route);
   }
+  const handleOnSubmit = async (formData) => {
+    try {
+      console.log({ formData });
+      await saveRoute(formData);
+      setShowModal(false);
+    } catch (e) {
+      console.log(e.response.data);
+      toast.error(e.response.data, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
   return (
     <div>
       {route.distance !== null && (
@@ -81,8 +95,9 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
               )}
               <ModifyRouteModal
                 show={showModal}
-                onHide={() => setShowModal(false)}
+                handleClose={() => setShowModal(false)}
                 routeDetails={route}
+                onSubmit={handleOnSubmit}
               />
               <Link
                 to={`/deleteRoute/${route.id}`}

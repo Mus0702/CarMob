@@ -28,7 +28,7 @@ export const getMyRoutes = async (userId) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
-export const createRoute = async (route) => {
+export const saveRoute = async (route) => {
   const token = localStorage.getItem("token");
   return await fetchAjax.post("/route", route, {
     headers: { Authorization: `Bearer ${token}` },

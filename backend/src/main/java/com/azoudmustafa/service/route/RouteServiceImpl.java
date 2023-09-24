@@ -99,11 +99,11 @@ public class RouteServiceImpl implements RouteService {
         return dto;
     }
 
-    public List<RouteGetOverviewDTO> getRoutesForUser(Integer userId) {
+    public List<RoutePostDTO> getRoutesForUser(Integer userId) {
         List<Route> routes = routeRepository.findAllByUserId(userId);
 
         return routes.stream()
-                .map(routeMapper::toDTO)
+                .map(routeMapper::RouteEntityToRoutePostDTO)
                 .collect(Collectors.toList());
     }
     @Override

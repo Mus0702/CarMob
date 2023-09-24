@@ -63,11 +63,11 @@ const MyRoutesPage = () => {
   });
 
   const filteredFutureDriverRoutes = filteredRoutes.filter(
-    (route) => isInFuture(route) && route.driver.id === +userConnectedId,
+    (route) => isInFuture(route) && route.driverId === +userConnectedId,
   );
 
   const filteredPastDriverRoutes = filteredRoutes.filter(
-    (route) => !isInFuture(route) && route.driver.id === +userConnectedId,
+    (route) => !isInFuture(route) && route.driverId === +userConnectedId,
   );
 
   const filteredFuturePassengerRoutes = filteredRoutes.filter(

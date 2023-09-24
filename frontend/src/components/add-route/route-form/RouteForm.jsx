@@ -8,7 +8,7 @@ import RoutePrice from "../RoutePrice.jsx";
 import ProgressBarr from "../../common/progress-bar/ProgressBarr.jsx";
 import { useNavigate } from "react-router-dom";
 import AddRouteSummary from "../AddRouteSummary.jsx";
-import { createRoute } from "../../../service/route.js";
+import { saveRoute } from "../../../service/route.js";
 import { toast } from "react-toastify";
 
 const RouteForm = () => {
@@ -28,7 +28,7 @@ const RouteForm = () => {
   const handlePublish = async () => {
     console.log({ formData });
     try {
-      const response = await createRoute(formData);
+      const response = await saveRoute(formData);
       if (response) {
         toast.success("Your route has been successfully published.");
         navigate("/");

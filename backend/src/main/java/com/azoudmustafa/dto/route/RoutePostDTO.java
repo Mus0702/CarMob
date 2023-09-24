@@ -32,5 +32,7 @@ public class RoutePostDTO {
     private Integer availableSeat;
     @NotNull
     private Double routePrice;
+    private List<UserWithFirstnameDTO> passengersDTO;
+
 
 }
