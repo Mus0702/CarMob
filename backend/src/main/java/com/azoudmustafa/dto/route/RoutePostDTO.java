@@ -30,6 +30,7 @@ public class RoutePostDTO {
     private Integer driverId;
     @NotNull
     private Integer availableSeat;
+    private Double distance;
     @NotNull
     private Double routePrice;
     private List<UserWithFirstnameDTO> passengersDTO;

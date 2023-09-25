@@ -1,5 +1,6 @@
 package com.azoudmustafa.model;
 
+import com.azoudmustafa.enums.RouteStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -52,6 +53,8 @@ public class Route {
     @Column(name = "arrival_location", columnDefinition = "geography(Point, 4326)")
     @NotNull
     private Point arrivalLocation;
+    @Enumerated(EnumType.STRING)
+    private RouteStatus status;
 
     public Route(Integer id) {
         this.id = id;

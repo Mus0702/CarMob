@@ -3,14 +3,21 @@ import "./RouteItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
 import dayjs from "dayjs";
 import { saveRoute } from "../../../service/route.js";
+import { cancelRouteAsPassenger } from "../../../service/route.js";
+import { cancelRouteAsDriver } from "../../../service/route.js";
 
 import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { userConnectedId } from "../../../utils/userConnectedId.js";
 const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
   const formatTime = (timeString) => {
     if (timeString) {
       const [hour, minute] = timeString.split(":");
@@ -22,7 +29,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
   if (buttonView === "MyRoutes") {
     isUpComming = isInFuture(route);
   }
-  const handleOnSubmit = async (formData) => {
+  const handleOnUpdate = async (formData) => {
     try {
       console.log({ formData });
       await saveRoute(formData);
@@ -34,9 +41,39 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
       });
     }
   };
+
+  const handleOnDelete = async () => {
+    try {
+      await cancelRouteAsDriver(route.id);
+      setShowDeleteModal(false);
+      toast.success("Cancelled successfully as driver", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } catch (e) {
+      console.log(e.response?.data || e.message);
+      toast.error(e.response?.data || "Failed to cancel as driver", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
+  const handleCancelAsPassenger = async () => {
+    try {
+      await cancelRouteAsPassenger(route.id, +userConnectedId);
+      setShowCancelModal(false);
+      toast.success("Cancelled successfully as passenger", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } catch (e) {
+      console.log(e.response?.data || e.message);
+      toast.error(e.response?.data || "Failed to cancel as passenger", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
   return (
     <div>
-      {route.distance !== null && (
+      {route.distance && (
         <div className="text-center fw-bold bg-white mb-3">
           {route.distance} meters from your departure address
         </div>
@@ -55,17 +92,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
             />
             <p className="text-color">{route.arrivalAddress}</p>
           </div>
-          {/*<div className="text-color bg-white border-0 fw-bold pb-1">*/}
-          {/*  <p>Driver name : {route.driver.firstname}</p>*/}
-          {/*</div>*/}
-          {/*<Link*/}
-          {/*  to={`/routeDetails/${route.id}`}*/}
-          {/*  state={{ route: route }}*/}
-          {/*  key={route.id}*/}
-          {/*  className="btn-custom btn-custom-success"*/}
-          {/*>*/}
-          {/*  Details*/}
-          {/*</Link>*/}
+
           {buttonView !== "MyRoutes" && (
             <Link
               to={`/routeDetails/${route.id}`}
@@ -79,37 +106,93 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
 
           {buttonView === "MyRoutes" && isUpComming && (
             <>
-              {isDriver && (
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="btn btn-primary mx-1"
-                >
-                  Modify
-                </button>
-                // <Link
-                //   to={`/modifyRoute/${route.id}`}
-                //   className="btn btn-primary mx-1"
-                // >
-                //   Modify
-                // </Link>
+              {isDriver ? (
+                <>
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="btn btn-primary mx-1"
+                  >
+                    Modify
+                  </button>
+                  <ModifyRouteModal
+                    show={showModal}
+                    handleClose={() => setShowModal(false)}
+                    routeDetails={route}
+                    onSubmit={handleOnUpdate}
+                  />
+                  <Button
+                    variant="danger"
+                    className="mx-1"
+                    onClick={() => setShowDeleteModal(true)}
+                  >
+                    Delete
+                  </Button>
+
+                  <Modal
+                    show={showDeleteModal}
+                    onHide={() => setShowDeleteModal(false)}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>Confirmation</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      Are you sure you want to cancel this trip?
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowDeleteModal(false)}
+                      >
+                        No
+                      </Button>
+                      <Button variant="success" onClick={handleOnDelete}>
+                        Yes
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="danger"
+                    className="mx-1"
+                    onClick={() => setShowCancelModal(true)}
+                  >
+                    Cancel as Passenger
+                  </Button>
+                  <Modal
+                    show={showCancelModal}
+                    onHide={() => setShowCancelModal(false)}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>Confirmation</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      Are you sure you do not want to be a passenger on this
+                      route?
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowCancelModal(false)}
+                      >
+                        No
+                      </Button>
+                      <Button
+                        variant="success"
+                        onClick={handleCancelAsPassenger}
+                      >
+                        Yes
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </>
               )}
-              <ModifyRouteModal
-                show={showModal}
-                handleClose={() => setShowModal(false)}
-                routeDetails={route}
-                onSubmit={handleOnSubmit}
-              />
-              <Link
-                to={`/deleteRoute/${route.id}`}
-                className="btn btn-danger mx-1"
-              >
-                Delete
-              </Link>
             </>
           )}
 
           {buttonView === "MyRoutes" && !isUpComming && (
-            <em className="text-color text-muted">Completed</em>
+            <em className="text-white bg-info">Completed</em>
           )}
         </div>
       </div>

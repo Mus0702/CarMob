@@ -2,16 +2,18 @@ package com.azoudmustafa.service.route;
 
 import com.azoudmustafa.dto.route.RouteGetOverviewDTO;
 import com.azoudmustafa.dto.route.RoutePostDTO;
+import com.azoudmustafa.enums.RouteStatus;
 import com.azoudmustafa.exceptionHandler.BadRequestException;
 import com.azoudmustafa.mapper.route.RouteMapper;
-import com.azoudmustafa.mapper.user.UserMapper;
 import com.azoudmustafa.model.Route;
 import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.route.RouteRepository;
 import com.azoudmustafa.repository.user.UserRepository;
+import com.azoudmustafa.service.email.EmailService;
 import com.azoudmustafa.service.geocoding.GoogleDistanceService;
 import com.azoudmustafa.service.geocoding.GoogleGeocodingService;
 import com.google.maps.model.LatLng;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -33,6 +35,7 @@ public class RouteServiceImpl implements RouteService {
     private final UserRepository userRepository;
     private final GoogleGeocodingService googleGeocodingService;
     private final GoogleDistanceService googleDistanceService;
+    private EmailService emailService;
 
     @Override
     public Page<RouteGetOverviewDTO> findAllBy(String selectedDepartureAddress,
@@ -106,10 +109,42 @@ public class RouteServiceImpl implements RouteService {
                 .map(routeMapper::RouteEntityToRoutePostDTO)
                 .collect(Collectors.toList());
     }
+
     @Override
     public RouteGetOverviewDTO findById(Integer id) {
         Route route = routeRepository.findById(id).orElse(null);
         return routeMapper.toDTO(route);
+    }
+
+    @Override
+    public Route cancelRouteAsDriver(Integer routeId) {
+        Route route = routeRepository.findById(routeId)
+                .orElseThrow(() -> new BadRequestException("Route not found with id: " + routeId));
+        route.setStatus(RouteStatus.CANCELED);
+
+        if (!route.getPassengers().isEmpty()) {
+            for (User passenger : route.getPassengers()) {
+                if (passenger.getEmail().contains("hotmail")) {
+                    emailService.sendEmail(
+                            passenger.getEmail(),
+                            "Route canceled",
+                            "Dear " + passenger.getFirstname() + ",\n\nThe route of " + route.getDepartureDate().toString() + " which you are a passenger has been cancelled by the driver.\n\nWe apologize for any inconvenience caused.\n\nKind regards."
+                    );
+                }
+
+            }
+        }
+
+        return routeRepository.save(route);
+    }
+
+    @Override
+    public void cancelRouteAsPassenger(Integer routeId, Integer userId) {
+        Route route = routeRepository.findById(routeId).orElseThrow(() -> new EntityNotFoundException("Route not found"));
+        User passenger = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        route.getPassengers().remove(passenger);
+        routeRepository.save(route);
     }
 
 

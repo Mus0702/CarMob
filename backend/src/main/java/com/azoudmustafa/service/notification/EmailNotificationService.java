@@ -25,7 +25,7 @@ public class EmailNotificationService {
         List<Booking> bookings = bookingRepository.findBookingsToNotify(currentDate);
         if(!bookings.isEmpty()){
             for(Booking booking:bookings){
-                emailService.sendRatingEmail(
+                emailService.sendEmail(
                         booking.getPassenger().getEmail(),
                         "CarMob rating",
                         "Dear "+booking.getPassenger().getFirstname()+", thanks for choosing CarMob.\n What do you think about your experience with "+booking.getDriver().getFirstname()+"?\n You can rate him by clicking on the followed link : http://localhost:5173/rating/"+booking.getRoute().getId()

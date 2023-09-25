@@ -36,6 +36,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
 
     Optional<Route> findById(Integer id);
 
-    @Query("SELECT r FROM Route r LEFT JOIN r.passengers p WHERE r.driver.id = :userId OR p.id = :userId")
+    @Query("SELECT r FROM Route r LEFT JOIN r.passengers p WHERE (r.driver.id = :userId OR p.id = :userId) and r.status = 'ACTIVE'")
     List<Route> findAllByUserId(@Param("userId") Integer userId);
 }

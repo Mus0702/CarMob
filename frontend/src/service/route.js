@@ -34,3 +34,19 @@ export const saveRoute = async (route) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+export const cancelRouteAsPassenger = async (routeId, passengerId) => {
+  const token = localStorage.getItem("token");
+  return await fetchAjax.put(
+    `/route/cancelAsPassenger/${routeId}/${passengerId}`,
+    null,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+};
+export const cancelRouteAsDriver = async (routeId) => {
+  const token = localStorage.getItem("token");
+  return await fetchAjax.put(`/route/cancel/${routeId}`, null, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

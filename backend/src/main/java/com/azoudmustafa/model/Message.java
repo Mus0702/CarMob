@@ -1,12 +1,7 @@
 package com.azoudmustafa.model;
 
-import com.azoudmustafa.enums.SenderType;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalTime;
 
 @Entity
 @Getter

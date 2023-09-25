@@ -63,7 +63,17 @@ public class RouteController {
     @PostMapping
     public ResponseEntity<RoutePostDTO> createOrUpdate(@Valid @RequestBody RoutePostDTO dto) {
         return new ResponseEntity<>(routeService.save(dto), HttpStatus.CREATED);
+    }
+    @PutMapping("cancel/{routeId}")
+    public ResponseEntity<Route> cancelRouteAsDriver(@PathVariable Integer routeId) {
+        Route cancelledRoute = routeService.cancelRouteAsDriver(routeId);
+        return ResponseEntity.ok(cancelledRoute);
+    }
 
+    @PutMapping("cancelAsPassenger/{routeId}/{passengerId}")
+    public ResponseEntity<?> cancelRouteAsPassenger(@PathVariable Integer routeId, @PathVariable Integer passengerId) {
+        routeService.cancelRouteAsPassenger(routeId, passengerId);
+        return ResponseEntity.ok().body("Cancelled successfully as passenger");
     }
 
 }

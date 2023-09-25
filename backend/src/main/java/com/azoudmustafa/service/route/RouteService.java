@@ -21,4 +21,7 @@ public interface RouteService {
 
     RoutePostDTO save(RoutePostDTO dto);
     List<RoutePostDTO> getRoutesForUser(Integer userId);
+
+    Route cancelRouteAsDriver(Integer routeId);
+   void cancelRouteAsPassenger(Integer routeId, Integer userId);
 }
