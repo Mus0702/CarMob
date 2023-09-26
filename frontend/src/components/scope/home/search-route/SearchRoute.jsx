@@ -90,7 +90,9 @@ const SearchRoute = () => {
 
         <input
           type="number"
-          className="form-control w-auto ms-2 me-2"
+          min={1}
+          max={6}
+          className="form-control w-25 ms-2 me-2"
           value={selectedNumberSeats}
           onChange={(event) => setSelectedNumberSeats(event.target.value)}
           placeholder="number of passengers"

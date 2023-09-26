@@ -36,7 +36,7 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(null);
 
         if (bookingDTO.getReservedSeats() > route.getAvailableSeat()) {
-            throw new BadRequestException("Not enough available seats for the request number");
+            throw new BadRequestException("There is no more available seats for this trip.");
         }
         route.setAvailableSeat(route.getAvailableSeat() - bookingDTO.getReservedSeats());
         route.getPassengers().add(passenger);

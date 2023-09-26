@@ -87,6 +87,7 @@ const RouteDetails = () => {
   }
 
   const onBook = async () => {
+    console.log({ routeDetail });
     const booking = {
       routeId: routeDetail.id,
       passengerId: +userConnectedId,
@@ -108,6 +109,9 @@ const RouteDetails = () => {
           });
         } catch (e) {
           console.log(e);
+          toast.error(e.response.data, {
+            position: toast.POSITION.TOP_CENTER,
+          });
         }
       }
     } else {

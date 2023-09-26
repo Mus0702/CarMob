@@ -86,15 +86,15 @@ public class RouteServiceImpl implements RouteService {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), srid);
 
         LatLng departureResults = googleGeocodingService.getLatLngFromAddress(dto.getDepartureAddress());
-        Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
-        if (departureResults == null) {
-            throw new BadRequestException("the departure address you've specified doesn't exist");
-        }
         LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(dto.getArrivalAddress());
-        Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
-        if (arrivalResults == null) {
-            throw new BadRequestException("the arrival address you've specified doesn't exist");
+
+        if (departureResults == null || arrivalResults == null) {
+            throw new BadRequestException("the departure address or arrival address you've specified doesn't exist");
         }
+        
+        Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
+        Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
+
         route.setDepartureLocation(departuPoint);
         route.setArrivalLocation(arrivalPoint);
 

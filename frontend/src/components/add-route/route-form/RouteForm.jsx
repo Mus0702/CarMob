@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 
 const RouteForm = () => {
   const userConnectedId = sessionStorage.getItem("connectedUserId");
+  const userConnectedString = sessionStorage.getItem("userConnected");
   console.log("user id " + userConnectedId);
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
@@ -25,6 +26,16 @@ const RouteForm = () => {
     availableSeat: "",
     routePrice: "",
   });
+
+  const hasUserACar = () => {
+    if (userConnectedString) {
+      const userConnected = JSON.parse(userConnectedString);
+      if (userConnected.car === null) {
+        navigate("/");
+      }
+    }
+  };
+
   const handlePublish = async () => {
     console.log({ formData });
     try {
@@ -52,7 +63,9 @@ const RouteForm = () => {
     console.log({ formData });
   };
 
-  useEffect(() => {}, [step]);
+  useEffect(() => {
+    hasUserACar();
+  }, [step]);
   return (
     <div className="container">
       <div className="mt-5">
