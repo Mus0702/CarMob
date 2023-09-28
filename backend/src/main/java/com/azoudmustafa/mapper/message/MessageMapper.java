@@ -25,4 +25,6 @@ public interface MessageMapper {
     Message messageDtoToMessage(MessageDTO messageDTO);
 
     MessageGetListDTO toMessageGetListDTO(Message message);
+//    @Mapping(source = "route", target = "route", qualifiedByName = "toEntityWithDriver")
+    Message messageGetListDTOToEntity(MessageGetListDTO messageGetListDTO);
 }

@@ -44,11 +44,23 @@ public class ChatController {
                                                                              @RequestParam("user2Id") Integer user2Id) {
         List<MessageGetListDTO> messages = messageService.findAllByRouteAndUser(routeId, user1Id, user2Id);
 
-        if (messages.isEmpty()){
+        if (messages.isEmpty()) {
             return new ResponseEntity<>(messages, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
+    @GetMapping("/notifications/allUnreadMessages")
+    public ResponseEntity<List<MessageGetListDTO>> getAllUnreadMessages(@RequestParam("receiverId") Integer receiverId) {
+        return new ResponseEntity<>(messageService.findAllUnreadMessagesByUserId(receiverId), HttpStatus.OK);
+    }
+
+    @GetMapping("/notifications/privateUnreadMessages")
+    public ResponseEntity<List<MessageGetListDTO>> getPrivateUnreadMessages(
+            @RequestParam("senderId") Integer senderId,
+            @RequestParam("receiverId") Integer receiverId,
+            @RequestParam("routeId") Integer routeId) {
+        return new ResponseEntity<>(messageService.findAllMessageFromSenderId(senderId, receiverId, routeId), HttpStatus.OK);
+    }
 
 }

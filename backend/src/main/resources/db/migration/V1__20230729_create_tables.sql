@@ -50,6 +50,8 @@ CREATE TABLE message
     sender_id   INT  NOT NULL,
     receiver_id INT  NOT NULL,
     route_id    INT  NOT NULL,
+    time_stamp  TIMESTAMP WITH TIME ZONE,
+    is_read     Bool DEFAULT 'f',
     FOREIGN KEY (sender_id) REFERENCES "user" (id),
     FOREIGN KEY (receiver_id) REFERENCES "user" (id),
     FOREIGN KEY (route_id) REFERENCES route (id)

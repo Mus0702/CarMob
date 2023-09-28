@@ -12,10 +12,13 @@ const SearchBar = ({ searchItem, onSearchChange }) => {
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Search..."
       />
+      <div className="form-text">
+        Search by departure address, arrival address or departure date
+      </div>
       <FontAwesomeIcon
         icon={faMagnifyingGlass}
         className="position-absolute"
-        style={{ top: "50%", right: "10px", transform: "translateY(-50%)" }}
+        style={{ top: "35%", right: "10px", transform: "translateY(-50%)" }}
       />
     </div>
   );

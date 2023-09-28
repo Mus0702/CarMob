@@ -9,5 +9,11 @@ import java.util.List;
 public interface MessageService {
 
     Message save(MessageDTO messageDTO);
+
     List<MessageGetListDTO> findAllByRouteAndUser(Integer routeId, Integer user1Id, Integer User2Id);
+
+    List<MessageGetListDTO> findAllUnreadMessagesByUserId(Integer receiverId);
+
+    List<MessageGetListDTO> findAllMessageFromSenderId(Integer senderId, Integer receiverId, Integer routeId);
+Message updateStatus(MessageGetListDTO messageDTO);
 }

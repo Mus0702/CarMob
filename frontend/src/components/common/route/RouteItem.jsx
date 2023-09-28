@@ -13,7 +13,14 @@ import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { userConnectedId } from "../../../utils/userConnectedId.js";
-const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
+const RouteItem = ({
+  route,
+  buttonView,
+  isInFuture,
+  isDriver,
+  onCancelRoute,
+  style,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -34,6 +41,9 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
       console.log({ formData });
       await saveRoute(formData);
       setShowModal(false);
+      toast.success("Updated successfully as driver", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } catch (e) {
       console.log(e.response.data);
       toast.error(e.response.data, {
@@ -46,6 +56,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
     try {
       await cancelRouteAsDriver(route.id);
       setShowDeleteModal(false);
+      onCancelRoute(route.id);
       toast.success("Cancelled successfully as driver", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -61,6 +72,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
     try {
       await cancelRouteAsPassenger(route.id, +userConnectedId);
       setShowCancelModal(false);
+      onCancelRoute(route.id);
       toast.success("Cancelled successfully as passenger", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -72,7 +84,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
     }
   };
   return (
-    <div>
+    <div style={style}>
       {route.distance && (
         <div className="text-center fw-bold bg-white mb-3">
           {route.distance} meters from your departure address
@@ -93,7 +105,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
             <p className="text-color">{route.arrivalAddress}</p>
           </div>
 
-          {buttonView !== "MyRoutes" && (
+          {buttonView === "default" && (
             <Link
               to={`/routeDetails/${route.id}`}
               state={{ route: route }}
@@ -158,7 +170,7 @@ const RouteItem = ({ route, buttonView, isInFuture, isDriver }) => {
                     className="mx-1"
                     onClick={() => setShowCancelModal(true)}
                   >
-                    Cancel as Passenger
+                    Cancel
                   </Button>
                   <Modal
                     show={showCancelModal}

@@ -24,7 +24,7 @@ import {
 const RouteDetails = () => {
   const [routeDetail, setRouteDetail] = useState();
   const { routeId } = useParams();
-
+  const today = new Date();
   const mapRef = useRef(null);
   const [directions, setDirections] = useState(null);
 
@@ -40,6 +40,7 @@ const RouteDetails = () => {
       console.log("l id est " + routeId);
       const response = await getRouteByIdNotAuth(routeId);
       const totalPrice = numberOfSelectedSeats * response.data.routePrice;
+      console.log("total price " + numberOfSelectedSeats);
       setPriceToDisplay(totalPrice);
 
       console.log({ response });
@@ -78,7 +79,13 @@ const RouteDetails = () => {
 
   function handleChat() {
     if (isLoggedIn) {
-      navigate(`/chat/${routeDetail.id}`);
+      if (+userConnectedId === routeDetail.driver.id) {
+        toast.error(
+          "You can not use the chat as you are the driver of this route",
+        );
+      } else {
+        navigate(`/chat/${routeDetail.id}/${+userConnectedId}`);
+      }
       // }
     } else {
       localStorage.setItem("redirectToChat", routeDetail.id);
@@ -127,76 +134,89 @@ const RouteDetails = () => {
           {dayjs(routeDetail.departureDate).format("DD/MM/YYYY")}
         </span>
       </h1>
-      <div className="w-75">
-        <p className="border-bottom border-3 py-3 w-50">
-          {routeDetail.departureAddress}
-          <FontAwesomeIcon icon={faArrowRight} className="mx-2 text-color" />
-          {routeDetail.arrivalAddress}
-        </p>
-        <p className="">
-          Driver: <strong>{routeDetail.driver.firstname}</strong>
-        </p>
-        <p className="border-bottom border-3 py-3 w-50">
-          {routeDetail.driver.rating !== null ? (
-            <>
-              <FontAwesomeIcon icon={faStar} style={{ color: "#FFFF33" }} />{" "}
-              <strong>{routeDetail.driver.rating.toFixed(1)} / 5</strong>
-            </>
-          ) : (
-            "Driver has not been rated yet."
-          )}
-        </p>
-        <p className="border-bottom border-3 py-3 w-50">
-          <strong>
-            {routeDetail.driver.car.brand} {routeDetail.driver.car.model}{" "}
-            {routeDetail.driver.car.color}
-          </strong>
-        </p>
-        <p className="border-bottom border-3 py-3 w-50">
-          Total Price for {numberOfSelectedSeats} passenger(s) :{" "}
-          <strong>€{priceToDisplay.toFixed(2)}</strong>
-        </p>
-        <p className="border-bottom border-3 py-3 w-50">
-          <FontAwesomeIcon
-            icon={faComments}
-            size="lg"
-            style={{ color: "#0d5c63" }}
-            className=""
-          />
-          <button className="btn" onClick={handleChat}>
-            Contact {routeDetail.driver.firstname}
-          </button>
-        </p>
-        {routeDetail.passengersDTO.length > 0 ? (
-          <>
-            <p> Passengers:</p>
-            <ul className="border-bottom border-3 pb-3 w-50">
-              {routeDetail.passengersDTO.map((passenger, index) => (
-                <li key={index}>{passenger.firstname}</li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <div className="mb-2">No passsengers yet</div>
-        )}
-
-        <button className="btn-custom btn-custom-success" onClick={onBook}>
-          {" "}
-          Pay €{priceToDisplay.toFixed(2)}
-        </button>
-
-        {/*<LoadScript*/}
-        {/*  googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}*/}
-        {/*>*/}
-        {/*  <GoogleMap*/}
-        {/*    mapContainerStyle={{ width: "50%", height: "200px" }}*/}
-        {/*    center={{ lat: 50.8503, lng: 4.3517 }}*/}
-        {/*    zoom={10}*/}
-        {/*    ref={mapRef}*/}
-        {/*  >*/}
-        {/*    {directions && <DirectionsRenderer directions={directions} />}*/}
-        {/*  </GoogleMap>*/}
-        {/*</LoadScript>*/}
+      <div className="row">
+        <div className="col-md-6">
+          <div>
+            <p className="border-bottom border-3 py-3 w-50">
+              {routeDetail.departureAddress}
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className="mx-2 text-color"
+              />
+              {routeDetail.arrivalAddress}
+            </p>
+            <p className="">
+              Driver: <strong>{routeDetail.driver.firstname}</strong>
+            </p>
+            <p className="border-bottom border-3 py-3 w-50">
+              {routeDetail.driver.rating !== null ? (
+                <>
+                  <FontAwesomeIcon icon={faStar} style={{ color: "#FFFF33" }} />{" "}
+                  <strong>{routeDetail.driver.rating.toFixed(1)} / 5</strong>
+                </>
+              ) : (
+                "Driver has not been rated yet."
+              )}
+            </p>
+            <p className="border-bottom border-3 py-3 w-50">
+              <strong>
+                {routeDetail.driver.car.brand} {routeDetail.driver.car.model}{" "}
+                {routeDetail.driver.car.color}
+              </strong>
+            </p>
+            <p className="border-bottom border-3 py-3 w-50">
+              Total Price for {numberOfSelectedSeats} passenger(s) :{" "}
+              <strong>€{priceToDisplay.toFixed(2)}</strong>
+            </p>
+            <p className="border-bottom border-3 py-3 w-50">
+              <FontAwesomeIcon
+                icon={faComments}
+                size="lg"
+                style={{ color: "#0d5c63" }}
+                className=""
+              />
+              <button className="btn" onClick={handleChat}>
+                Contact {routeDetail.driver.firstname}
+              </button>
+            </p>
+            {routeDetail.passengersDTO.length > 0 ? (
+              <>
+                <p> Passengers:</p>
+                <ul className="border-bottom border-3 pb-3 w-50">
+                  {routeDetail.passengersDTO.map((passenger) => (
+                    <li key={passenger.id}>{passenger.firstname}</li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <div className="mb-2">No passsengers yet</div>
+            )}
+            {routeDetail &&
+              +userConnectedId !== routeDetail.driver.id &&
+              new Date(routeDetail.departureDate) > new Date() && (
+                <button
+                  className="btn-custom btn-custom-success"
+                  onClick={onBook}
+                >
+                  Pay €{priceToDisplay.toFixed(2)}
+                </button>
+              )}
+          </div>
+        </div>
+        <div className="col-md-6">
+          {/*<LoadScript*/}
+          {/*  googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}*/}
+          {/*>*/}
+          {/*  <GoogleMap*/}
+          {/*    mapContainerStyle={{ width: "100%", height: "500px" }}*/}
+          {/*    center={{ lat: 50.8503, lng: 4.3517 }}*/}
+          {/*    zoom={10}*/}
+          {/*    ref={mapRef}*/}
+          {/*  >*/}
+          {/*    {directions && <DirectionsRenderer directions={directions} />}*/}
+          {/*  </GoogleMap>*/}
+          {/*</LoadScript>*/}
+        </div>
       </div>
     </div>
   );

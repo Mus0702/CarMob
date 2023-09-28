@@ -33,7 +33,7 @@ public interface RouteMapper {
     RoutePostDTO RouteEntityToRoutePostDTO(Route entity);
 
 
-    Route toEntityWithDriver(RouteWithDriverDTO dto);
-    RouteWithDriverDTO toRouteDriverDTO(Route entity);
-    Route toEntityDriverDTO(RouteWithDriverDTO dto);
+//    Route toEntityWithDriver(RouteWithDriverDTO dto);
+//    RouteWithDriverDTO toRouteDriverDTO(Route entity);
+//    Route toEntityDriverDTO(RouteWithDriverDTO dto);
 }

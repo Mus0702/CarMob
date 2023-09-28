@@ -39,7 +39,7 @@ export default function Myapp() {
           <Route path="/route-results" element={<RoutesResultsPage />} />
           <Route path="/routeDetails/:routeId" element={<RouteDetails />} />
           <Route element={<RequiredAuth />}>
-            <Route path="/chat/:routeId" element={<ChatPage />} />
+            <Route path="/chat/:routeId/:senderId" element={<ChatPage />} />
           </Route>
           <Route element={<RequiredAuth />}>
             <Route path="/message-success" element={<MessageSuccessPage />} />

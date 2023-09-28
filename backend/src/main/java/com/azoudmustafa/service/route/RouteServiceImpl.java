@@ -80,7 +80,7 @@ public class RouteServiceImpl implements RouteService {
         }
 
         route.setDriver(driver);
-
+route.setStatus(RouteStatus.ACTIVE);
 
         int srid = 4326;
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), srid);
@@ -91,7 +91,7 @@ public class RouteServiceImpl implements RouteService {
         if (departureResults == null || arrivalResults == null) {
             throw new BadRequestException("the departure address or arrival address you've specified doesn't exist");
         }
-        
+
         Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
         Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
 

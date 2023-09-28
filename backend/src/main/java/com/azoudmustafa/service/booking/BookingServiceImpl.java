@@ -11,6 +11,10 @@ import com.azoudmustafa.repository.route.RouteRepository;
 import com.azoudmustafa.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.time.LocalDate;
+import java.util.Date;
+
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -37,6 +41,11 @@ public class BookingServiceImpl implements BookingService {
 
         if (bookingDTO.getReservedSeats() > route.getAvailableSeat()) {
             throw new BadRequestException("There is no more available seats for this trip.");
+        }
+        LocalDate today= LocalDate.now();
+        if(route.getDepartureDate().isBefore(today)){
+            throw new BadRequestException("You cannot book a route that has already taken place. ");
+
         }
         route.setAvailableSeat(route.getAvailableSeat() - bookingDTO.getReservedSeats());
         route.getPassengers().add(passenger);

@@ -36,16 +36,48 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.save(messageEntity);
     }
 
+    public Message updateStatus(MessageGetListDTO messageDTO) {
+        Message messageEntity = MessageMapper.INSTANCE.messageGetListDTOToEntity(messageDTO);
+        messageEntity.setIsRead(true);
+        return messageRepository.save(messageEntity);
+    }
+
     @Override
     public List<MessageGetListDTO> findAllByRouteAndUser(Integer routeId, Integer user1Id, Integer user2Id) {
         List<Message> messages = messageRepository.findConversationForRouteAndUsers(routeId, user1Id, user2Id);
         List<MessageGetListDTO> messagesDTO = new ArrayList<>();
-        for (Message message:messages){
+        for (Message message : messages) {
 
-            messagesDTO.add( messageMapper.toMessageGetListDTO(message));
+            messagesDTO.add(messageMapper.toMessageGetListDTO(message));
         }
         return messagesDTO;
 
+    }
+
+    @Override
+    public List<MessageGetListDTO> findAllUnreadMessagesByUserId(Integer receiverId) {
+        List<Message> unreadMessages = messageRepository.findAllUnreadMessagesByUserId(receiverId);
+        List<MessageGetListDTO> unreadMessagesDTO = new ArrayList<>();
+
+        for (Message unReadMessage : unreadMessages) {
+
+            unreadMessagesDTO.add(messageMapper.toMessageGetListDTO(unReadMessage));
+        }
+        return unreadMessagesDTO;
+
+
+    }
+
+    @Override
+    public List<MessageGetListDTO> findAllMessageFromSenderId(Integer senderId, Integer receiverId, Integer routeId) {
+        List<Message> unreadMessages = messageRepository.findAllMessageFromSenderId(senderId, receiverId, routeId);
+        List<MessageGetListDTO> unreadMessagesDTO = new ArrayList<>();
+
+        for (Message unReadMessage : unreadMessages) {
+
+            unreadMessagesDTO.add(messageMapper.toMessageGetListDTO(unReadMessage));
+        }
+        return unreadMessagesDTO;
     }
 
 }

@@ -15,6 +15,7 @@ const MyRoutesPage = () => {
     try {
       const response = await getMyRoutes(+userConnectedId);
       setRoutes(response.data);
+      console.log({ routes: response.data });
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -116,6 +117,8 @@ const MyRoutesPage = () => {
                   buttonView="MyRoutes"
                   isInFuture={isInFuture}
                   isDriver={true}
+                  setRoutes={setRoutes}
+                  allRoutes={routes}
                 />
               ) : (
                 <p className="text-color">
@@ -130,6 +133,8 @@ const MyRoutesPage = () => {
                   routes={filteredPastDriverRoutes}
                   buttonView="MyRoutes"
                   isInFuture={isInFuture}
+                  setRoutes={() => null}
+                  allRoutes={routes}
                 />
               ) : (
                 <p className="text-color">
@@ -151,6 +156,8 @@ const MyRoutesPage = () => {
                 buttonView="MyRoutes"
                 isInFuture={isInFuture}
                 isDriver={false}
+                setRoutes={setRoutes}
+                allRoutes={routes}
               />
             ) : (
               <p className="text-center text-color">
@@ -164,6 +171,8 @@ const MyRoutesPage = () => {
                 routes={filteredPastPassengerRoutes}
                 buttonView="MyRoutes"
                 isInFuture={isInFuture}
+                setRoutes={() => null}
+                allRoutes={routes}
               />
             ) : (
               <p className="text-color">

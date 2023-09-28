@@ -7,26 +7,48 @@ import {
   disconnect,
   sendMessage,
 } from "../../../../service/webSocket.js";
+import { getUserById } from "../../../../service/user.js";
+import dayjs from "dayjs";
+import RouteItem from "../RouteItem.jsx";
 
 const Chat = () => {
   const [route, setRoute] = useState(null);
+  const [potentialPassenger, setPotentialPassenger] = useState(null);
+
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const { routeId } = useParams();
+  const { routeId, senderId } = useParams();
   const userConnectedId = sessionStorage.getItem("connectedUserId");
+  const [messageChat, setMessageChat] = useState({});
+  const today = new Date().toISOString();
 
   useEffect(() => {
     const fetchRoute = async () => {
+      console.log("senderId " + senderId);
       try {
         const response = await getRouteById(routeId);
         setRoute(response.data);
         console.log({ response });
         if (response.data) {
           try {
+            const userResponse = await getUserById(senderId);
+            setPotentialPassenger(userResponse.data);
+            console.log("potentiel passager ", userResponse.data);
+            console.log("sender id " + senderId);
+            let receiverId;
+            let senderMsgId;
+            if (Number(userConnectedId) === response.data.driver.id) {
+              receiverId = response.data.driver.id;
+              senderMsgId = Number(senderId);
+            } else if (response.data) {
+              receiverId = Number(userConnectedId);
+              senderMsgId = response.data.driver.id;
+            }
+
             const messageResponse = await getMessages(
               routeId,
-              userConnectedId,
-              response.data.driver.id,
+              senderMsgId,
+              receiverId,
             );
             console.log({ messageResponse });
             if (messageResponse.data.length > 0) {
@@ -50,34 +72,35 @@ const Chat = () => {
     return () => {
       disconnect();
     };
-  }, []);
+  }, [routeId, senderId]);
 
   const handleSendMessage = () => {
-    let receiver;
-
-    if (!localStorage.getItem("lastSenderId")) {
-      receiver = route.driver.id;
-      localStorage.setItem("lastSenderId", userConnectedId);
+    let receiverId;
+    let senderMsgId;
+    if (route && Number(userConnectedId) === route.driver.id) {
+      receiverId = Number(senderId);
+      senderMsgId = Number(userConnectedId);
     } else {
-      if (Number(userConnectedId) === route.driver.id) {
-        receiver = +localStorage.getItem("lastSenderId");
-        //localStorage.setItem("lastSenderId", route.driver.id.toString());
-      } else {
-        receiver = route.driver.id;
-        localStorage.setItem("lastSenderId", userConnectedId);
-      }
+      receiverId = route.driver.id;
+      senderMsgId = Number(userConnectedId);
     }
-    const messageChat = {
+    const messageSent = {
       content: message,
-      senderId: +userConnectedId,
-      receiverId: receiver,
+      senderId: senderMsgId,
+      receiverId: receiverId,
       routeId: +routeId,
+      timestamp: today,
     };
-    sendMessage(messageChat);
-    setMessages((prevMessages) => [...prevMessages, messageChat]);
+
+    // setMessageChat(messageSent);
+
+    sendMessage(messageSent);
+    setMessages((prevMessages) => [...prevMessages, messageSent]);
 
     setMessage("");
-    console.log("liste messages ", messages);
+    messages.map((message) => {
+      console.log({ message });
+    });
   };
 
   /*
@@ -106,31 +129,70 @@ Utilisation d'une combinaison d'identifiants et d'autres propriétés : Si msg.i
       `${msg.senderId}-${msg.receiverId}-${msg.content.substring(0, 5)}`
     );
   };
+  const getSenderName = (msg) => {
+    const senderId = getSenderId(msg); // utilisez votre fonction existante pour obtenir l'ID du sender
+    if (senderId === +userConnectedId) {
+      return "";
+    } else if (route && senderId === route.driver.id) {
+      return route.driver.firstname;
+    } else if (potentialPassenger) {
+      return potentialPassenger.firstname;
+    }
+    return null;
+  };
+
   return (
     <div className="chat-container container mt-5">
+      {route && (
+        <RouteItem
+          route={route}
+          style={{
+            width: "50%",
+            height: "25%",
+            marginBottom: "50px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+      )}
       <div className="card">
         <div className="card-header text-center fw-bold text-color">
           Welcome to the Chat page
         </div>
         <div className="card-body message-section">
-          {messages.map((msg) => (
-            <div
-              key={getMessageKey(msg)}
-              className={`d-flex justify-content-${
-                getSenderId(msg) === +userConnectedId ? "end" : "start"
-              } mb-3`}
-            >
+          {messages &&
+            messages.map((msg) => (
               <div
-                className={`message p-2 rounded ${
-                  getSenderId(msg) === +userConnectedId
-                    ? "bg-primary text-white"
-                    : "border"
-                }`}
+                key={getMessageKey(msg)}
+                className={`d-flex justify-content-${
+                  getSenderId(msg) === +userConnectedId ? "end" : "start"
+                } mb-3`}
               >
-                {msg.content}
+                <div
+                  className={`message-container ${
+                    getSenderId(msg) === +userConnectedId
+                      ? "text-end"
+                      : "text-start"
+                  }`}
+                >
+                  <div className="sender-name text-color fw-bold">
+                    {getSenderName(msg)}
+                  </div>
+                  <div
+                    className={`message p-2 rounded ${
+                      getSenderId(msg) === +userConnectedId
+                        ? "bg-primary text-white"
+                        : "border"
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
+                  <div id="passwordHelpBlock" className="form-text">
+                    {dayjs(msg.timestamp).format("HH:mm")}{" "}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
         <div className="card-footer input-section">
           <div className="input-group">

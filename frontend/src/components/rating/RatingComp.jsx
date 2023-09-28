@@ -7,6 +7,7 @@ import Loader from "../common/loader/Loader.jsx";
 import { createRating } from "../../service/rating.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RouteItem from "../common/route/RouteItem.jsx";
 
 const RatingComp = () => {
   const [route, setRoute] = useState();
@@ -77,6 +78,7 @@ const RatingComp = () => {
         <Loader />
       ) : (
         <div className="text-center text-color">
+          {route && <RouteItem route={route} />}
           {route && <h2> Please rate the driver {route.driver.firstname}</h2>}
           <Rating onClick={handleRating} initialValue={ratingValue} />
 

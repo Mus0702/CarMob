@@ -3,6 +3,8 @@ package com.azoudmustafa.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.*;
+
 @Entity
 @Getter
 @Setter
@@ -24,11 +26,17 @@ public class Message {
     private User receiver;
     @Column(nullable = false)
     private String content;
-//    @Enumerated(EnumType.STRING)
-//    private SenderType senderType;
+    @Transient
+    LocalDateTime localNow = LocalDateTime.now();
+    @Column(name = "time_stamp")
+    private ZonedDateTime timestamp=  localNow.atZone(ZoneId.of("UTC"));
 
-//    private LocalTime timestamp;
 
+    @Column(name = "is_read")
+    private Boolean isRead;
 
-
+    @PrePersist
+    public void prePersist() {
+       this.isRead = false;
+    }
 }

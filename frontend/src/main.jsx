@@ -3,6 +3,7 @@ import "./index.scss";
 import Myapp from "./components/app/App.jsx";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { ToastContainer } from "react-toastify";
 
 import { AuthProvider } from "./context/AuthContext.jsx";

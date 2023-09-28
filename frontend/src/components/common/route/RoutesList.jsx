@@ -1,8 +1,23 @@
 import PropTypes from "prop-types";
 
 import RouteItem from "./RouteItem.jsx";
+import { useEffect } from "react";
 
-const RoutesList = ({ routes, buttonView, isInFuture, isDriver }) => {
+const RoutesList = ({
+  routes,
+  buttonView,
+  isInFuture,
+  isDriver,
+  setRoutes,
+  allRoutes,
+}) => {
+  const cancelRoute = (routeId) => {
+    console.log("routes dans on cancel = ", routes);
+    if (!routeId) return;
+    const newRoutes = allRoutes.filter((route) => route.id !== routeId);
+    console.log("new route = ", newRoutes);
+    setRoutes(newRoutes);
+  };
   return (
     <div className="container mt-3">
       {routes.length === 0 ? (
@@ -19,6 +34,7 @@ const RoutesList = ({ routes, buttonView, isInFuture, isDriver }) => {
                 buttonView={buttonView}
                 isInFuture={isInFuture}
                 isDriver={isDriver}
+                onCancelRoute={cancelRoute}
               />
             </div>
           ))}
