@@ -39,18 +39,20 @@ const DepartureAddress = ({ nextStep, handleChange, values }) => {
             type="text"
             className="form-control w-100"
             placeholder="Departure address"
+            onChange={handleChange("departureAddress")}
+            value={values.departureAddress}
           />
         </StandaloneSearchBox>
 
-        <input
-          type="text"
-          onChange={handleChange("departureAddress")}
-          value={values.departureAddress}
-          className="form-control"
-          placeholder="Departure address"
-          id="form3Example4c"
-          style={{ width: "50%" }}
-        />
+        {/*<input*/}
+        {/*  type="text"*/}
+        {/*  onChange={handleChange("departureAddress")}*/}
+        {/*  value={values.departureAddress}*/}
+        {/*  className="form-control"*/}
+        {/*  placeholder="Departure address"*/}
+        {/*  id="form3Example4c"*/}
+        {/*  style={{ width: "50%" }}*/}
+        {/*/>*/}
       </div>
       <button
         className="btn btn-success mt-3 d-grid gap-2 col-4 mx-auto"

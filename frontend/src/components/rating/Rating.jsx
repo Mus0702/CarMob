@@ -8,6 +8,7 @@ import { createRating } from "../../service/rating.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Rating.css";
+import RouteItem from "../common/route/RouteItem.jsx";
 
 const Rating = () => {
   const [route, setRoute] = useState();
@@ -16,7 +17,6 @@ const Rating = () => {
   const { isLoggedIn } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [ratingValue, setRatingValue] = useState("1");
-  const [errorMessage, setErrorMessage] = useState("");
   const userConnectedId = sessionStorage.getItem("connectedUserId");
 
   const fetchRoute = async () => {
@@ -73,6 +73,18 @@ const Rating = () => {
         <Loader />
       ) : (
         <div className="text-center text-color">
+          {/*{route && (*/}
+          {/*  <RouteItem*/}
+          {/*    route={route}*/}
+          {/*    style={{*/}
+          {/*      width: "50%",*/}
+          {/*      height: "25%",*/}
+          {/*      marginBottom: "200px",*/}
+          {/*      marginLeft: "auto",*/}
+          {/*      marginRight: "auto",*/}
+          {/*    }}*/}
+          {/*  />*/}
+          {/*)}*/}
           {route && <h2> Please rate the driver {route.driver.firstname}</h2>}
           <input
             type="number"

@@ -8,6 +8,8 @@ import { createRating } from "../../service/rating.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RouteItem from "../common/route/RouteItem.jsx";
+import { hasRated } from "../../service/rating.js";
+import dayjs from "dayjs";
 
 const RatingComp = () => {
   const [route, setRoute] = useState();
@@ -18,6 +20,8 @@ const RatingComp = () => {
   const [ratingValue, setRatingValue] = useState(0);
   const userConnectedId = sessionStorage.getItem("connectedUserId");
 
+  const today = dayjs(new Date()).format("YYYY-MM-DD");
+
   const fetchRoute = async () => {
     if (isLoggedIn) {
       try {
@@ -26,6 +30,32 @@ const RatingComp = () => {
         console.log({ userConnectedId });
         setRoute(response.data);
         setIsLoading(false);
+        const hasRatedResponse = await hasRated(
+          response.data.id,
+          response.data.driver.id,
+          +userConnectedId,
+        );
+        if (response.data.departureDate > today) {
+          navigate("/");
+          toast.error("You can note rate a driver of a future route");
+        } else if (
+          response.data.passengersDTO.every(
+            (passenger) => passenger.id !== +userConnectedId,
+          )
+        ) {
+          navigate("/");
+          toast.error(
+            "You are not able to rate the driver as you are not a passenger on the route.",
+          );
+        } else if (response.data.driver.id === +userConnectedId) {
+          navigate("/");
+          toast.error("You cannot rate yourself as a driver on this route.");
+        } else if (hasRatedResponse) {
+          navigate("/");
+          toast.error(
+            "you've already rated this driver for this specific route.",
+          );
+        }
       } catch (e) {
         const errorMessage = e.response.data || "Something went wrong!";
         console.error(errorMessage);
@@ -40,7 +70,6 @@ const RatingComp = () => {
     fetchRoute();
   }, [routeId]);
 
-  // Catch Rating value
   const handleRating = (rate) => {
     setRatingValue(rate);
     console.log(typeof rate);
@@ -73,19 +102,34 @@ const RatingComp = () => {
   };
 
   return (
-    <div className="vh-100 d-flex justify-content-center align-items-center">
+    <div className="d-flex justify-content-center align-items-center">
       {isLoading ? (
         <Loader />
       ) : (
         <div className="text-center text-color">
-          {route && <RouteItem route={route} />}
-          {route && <h2> Please rate the driver {route.driver.firstname}</h2>}
-          <Rating onClick={handleRating} initialValue={ratingValue} />
+          <div className="mb-5 mt-3">
+            {route && (
+              <RouteItem
+                route={route}
+                style={{
+                  width: "50%",
+                  height: "25%",
+                  marginBottom: "20px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              />
+            )}
+          </div>
+          <div>
+            {route && <h2> Please rate the driver {route.driver.firstname}</h2>}
+            <Rating onClick={handleRating} initialValue={ratingValue} />
 
-          <div className="mt-2 align-items-center">
-            <button className="btn btn-success" onClick={onRate}>
-              Send
-            </button>
+            <div className="mt-2 align-items-center">
+              <button className="btn btn-success" onClick={onRate}>
+                Send
+              </button>
+            </div>
           </div>
         </div>
       )}

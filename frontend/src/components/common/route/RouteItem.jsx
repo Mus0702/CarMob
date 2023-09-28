@@ -12,7 +12,6 @@ import { cancelRouteAsDriver } from "../../../service/route.js";
 import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { userConnectedId } from "../../../utils/userConnectedId.js";
 const RouteItem = ({
   route,
   buttonView,
@@ -24,6 +23,8 @@ const RouteItem = ({
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+
+  const userConnectedId = sessionStorage.getItem("connectedUserId");
 
   const formatTime = (timeString) => {
     if (timeString) {
@@ -137,7 +138,7 @@ const RouteItem = ({
                     className="mx-1"
                     onClick={() => setShowDeleteModal(true)}
                   >
-                    Delete
+                    Cancel
                   </Button>
 
                   <Modal

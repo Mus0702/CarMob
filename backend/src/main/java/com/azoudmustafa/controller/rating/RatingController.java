@@ -21,4 +21,10 @@ public class RatingController {
     public ResponseEntity<RatingDTO> createOrUpdate(@Valid @RequestBody RatingDTO dto) {
         return new ResponseEntity<>(ratingService.save(dto), HttpStatus.CREATED);
     }
+
+    @GetMapping("/hasRated")
+    public ResponseEntity<?> hasUserRatedRoute(@RequestParam Integer routeId,@RequestParam Integer driverId, @RequestParam Integer passengerId) {
+        boolean hasRated = ratingService.hasUserRatedDriverForRoute(routeId, driverId, passengerId);
+        return ResponseEntity.ok().body(hasRated);
+    }
 }

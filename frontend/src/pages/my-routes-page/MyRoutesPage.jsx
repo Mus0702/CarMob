@@ -11,6 +11,8 @@ const MyRoutesPage = () => {
   const [searchItem, setSearchItem] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  const [hasSearched, setHasSearched] = useState(false);
+
   const fetchMyRoutes = async () => {
     try {
       const response = await getMyRoutes(+userConnectedId);
@@ -87,6 +89,11 @@ const MyRoutesPage = () => {
       ),
   );
 
+  // Modifier la fonction de recherche pour indiquer qu'une recherche a été effectuée
+  const handleSearchChange = (value) => {
+    setSearchItem(value);
+    setHasSearched(true);
+  };
   useEffect(() => {
     fetchMyRoutes();
   }, []);
@@ -101,7 +108,7 @@ const MyRoutesPage = () => {
             <div className="col ml-auto">
               <SearchBar
                 searchItem={searchItem}
-                onSearchChange={(value) => setSearchItem(value)}
+                onSearchChange={handleSearchChange}
               />
             </div>
           </div>
@@ -119,6 +126,7 @@ const MyRoutesPage = () => {
                   isDriver={true}
                   setRoutes={setRoutes}
                   allRoutes={routes}
+                  onSearch={hasSearched}
                 />
               ) : (
                 <p className="text-color">
@@ -135,6 +143,7 @@ const MyRoutesPage = () => {
                   isInFuture={isInFuture}
                   setRoutes={() => null}
                   allRoutes={routes}
+                  onSearch={hasSearched}
                 />
               ) : (
                 <p className="text-color">
@@ -158,6 +167,7 @@ const MyRoutesPage = () => {
                 isDriver={false}
                 setRoutes={setRoutes}
                 allRoutes={routes}
+                onSearch={hasSearched}
               />
             ) : (
               <p className="text-center text-color">
@@ -173,6 +183,7 @@ const MyRoutesPage = () => {
                 isInFuture={isInFuture}
                 setRoutes={() => null}
                 allRoutes={routes}
+                onSearch={hasSearched}
               />
             ) : (
               <p className="text-color">

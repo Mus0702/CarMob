@@ -17,4 +17,5 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
             @Param("route") Route route);
 
     List<Rating> findByDriverId(Integer DriverId);
+    Boolean existsRatingByRouteAndDriverAndPassenger(Route route, User driver, User passenger);
 }

@@ -5,7 +5,6 @@ import RatingComp from "../../components/rating/RatingComp.jsx";
 const RatingPage = () => {
   return (
     <div className="container">
-      {/*<Rating />*/}
       <RatingComp />
     </div>
   );

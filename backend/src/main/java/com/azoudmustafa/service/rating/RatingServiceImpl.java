@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public RatingDTO save(RatingDTO dto) {
-        User userConnected=getUserConnected();
+        User userConnected = getUserConnected();
 
         User driver = userRepository.findById(dto.getDriverId())
                 .orElseThrow(null);
@@ -48,14 +49,16 @@ public class RatingServiceImpl implements RatingService {
                 .rating(dto.getRating())
                 .build();
 
-        if(userConnected.getId().equals(savedRating.getDriver().getId())){
+        if (userConnected.getId().equals(savedRating.getDriver().getId())) {
             throw new BadRequestException("You cannot rate yourself as a driver on this route.");
         }
 
         if (!savedRating.getRoute().getPassengers().contains(passenger)) {
             throw new BadRequestException("You are not a passenger on this route.");
         }
-
+        if (route.getDepartureDate().isAfter(LocalDate.now())) {
+            throw new BadRequestException("You can note rate a driver of a future route");
+        }
         if (savedRating != null) {
             ratingRepository.save(savedRating);
         } else {
@@ -64,6 +67,19 @@ public class RatingServiceImpl implements RatingService {
         setDriverAverageRating(driver);
 
         return dto;
+    }
+
+    @Override
+    public Boolean hasUserRatedDriverForRoute(Integer routeId, Integer driverId, Integer passengerId) {
+        User driver = userRepository.findById(driverId)
+                .orElseThrow(null);
+        User passenger = userRepository.findById(passengerId)
+                .orElseThrow();
+        Route route = routeRepository.findById(routeId)
+                .orElseThrow(null);
+
+
+        return ratingRepository.existsRatingByRouteAndDriverAndPassenger(route,driver,passenger);
     }
 
     private void setDriverAverageRating(User driver) {
@@ -80,7 +96,7 @@ public class RatingServiceImpl implements RatingService {
 
     }
 
-    private User getUserConnected(){
+    private User getUserConnected() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         Optional<User> currentUser = userRepository.findByEmail(currentUserName);
