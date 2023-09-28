@@ -88,8 +88,18 @@ const MyRoutesPage = () => {
         (passenger) => passenger.id === +userConnectedId,
       ),
   );
+  const sortByDateDesc = (a, b) => {
+    return a.departureDate.localeCompare(b.departureDate);
+  };
 
-  // Modifier la fonction de recherche pour indiquer qu'une recherche a été effectuée
+  const sortedFutureDriverRoutes =
+    filteredFutureDriverRoutes.sort(sortByDateDesc);
+  const sortedPastDriverRoutes = filteredPastDriverRoutes.sort(sortByDateDesc);
+  const sortedFuturePassengerRoutes =
+    filteredFuturePassengerRoutes.sort(sortByDateDesc);
+  const sortedPastPassengerRoutes =
+    filteredPastPassengerRoutes.sort(sortByDateDesc);
+
   const handleSearchChange = (value) => {
     setSearchItem(value);
     setHasSearched(true);
@@ -120,7 +130,7 @@ const MyRoutesPage = () => {
               <h3 className="text-color fw-bold">Upcoming</h3>
               {filteredFutureDriverRoutes.length > 0 ? (
                 <RoutesList
-                  routes={filteredFutureDriverRoutes}
+                  routes={sortedFutureDriverRoutes}
                   buttonView="MyRoutes"
                   isInFuture={isInFuture}
                   isDriver={true}
@@ -138,7 +148,7 @@ const MyRoutesPage = () => {
               <h3 className="fw-bold text-color">Past</h3>
               {filteredPastDriverRoutes.length > 0 ? (
                 <RoutesList
-                  routes={filteredPastDriverRoutes}
+                  routes={sortedPastDriverRoutes}
                   buttonView="MyRoutes"
                   isInFuture={isInFuture}
                   setRoutes={() => null}
@@ -161,7 +171,7 @@ const MyRoutesPage = () => {
             <h3 className="text-color fw-bold">Upcoming</h3>
             {filteredFuturePassengerRoutes.length > 0 ? (
               <RoutesList
-                routes={filteredFuturePassengerRoutes}
+                routes={sortedFuturePassengerRoutes}
                 buttonView="MyRoutes"
                 isInFuture={isInFuture}
                 isDriver={false}
@@ -178,7 +188,7 @@ const MyRoutesPage = () => {
             <h3 className="fw-bold text-color">Past</h3>
             {filteredPastPassengerRoutes.length > 0 ? (
               <RoutesList
-                routes={filteredPastPassengerRoutes}
+                routes={sortedPastPassengerRoutes}
                 buttonView="MyRoutes"
                 isInFuture={isInFuture}
                 setRoutes={() => null}

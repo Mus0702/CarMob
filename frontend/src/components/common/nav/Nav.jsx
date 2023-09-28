@@ -27,6 +27,7 @@ const Nav = () => {
   const [unreadMessages, setUnreadMessages] = useState("");
   const [groupedMessages, setGroupedMessages] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [readNotifications, setReadNotifications] = useState(new Set());
 
   const fetchUnreadMessagesFromAPI = async () => {
     try {
@@ -46,10 +47,18 @@ const Nav = () => {
           sender: message.sender.firstname,
           routeId: message.route.id,
           messages: [],
+          latestTimestamp: null,
         };
       }
       acc[message.sender.id].count += 1;
       acc[message.sender.id].messages.push(message);
+
+      if (
+        !acc[message.sender.id].latestTimestamp ||
+        message.timestamp > acc[message.sender.id].latestTimestamp
+      ) {
+        acc[message.sender.id].latestTimestamp = message.timestamp;
+      }
       return acc;
     }, {});
   };
@@ -62,23 +71,30 @@ const Nav = () => {
       setMessages(response);
       const groupedBySender = groupMessagesBySender(response);
 
-      setGroupedMessages(Object.values(groupedBySender));
+      const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
+        return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
+      });
+      setGroupedMessages(sortedGroups);
       setUnreadMessagesCount(response.length);
     }
   };
 
   const handleItemClick = async (group) => {
     console.log({ group });
-    setUnreadMessagesCount(messages.length - 1);
+    setUnreadMessagesCount(unreadMessagesCount - group.count);
     try {
       for (const message of group.messages) {
         await updateStatus(message);
       }
-
       navigate(`/chat/${group.routeId}/${group.messages[0].sender.id}`);
     } catch (e) {
       console.log(e);
     }
+    setReadNotifications((prevSet) => {
+      const newSet = new Set(prevSet);
+      newSet.add(group.messages[0].sender.id);
+      return newSet;
+    });
   };
 
   useEffect(() => {
@@ -154,7 +170,11 @@ const Nav = () => {
                       {groupedMessages.map((group, index) => (
                         <li key={index}>
                           <a
-                            className="dropdown-item"
+                            className={`dropdown-item ${
+                              readNotifications.has(group.messages[0].sender.id)
+                                ? ""
+                                : "fw-bold"
+                            }`}
                             href="#"
                             onClick={(e) => {
                               e.preventDefault();
@@ -228,7 +248,11 @@ const Nav = () => {
                       {groupedMessages.map((group, index) => (
                         <li key={index}>
                           <a
-                            className="dropdown-item"
+                            className={`dropdown-item ${
+                              readNotifications.has(group.messages[0].sender.id)
+                                ? ""
+                                : "fw-bold"
+                            }`}
                             href="#"
                             onClick={(e) => {
                               e.preventDefault();
