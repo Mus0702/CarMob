@@ -128,7 +128,7 @@ route.setStatus(RouteStatus.ACTIVE);
                     emailService.sendEmail(
                             passenger.getEmail(),
                             "Route canceled",
-                            "Dear " + passenger.getFirstname() + ",\n\nThe route of " + route.getDepartureDate().toString() + " which you are a passenger has been cancelled by the driver.\n\nWe apologize for any inconvenience caused.\n\nKind regards."
+                            "Dear " + passenger.getFirstname() + ",\n\nThe route of " + route.getDepartureDate().toString() + " which you are a passenger has been cancelled by the driver.\n\nWe will refund your reservation as soon as possible.\n\nWe apologize for any inconvenience caused.\n\nKind regards."
                     );
                 }
 

@@ -14,69 +14,38 @@ import RouteItem from "../RouteItem.jsx";
 const Chat = () => {
   const [route, setRoute] = useState(null);
   const [potentialPassenger, setPotentialPassenger] = useState(null);
-
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const { routeId, senderId } = useParams();
   const userConnectedId = sessionStorage.getItem("connectedUserId");
-  const [messageChat, setMessageChat] = useState({});
   const today = new Date().toISOString();
 
-  useEffect(() => {
-    const fetchRoute = async () => {
-      console.log("senderId " + senderId);
-      try {
-        const response = await getRouteById(routeId);
-        setRoute(response.data);
-        console.log({ response });
-        if (response.data) {
-          try {
-            const userResponse = await getUserById(senderId);
-            setPotentialPassenger(userResponse.data);
-            console.log("potentiel passager ", userResponse.data);
-            console.log("sender id " + senderId);
-            let receiverId;
-            let senderMsgId;
-            if (Number(userConnectedId) === response.data.driver.id) {
-              receiverId = response.data.driver.id;
-              senderMsgId = Number(senderId);
-            } else if (response.data) {
-              receiverId = Number(userConnectedId);
-              senderMsgId = response.data.driver.id;
-            }
+  const fetchRouteAndMessages = async () => {
+    const response = await getRouteById(routeId);
+    setRoute(response.data);
 
-            const messageResponse = await getMessages(
-              routeId,
-              senderMsgId,
-              receiverId,
-            );
-            console.log({ messageResponse });
-            if (messageResponse.data.length > 0) {
-              setMessages(messageResponse.data);
-            } else {
-              setMessage([]);
-            }
-          } catch (e) {
-            console.log(e);
-          }
-          connect(userConnectedId, (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
-          });
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    const userResponse = await getUserById(senderId);
+    setPotentialPassenger(userResponse.data);
 
-    fetchRoute();
-    return () => {
-      disconnect();
-    };
-  }, [routeId, senderId]);
+    let receiverId, senderMsgId;
+    if (Number(userConnectedId) === response.data.driver.id) {
+      receiverId = response.data.driver.id;
+      senderMsgId = Number(senderId);
+    } else {
+      receiverId = Number(userConnectedId);
+      senderMsgId = response.data.driver.id;
+    }
 
-  const handleSendMessage = () => {
-    let receiverId;
-    let senderMsgId;
+    const messageResponse = await getMessages(routeId, senderMsgId, receiverId);
+    setMessages(messageResponse.data.length > 0 ? messageResponse.data : []);
+  };
+
+  const handleNewMessage = (newMessage) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  const determineReceiverAndSender = () => {
+    let receiverId, senderMsgId;
     if (route && Number(userConnectedId) === route.driver.id) {
       receiverId = Number(senderId);
       senderMsgId = Number(userConnectedId);
@@ -84,6 +53,19 @@ const Chat = () => {
       receiverId = route.driver.id;
       senderMsgId = Number(userConnectedId);
     }
+    return { receiverId, senderMsgId };
+  };
+
+  useEffect(() => {
+    fetchRouteAndMessages();
+    connect(userConnectedId, handleNewMessage);
+    return () => {
+      disconnect();
+    };
+  }, [routeId, senderId]);
+
+  const handleSendMessage = () => {
+    const { receiverId, senderMsgId } = determineReceiverAndSender();
     const messageSent = {
       content: message,
       senderId: senderMsgId,
@@ -91,46 +73,29 @@ const Chat = () => {
       routeId: +routeId,
       timestamp: today,
     };
-
-    // setMessageChat(messageSent);
-
     sendMessage(messageSent);
     setMessages((prevMessages) => [...prevMessages, messageSent]);
-
     setMessage("");
-    messages.map((message) => {
-      console.log({ message });
-    });
   };
-
-  /*
-  deux structures différentes pour mes objets de message, selon qu'ils proviennent du backend pour la recuperation des messages
-  ou qu'ils sont envoyés au backend pour la creation et sauvegarde d 'un message
-
- vérification pour déterminer si un objet de message a une structure "sender" ou "senderId".
- utiliser une fonction de helper qui renvoie l'ID approprié en fonction de la structure du message.
-
- fonction qui renvoie l'ID approprié pour un message donné et elle sera utilsé dans le rendu
-   */
-  const getSenderId = (msg) => {
-    if (msg.sender && msg.sender.id) {
-      return msg.sender.id;
-    } else if (msg.senderId) {
-      return msg.senderId;
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage();
     }
-    return null;
   };
-  /*
-Utilisation d'une combinaison d'identifiants et d'autres propriétés : Si msg.id est undefined pour certains messages,  créer une clé basée sur une combinaison d'autres propriétés pour assurer l'unicité.
- */
+
+  const getSenderId = (msg) => {
+    return msg.sender && msg.sender.id ? msg.sender.id : msg.senderId;
+  };
+
   const getMessageKey = (msg) => {
     return (
       msg.id ||
       `${msg.senderId}-${msg.receiverId}-${msg.content.substring(0, 5)}`
     );
   };
+
   const getSenderName = (msg) => {
-    const senderId = getSenderId(msg); // utilisez votre fonction existante pour obtenir l'ID du sender
+    const senderId = getSenderId(msg);
     if (senderId === +userConnectedId) {
       return "";
     } else if (route && senderId === route.driver.id) {
@@ -202,10 +167,11 @@ Utilisation d'une combinaison d'identifiants et d'autres propriétés : Si msg.i
               placeholder="Please enter your message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyUp={handleKeyPress}
             />
             <div className="input-group-append">
               <button className="btn btn-primary" onClick={handleSendMessage}>
-                Envoyer
+                Send
               </button>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../../hooks/useAuth.jsx";
 import { createBooking } from "../../../../service/booking.js";
 import { getRouteByIdNotAuth } from "../../../../service/route.js";
-
+import { useGoogleMaps } from "../../../../context/GoogleMapsContext.jsx";
 import "./RouteDetails.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,6 +27,8 @@ const RouteDetails = () => {
   const today = new Date();
   const mapRef = useRef(null);
   const [directions, setDirections] = useState(null);
+  const [mapsLoaded, setMapsLoaded] = useState(false);
+  const { isLoaded, loadError } = useGoogleMaps();
 
   const numberOfSelectedSeats = localStorage.getItem("numberOfSelectedSeats");
   const [priceToDisplay, setPriceToDisplay] = useState(0);
@@ -35,9 +37,8 @@ const RouteDetails = () => {
   const navigate = useNavigate();
   const userConnectedId = sessionStorage.getItem("connectedUserId");
 
-  const fetchDirections = async () => {
+  const fetchData = async () => {
     try {
-      console.log("l id est " + routeId);
       const response = await getRouteByIdNotAuth(routeId);
       const totalPrice = numberOfSelectedSeats * response.data.routePrice;
       console.log("total price " + numberOfSelectedSeats);
@@ -45,38 +46,41 @@ const RouteDetails = () => {
 
       console.log({ response });
       setRouteDetail(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-    if (routeDetail) {
-      const DirectionsService = new window.google.maps.DirectionsService();
 
+      const DirectionsService = new window.google.maps.DirectionsService();
       await DirectionsService.route(
         {
-          origin: routeDetail.departureAddress,
-          destination: routeDetail.arrivalAddress,
+          origin: response.data.departureAddress,
+          destination: response.data.arrivalAddress,
           travelMode: window.google.maps.TravelMode.DRIVING,
         },
         (result, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
             setDirections(result);
-            console.log({ directions });
           } else {
             console.error(`error fetching directions: ${status}`);
           }
         },
       );
+    } catch (e) {
+      console.log(e);
     }
   };
 
   useEffect(() => {
-    fetchDirections();
-  }, [routeId]);
+    fetchData();
+  }, [routeId, isLoaded]);
 
   if (!routeDetail) {
     return <div>No route details provided.</div>;
   }
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
 
+  if (loadError) {
+    return <div>Error loading Google Maps: {loadError.message}</div>;
+  }
   function handleChat() {
     if (isLoggedIn) {
       if (+userConnectedId === routeDetail.driver.id) {
@@ -203,19 +207,16 @@ const RouteDetails = () => {
               )}
           </div>
         </div>
+
         <div className="col-md-6">
-          {/*<LoadScript*/}
-          {/*  googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY}*/}
-          {/*>*/}
-          {/*  <GoogleMap*/}
-          {/*    mapContainerStyle={{ width: "100%", height: "500px" }}*/}
-          {/*    center={{ lat: 50.8503, lng: 4.3517 }}*/}
-          {/*    zoom={10}*/}
-          {/*    ref={mapRef}*/}
-          {/*  >*/}
-          {/*    {directions && <DirectionsRenderer directions={directions} />}*/}
-          {/*  </GoogleMap>*/}
-          {/*</LoadScript>*/}
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "500px" }}
+            center={{ lat: 50.8503, lng: 4.3517 }}
+            zoom={10}
+            ref={mapRef}
+          >
+            {directions && <DirectionsRenderer directions={directions} />}
+          </GoogleMap>
         </div>
       </div>
     </div>

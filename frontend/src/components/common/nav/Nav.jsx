@@ -64,7 +64,6 @@ const Nav = () => {
   };
 
   const fetchUnReadMessages = async () => {
-    console.log("user id = " + userConnect.id);
     if (isLoggedIn && userConnect) {
       const response = await fetchUnreadMessagesFromAPI();
       console.log({ response });
@@ -208,6 +207,8 @@ const Nav = () => {
                         icon={faUser}
                         style={{ color: "#1f5129", marginBottom: "2px" }}
                       />{" "}
+                      {/* eslint-disable-next-line react/no-unescaped-entities */}
+                      <span className="fw-bold">{userConnect.firstname}</span>'s
                       Profile
                     </Link>
                   </li>
@@ -277,6 +278,8 @@ const Nav = () => {
                         icon={faUser}
                         style={{ color: "#1f5129", marginBottom: "2px" }}
                       />{" "}
+                      {/* eslint-disable-next-line react/no-unescaped-entities */}
+                      <span className="fw-bold">{userConnect.firstname}</span>'s
                       Profile
                     </Link>
                   </li>

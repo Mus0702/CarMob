@@ -13,7 +13,7 @@ const RoutesList = ({
   onSearch,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
+  const itemsPerPage = 3;
 
   const totalPages = Math.ceil(routes.length / itemsPerPage);
 

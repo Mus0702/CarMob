@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useLoadScript, StandaloneSearchBox } from "@react-google-maps/api";
+import { StandaloneSearchBox } from "@react-google-maps/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./SearchRoute.css";
@@ -7,14 +7,10 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-
-const libraries = ["places"];
+import { useGoogleMaps } from "../../../../context/GoogleMapsContext.jsx";
 
 const SearchRoute = () => {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY,
-    libraries,
-  });
+  const { isLoaded } = useGoogleMaps();
 
   const [selectedDepartureAddress, setSelectedDepartureAddress] = useState("");
   const [selectedArrivalAddress, setSelectedArrivalAddress] = useState("");
@@ -55,34 +51,60 @@ const SearchRoute = () => {
 
   return (
     <div className="container h-100">
-      <div className=" d-flex  mt-3">
-        <StandaloneSearchBox
-          onLoad={(ref) => (departureSearchBoxRef.current = ref)}
-          onPlacesChanged={onDeparturePlacesChanged}
-        >
-          <input
-            type="text"
-            className="form-control w-auto"
-            placeholder="Departure address"
+      <div className="d-flex flex-column flex-md-row align-items-center mt-3">
+        <div className="position-relative me-2 mb-2">
+          <StandaloneSearchBox
+            onLoad={(ref) => (departureSearchBoxRef.current = ref)}
+            onPlacesChanged={onDeparturePlacesChanged}
+          >
+            <input
+              type="text"
+              className="form-control w-auto pl-4"
+              placeholder="Departure address"
+            />
+          </StandaloneSearchBox>
+          <FontAwesomeIcon
+            icon={faLocationDot}
+            style={{
+              position: "absolute",
+              top: "25%",
+              right: "10px",
+              transform: "translateY(-50%)",
+              color: "green",
+            }}
+            bounce
+            size="xl"
           />
-        </StandaloneSearchBox>
-        <FontAwesomeIcon icon={faLocationDot} bounce size="xl" />
+        </div>
 
-        <StandaloneSearchBox
-          onLoad={(ref) => (arrivalSearchBoxRef.current = ref)}
-          onPlacesChanged={onArrivalPlacesChanged}
-        >
-          <input
-            type="text"
-            className="form-control w-auto"
-            placeholder="Arrival address"
+        <div className="position-relative me-2 mb-2">
+          <StandaloneSearchBox
+            onLoad={(ref) => (arrivalSearchBoxRef.current = ref)}
+            onPlacesChanged={onArrivalPlacesChanged}
+          >
+            <input
+              type="text"
+              className="form-control w-auto pl-4"
+              placeholder="Arrival address"
+            />
+          </StandaloneSearchBox>
+          <FontAwesomeIcon
+            icon={faLocationDot}
+            style={{
+              position: "absolute",
+              top: "25%",
+              right: "10px",
+              transform: "translateY(-50%)",
+              color: "green",
+            }}
+            bounce
+            size="xl"
           />
-        </StandaloneSearchBox>
-        <FontAwesomeIcon icon={faLocationDot} bounce size="xl" />
+        </div>
 
         <DatePicker
           selected={selectedDepartureDate}
-          className="form-control w-100"
+          className="form-control w-100 mb-2"
           onChange={(date) => setSelectedDepartureDate(date)}
           dateFormat="dd/MM/yyyy"
           placeholderText="DD/MM/YYYY"
@@ -92,7 +114,7 @@ const SearchRoute = () => {
           type="number"
           min={1}
           max={6}
-          className="form-control w-25 ms-2 me-2"
+          className="form-control w-25 ms-2 me-2 mb-2"
           value={selectedNumberSeats}
           onChange={(event) => setSelectedNumberSeats(event.target.value)}
           placeholder="number of passengers"

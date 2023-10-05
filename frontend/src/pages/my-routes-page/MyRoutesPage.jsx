@@ -88,17 +88,28 @@ const MyRoutesPage = () => {
         (passenger) => passenger.id === +userConnectedId,
       ),
   );
-  const sortByDateDesc = (a, b) => {
-    return a.departureDate.localeCompare(b.departureDate);
+  const sortByDateAndTimeDesc = (a, b) => {
+    const dateComparison = a.departureDate.localeCompare(b.departureDate);
+
+    if (dateComparison !== 0) {
+      return dateComparison;
+    }
+
+    return a.departureTime.localeCompare(b.departureTime);
   };
 
-  const sortedFutureDriverRoutes =
-    filteredFutureDriverRoutes.sort(sortByDateDesc);
-  const sortedPastDriverRoutes = filteredPastDriverRoutes.sort(sortByDateDesc);
-  const sortedFuturePassengerRoutes =
-    filteredFuturePassengerRoutes.sort(sortByDateDesc);
-  const sortedPastPassengerRoutes =
-    filteredPastPassengerRoutes.sort(sortByDateDesc);
+  const sortedFutureDriverRoutes = filteredFutureDriverRoutes.sort(
+    sortByDateAndTimeDesc,
+  );
+  const sortedPastDriverRoutes = filteredPastDriverRoutes.sort(
+    sortByDateAndTimeDesc,
+  );
+  const sortedFuturePassengerRoutes = filteredFuturePassengerRoutes.sort(
+    sortByDateAndTimeDesc,
+  );
+  const sortedPastPassengerRoutes = filteredPastPassengerRoutes.sort(
+    sortByDateAndTimeDesc,
+  );
 
   const handleSearchChange = (value) => {
     setSearchItem(value);
@@ -139,8 +150,8 @@ const MyRoutesPage = () => {
                   onSearch={hasSearched}
                 />
               ) : (
-                <p className="text-color">
-                  You have no upcoming routes as a driver.
+                <p className="text-color bg-info d-inline-block px-2">
+                  <em>You have no upcoming routes as a driver.</em>
                 </p>
               )}
             </div>
@@ -156,8 +167,8 @@ const MyRoutesPage = () => {
                   onSearch={hasSearched}
                 />
               ) : (
-                <p className="text-color">
-                  You have no past routes as a driver.
+                <p className="text-color bg-info d-inline-block px-2">
+                  <em>You have no past routes as a driver..</em>
                 </p>
               )}
             </div>
@@ -180,8 +191,8 @@ const MyRoutesPage = () => {
                 onSearch={hasSearched}
               />
             ) : (
-              <p className="text-center text-color">
-                You have no upcoming routes as a passenger.
+              <p className="text-color bg-info d-inline-block px-2">
+                <em>You have no upcoming routes as a passenger.</em>
               </p>
             )}
 
@@ -196,8 +207,8 @@ const MyRoutesPage = () => {
                 onSearch={hasSearched}
               />
             ) : (
-              <p className="text-color">
-                You have no past routes as a passenger.
+              <p className="text-color bg-info d-inline-block px-2">
+                <em>You have no past routes as a passenger.</em>
               </p>
             )}
           </div>

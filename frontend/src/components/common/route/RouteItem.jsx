@@ -52,6 +52,18 @@ const RouteItem = ({
       });
     }
   };
+  const handleModifyClick = () => {
+    if (route.passengersDTO && route.passengersDTO.length !== 0) {
+      toast.error(
+        "You cannot modify this route as passengers have already booked it.",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        },
+      );
+    } else {
+      setShowModal(true);
+    }
+  };
 
   const handleOnDelete = async () => {
     try {
@@ -122,7 +134,7 @@ const RouteItem = ({
               {isDriver ? (
                 <>
                   <button
-                    onClick={() => setShowModal(true)}
+                    onClick={handleModifyClick}
                     className="btn btn-primary mx-1"
                   >
                     Modify
@@ -166,6 +178,14 @@ const RouteItem = ({
                 </>
               ) : (
                 <>
+                  <Link
+                    to={`/routeDetails/${route.id}`}
+                    state={{ route: route }}
+                    key={route.id}
+                    className="btn-custom btn-custom-success"
+                  >
+                    Details
+                  </Link>
                   <Button
                     variant="danger"
                     className="mx-1"

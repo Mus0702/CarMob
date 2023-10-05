@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 import Nav from "../common/nav/Nav.jsx";
@@ -16,13 +16,10 @@ import ChatPage from "../../pages/chat-page/ChatPage.jsx";
 import MessageSuccessPage from "../../pages/message-success-page/MessageSuccessPage.jsx";
 import RatingPage from "../../pages/rating-page/RatingPage.jsx";
 import RouteForm from "../add-route/route-form/RouteForm.jsx";
-import DepartureAddress from "../add-route/departure-address/DepartureAddress.jsx";
-import ArrivalAddress from "../add-route/arrival-address/ArrivalAddress.jsx";
-import DepartureDate from "../add-route/DepartureDate.jsx";
-import DepartureTIme from "../add-route/DepartureTIme.jsx";
-import AvailableSeats from "../add-route/AvailableSeats.jsx";
-import RoutePrice from "../add-route/RoutePrice.jsx";
 import MyRoutesPage from "../../pages/my-routes-page/MyRoutesPage.jsx";
+import { GoogleMapsProvider } from "../../context/GoogleMapsContext.jsx";
+import NotFound from "../not-found/NotFound.jsx";
+
 export default function Myapp() {
   return (
     <>
@@ -30,14 +27,30 @@ export default function Myapp() {
       <BrowserRouter>
         <Nav />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <GoogleMapsProvider>
+                <HomePage />
+              </GoogleMapsProvider>
+            }
+          />
           <Route element={<RequiredAdminRole />}>
             <Route path="/admin" element={<AdminHomePage />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/route-results" element={<RoutesResultsPage />} />
-          <Route path="/routeDetails/:routeId" element={<RouteDetails />} />
+
+          <Route
+            path="/routeDetails/:routeId"
+            element={
+              <GoogleMapsProvider>
+                <RouteDetails />
+              </GoogleMapsProvider>
+            }
+          />
+
           <Route element={<RequiredAuth />}>
             <Route path="/chat/:routeId/:senderId" element={<ChatPage />} />
           </Route>
@@ -51,39 +64,6 @@ export default function Myapp() {
             <Route path="/add-route" element={<RouteForm />} />
           </Route>
 
-          {/*<Route element={<RequiredAuth />}>*/}
-          {/*  <Route*/}
-          {/*    path="/add-route/departure-address"*/}
-          {/*    element={<DepartureAddress />}*/}
-          {/*  />*/}
-          {/*</Route>*/}
-          {/*<Route element={<RequiredAuth />}>*/}
-          {/*  <Route*/}
-          {/*    path="/add-route/arrival-address"*/}
-          {/*    element={<ArrivalAddress />}*/}
-          {/*  />*/}
-          {/*</Route>*/}
-          {/*<Route element={<RequiredAuth />}>*/}
-          {/*  <Route*/}
-          {/*    path="/add-route/departure-date"*/}
-          {/*    element={<DepartureDate />}*/}
-          {/*  />*/}
-          {/*</Route>*/}
-          {/*<Route element={<RequiredAuth />}>*/}
-          {/*  <Route*/}
-          {/*    path="/add-route/departure-time"*/}
-          {/*    element={<DepartureTIme />}*/}
-          {/*  />*/}
-          {/*</Route>*/}
-          {/*<Route element={<RequiredAuth />}>*/}
-          {/*  <Route*/}
-          {/*    path="/add-route/available-seats"*/}
-          {/*    element={<AvailableSeats />}*/}
-          {/*  />*/}
-          {/*</Route>*/}
-          {/*<Route element={<RequiredAuth />}>*/}
-          {/*  <Route path="/add-route/route-price" element={<RoutePrice />} />*/}
-          {/*</Route>*/}
           <Route element={<RequiredAuth />}>
             <Route path="/my-routes" element={<MyRoutesPage />} />
           </Route>
@@ -94,6 +74,7 @@ export default function Myapp() {
           {/*  *mettre ici la page où le user doit etre connecté*/}
           {/*</Route>*/}
           <Route path="/restricted" element={<RestrictedPage />} />
+          <Route element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>

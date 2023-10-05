@@ -8,7 +8,7 @@ let stompClient = null;
 export const connect = (userId, onMessageReceived) => {
   stompClient = Stomp.over(() => new SockJS(serverUrl));
   stompClient.onStompError = (error) => {
-    console.error("Erreur STOMP :", error);
+    console.error("STOMP error :", error);
   };
 
   const onConnect = () => {
@@ -19,7 +19,7 @@ export const connect = (userId, onMessageReceived) => {
   };
 
   const onError = (error) => {
-    console.error("Erreur de connexion WebSocket :", error);
+    console.error("WebSocket connexion error : ", error);
   };
 
   stompClient.connect({}, onConnect, onError);
@@ -27,9 +27,7 @@ export const connect = (userId, onMessageReceived) => {
 
 export const sendMessage = (message) => {
   if (!stompClient || !stompClient.connected) {
-    console.error(
-      "Le client STOMP n'est pas connecté. Impossible d'envoyer le message.",
-    );
+    console.error("STOMP client not connected. Unable to send message.");
     return;
   }
   console.log({ message });
@@ -38,12 +36,10 @@ export const sendMessage = (message) => {
 
 export const disconnect = () => {
   if (!stompClient || !stompClient.connected) {
-    console.error(
-      "Le client STOMP n'est pas connecté. Impossible de se déconnecter.",
-    );
+    console.error("STOMP client not connected. Unable to disconnect.");
     return;
   }
   stompClient.disconnect(() => {
-    console.log("Déconnecté du serveur WebSocket.");
+    console.log("Disconnected from WebSocket server.");
   });
 };

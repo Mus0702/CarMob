@@ -35,6 +35,7 @@ const RatingComp = () => {
           response.data.driver.id,
           +userConnectedId,
         );
+        console.log({ hasRatedResponse });
         if (response.data.departureDate > today) {
           navigate("/");
           toast.error("You can note rate a driver of a future route");
@@ -50,7 +51,7 @@ const RatingComp = () => {
         } else if (response.data.driver.id === +userConnectedId) {
           navigate("/");
           toast.error("You cannot rate yourself as a driver on this route.");
-        } else if (hasRatedResponse) {
+        } else if (hasRatedResponse.data) {
           navigate("/");
           toast.error(
             "you've already rated this driver for this specific route.",
