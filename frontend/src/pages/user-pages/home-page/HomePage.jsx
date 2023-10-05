@@ -7,8 +7,14 @@ const HomePage = () => {
   return (
     <div>
       <Banner img={`url(${HomeImage})`} title="Welcome to CarMob" />
-      <SearchRoute />
-      <WhyUs />
+      <div>
+        <div style={{ marginBottom: "100px" }}>
+          <SearchRoute />
+        </div>
+        <div>
+          <WhyUs />
+        </div>
+      </div>
     </div>
   );
 };
