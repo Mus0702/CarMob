@@ -3,8 +3,7 @@ import React, { useRef, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
-import { useLoadScript, StandaloneSearchBox } from "@react-google-maps/api";
+import { useLoadScript } from "@react-google-maps/api";
 
 const libraries = ["places"];
 

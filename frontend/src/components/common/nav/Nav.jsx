@@ -208,8 +208,10 @@ const Nav = () => {
                         style={{ color: "#1f5129", marginBottom: "2px" }}
                       />{" "}
                       {/* eslint-disable-next-line react/no-unescaped-entities */}
-                      <span className="fw-bold">{userConnect.firstname}</span>'s
-                      Profile
+                      <span className="fw-bold">
+                        {userConnect && userConnect.firstname}
+                      </span>
+                      's Profile
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -279,8 +281,10 @@ const Nav = () => {
                         style={{ color: "#1f5129", marginBottom: "2px" }}
                       />{" "}
                       {/* eslint-disable-next-line react/no-unescaped-entities */}
-                      <span className="fw-bold">{userConnect.firstname}</span>'s
-                      Profile
+                      <span className="fw-bold">
+                        {userConnect && userConnect.firstname}
+                      </span>
+                      's Profile
                     </Link>
                   </li>
                   <li className="nav-item">
