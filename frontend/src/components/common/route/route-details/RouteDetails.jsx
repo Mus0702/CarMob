@@ -37,6 +37,13 @@ const RouteDetails = () => {
   const navigate = useNavigate();
   const userConnectedId = sessionStorage.getItem("connectedUserId");
 
+  const formatTime = (timeString) => {
+    if (timeString) {
+      const [hour, minute] = timeString.split(":");
+      return `${hour}:${minute}`;
+    }
+    return "";
+  };
   const fetchData = async () => {
     try {
       const response = await getRouteByIdNotAuth(routeId);
@@ -135,7 +142,8 @@ const RouteDetails = () => {
     <div className="container mt-5 text-color fw-bold">
       <h1 className="text-center mb-4 w-100">
         <span className="text-color">
-          {dayjs(routeDetail.departureDate).format("DD/MM/YYYY")}
+          {dayjs(routeDetail.departureDate).format("DD/MM/YYYY")} at{" "}
+          {formatTime(routeDetail.departureTime)}
         </span>
       </h1>
       <div className="row">
@@ -197,7 +205,16 @@ const RouteDetails = () => {
             )}
             {routeDetail &&
               +userConnectedId !== routeDetail.driver.id &&
-              new Date(routeDetail.departureDate) > new Date() && (
+              (new Date(routeDetail.departureDate).setHours(0, 0, 0, 0) >
+                new Date().setHours(0, 0, 0, 0) ||
+                (new Date(routeDetail.departureDate).setHours(0, 0, 0, 0) ===
+                  new Date().setHours(0, 0, 0, 0) &&
+                  (parseInt(routeDetail.departureTime.split(":")[0], 10) >
+                    new Date().getHours() ||
+                    (parseInt(routeDetail.departureTime.split(":")[0], 10) ===
+                      new Date().getHours() &&
+                      parseInt(routeDetail.departureTime.split(":")[1], 10) >
+                        new Date().getMinutes())))) && (
                 <button
                   className="btn-custom btn-custom-success"
                   onClick={onBook}
@@ -209,14 +226,14 @@ const RouteDetails = () => {
         </div>
 
         <div className="col-md-6">
-          <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "500px" }}
-            center={{ lat: 50.8503, lng: 4.3517 }}
-            zoom={10}
-            ref={mapRef}
-          >
-            {directions && <DirectionsRenderer directions={directions} />}
-          </GoogleMap>
+          {/*<GoogleMap*/}
+          {/*  mapContainerStyle={{ width: "100%", height: "500px" }}*/}
+          {/*  center={{ lat: 50.8503, lng: 4.3517 }}*/}
+          {/*  zoom={10}*/}
+          {/*  ref={mapRef}*/}
+          {/*>*/}
+          {/*  {directions && <DirectionsRenderer directions={directions} />}*/}
+          {/*</GoogleMap>*/}
         </div>
       </div>
     </div>

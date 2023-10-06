@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 import RouteItem from "./RouteItem.jsx";
 import { useEffect, useState } from "react";
+import RoutesContext from "../../../context/RoutesContext.jsx";
 
 const RoutesList = ({
   routes,
@@ -29,6 +30,12 @@ const RoutesList = ({
     console.log("new route = ", newRoutes);
     setRoutes(newRoutes);
   };
+  const updateRoute = (updatedRoute) => {
+    const updatedRoutes = routes.map((route) =>
+      route.id === updatedRoute.id ? updatedRoute : route,
+    );
+    setRoutes(updatedRoutes);
+  };
 
   useEffect(() => {
     if (onSearch) {
@@ -46,14 +53,16 @@ const RoutesList = ({
           <div className="row">
             {displayRoutes.map((route) => (
               <div key={route.id} className="col-md-4">
-                <RouteItem
-                  route={route}
-                  key={route.id}
-                  buttonView={buttonView}
-                  isInFuture={isInFuture}
-                  isDriver={isDriver}
-                  onCancelRoute={cancelRoute}
-                />
+                <RoutesContext.Provider value={{ updateRoute }}>
+                  <RouteItem
+                    route={route}
+                    key={route.id}
+                    buttonView={buttonView}
+                    isInFuture={isInFuture}
+                    isDriver={isDriver}
+                    onCancelRoute={cancelRoute}
+                  />
+                </RoutesContext.Provider>
               </div>
             ))}
           </div>

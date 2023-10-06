@@ -3,6 +3,7 @@ import { getMyRoutes } from "../../service/route.js";
 import Loader from "../../components/common/loader/Loader.jsx";
 import SearchBar from "../../components/common/search-bar/SearchBar.jsx";
 import RoutesList from "../../components/common/route/RoutesList.jsx";
+import RoutesContext from "../../context/RoutesContext.jsx";
 
 const MyRoutesPage = () => {
   const [routes, setRoutes] = useState([]);
@@ -76,6 +77,7 @@ const MyRoutesPage = () => {
   const filteredFuturePassengerRoutes = filteredRoutes.filter(
     (route) =>
       isInFuture(route) &&
+      route.passengersDTO &&
       route.passengersDTO.some(
         (passenger) => passenger.id === +userConnectedId,
       ),
@@ -84,6 +86,7 @@ const MyRoutesPage = () => {
   const filteredPastPassengerRoutes = filteredRoutes.filter(
     (route) =>
       !isInFuture(route) &&
+      route.passengersDTO &&
       route.passengersDTO.some(
         (passenger) => passenger.id === +userConnectedId,
       ),

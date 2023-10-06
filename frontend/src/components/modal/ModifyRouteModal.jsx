@@ -112,19 +112,20 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
               onChange={handleChange}
             />
           </Form.Group>
-          {routeDetails.passengersDTO.length === 0 && (
-            <Form.Group className="mb-3">
-              <Form.Label>AvailableSeat</Form.Label>
-              <Form.Control
-                type="number"
-                name="availableSeat"
-                value={formData.availableSeat}
-                max={userConnected.car.numberAvailableSeat}
-                min={1}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          )}
+          {routeDetails.passengersDTO &&
+            routeDetails.passengersDTO.length === 0 && (
+              <Form.Group className="mb-3">
+                <Form.Label>AvailableSeat</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="availableSeat"
+                  value={formData.availableSeat}
+                  max={userConnected.car.numberAvailableSeat}
+                  min={1}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            )}
 
           <Form.Group className="mb-3">
             <Form.Label>Route Price</Form.Label>

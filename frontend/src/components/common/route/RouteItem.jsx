@@ -10,8 +10,9 @@ import { cancelRouteAsPassenger } from "../../../service/route.js";
 import { cancelRouteAsDriver } from "../../../service/route.js";
 
 import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
+import RoutesContext from "../../../context/RoutesContext.jsx";
 const RouteItem = ({
   route,
   buttonView,
@@ -23,6 +24,7 @@ const RouteItem = ({
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const { updateRoute } = useContext(RoutesContext);
 
   const userConnectedId = sessionStorage.getItem("connectedUserId");
 
@@ -40,7 +42,8 @@ const RouteItem = ({
   const handleOnUpdate = async (formData) => {
     try {
       console.log({ formData });
-      await saveRoute(formData);
+      const response = await saveRoute(formData);
+      updateRoute(response.data);
       setShowModal(false);
       toast.success("Updated successfully as driver", {
         position: toast.POSITION.TOP_CENTER,
