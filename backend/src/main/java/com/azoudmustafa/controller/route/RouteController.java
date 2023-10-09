@@ -24,6 +24,12 @@ import java.util.List;
 public class RouteController {
     private final RouteService routeService;
 
+    @PostMapping
+    public ResponseEntity<RoutePostDTO> createOrUpdate(@Valid @RequestBody RoutePostDTO dto) {
+        return new ResponseEntity<>(routeService.save(dto), HttpStatus.CREATED);
+    }
+
+
     @GetMapping("/search")
     public ResponseEntity<Page<RouteGetOverviewDTO>> searchRoutes(
             @RequestParam String departureAddress,
@@ -60,10 +66,7 @@ public class RouteController {
         List<RoutePostDTO> routes = routeService.getRoutesForUser(userId);
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }
-    @PostMapping
-    public ResponseEntity<RoutePostDTO> createOrUpdate(@Valid @RequestBody RoutePostDTO dto) {
-        return new ResponseEntity<>(routeService.save(dto), HttpStatus.CREATED);
-    }
+
     @PutMapping("cancel/{routeId}")
     public ResponseEntity<Route> cancelRouteAsDriver(@PathVariable Integer routeId) {
         Route cancelledRoute = routeService.cancelRouteAsDriver(routeId);

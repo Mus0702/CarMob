@@ -38,6 +38,40 @@ public class RouteServiceImpl implements RouteService {
     private EmailService emailService;
 
     @Override
+    public RoutePostDTO save(RoutePostDTO dto) {
+        Route route = RouteMapper.INSTANCE.routePostDTOToEntity(dto);
+        User driver = userRepository.findById(dto.getDriverId()).orElseThrow(null);
+
+        if (dto.getAvailableSeat() > driver.getCar().getNumberAvailableSeat()) {
+            throw new BadRequestException("The route number of available seats cannot exceed the car number of available seats");
+
+        }
+
+        route.setDriver(driver);
+        route.setStatus(RouteStatus.ACTIVE);
+
+        int srid = 4326;
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), srid);
+
+        LatLng departureResults = googleGeocodingService.getLatLngFromAddress(dto.getDepartureAddress());
+        LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(dto.getArrivalAddress());
+
+        if (departureResults == null || arrivalResults == null) {
+            throw new BadRequestException("the departure address or arrival address you've specified doesn't exist");
+        }
+
+        Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
+        Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
+
+        route.setDepartureLocation(departuPoint);
+        route.setArrivalLocation(arrivalPoint);
+
+        routeRepository.save(route);
+        return dto;
+    }
+
+
+    @Override
     public Page<RouteGetOverviewDTO> findAllBy(String selectedDepartureAddress,
                                                String selectedArrivalAddress,
                                                LocalDate departureDate,
@@ -70,37 +104,6 @@ public class RouteServiceImpl implements RouteService {
         });
     }
 
-    public RoutePostDTO save(RoutePostDTO dto) {
-        Route route = RouteMapper.INSTANCE.routePostDTOToEntity(dto);
-        User driver = userRepository.findById(dto.getDriverId()).orElseThrow(null);
-
-        if (dto.getAvailableSeat() > driver.getCar().getNumberAvailableSeat()) {
-            throw new BadRequestException("The route number of available seats cannot exceed the car number of available seats");
-
-        }
-
-        route.setDriver(driver);
-route.setStatus(RouteStatus.ACTIVE);
-
-        int srid = 4326;
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), srid);
-
-        LatLng departureResults = googleGeocodingService.getLatLngFromAddress(dto.getDepartureAddress());
-        LatLng arrivalResults = googleGeocodingService.getLatLngFromAddress(dto.getArrivalAddress());
-
-        if (departureResults == null || arrivalResults == null) {
-            throw new BadRequestException("the departure address or arrival address you've specified doesn't exist");
-        }
-
-        Point departuPoint = geometryFactory.createPoint(new Coordinate(departureResults.lng, departureResults.lat));
-        Point arrivalPoint = geometryFactory.createPoint(new Coordinate(arrivalResults.lng, arrivalResults.lat));
-
-        route.setDepartureLocation(departuPoint);
-        route.setArrivalLocation(arrivalPoint);
-
-        routeRepository.save(route);
-        return dto;
-    }
 
     public List<RoutePostDTO> getRoutesForUser(Integer userId) {
         List<Route> routes = routeRepository.findAllByUserId(userId);

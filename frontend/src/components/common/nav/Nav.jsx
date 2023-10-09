@@ -2,8 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../assets/images/logo.png";
 import "./Nav.css";
 import { useAuth } from "../../../hooks/useAuth.jsx";
-import { getAllUnReadMessages } from "../../../service/message.js";
-import { updateStatus } from "../../../service/message.js";
+import {
+  getAllUnReadMessages,
+  updateStatus,
+} from "../../../service/message.js";
 import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
@@ -14,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useMemo, useState } from "react";
+import { connect, disconnect } from "../../../service/webSocket.js";
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -29,18 +32,24 @@ const Nav = () => {
   const [messages, setMessages] = useState([]);
   const [readNotifications, setReadNotifications] = useState(new Set());
 
-  const fetchUnreadMessagesFromAPI = async () => {
-    try {
-      const response = await getAllUnReadMessages(userConnect.id);
-      console.log({ response });
-      return response.data;
-    } catch (e) {
-      console.log(e);
-      return [];
+  const fetchUnReadMessages = async () => {
+    if (isLoggedIn && userConnect) {
+      try {
+        const response = await getAllUnReadMessages(userConnect.id);
+        setMessages(response.data);
+        setUnreadMessagesCount(response.data.length);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   const groupMessagesBySender = (messages) => {
     return messages.reduce((acc, message) => {
+      if (!message.sender || !message.route) {
+        console.warn("Message mal formé :", message);
+        return acc;
+      }
+
       if (!acc[message.sender.id]) {
         acc[message.sender.id] = {
           count: 0,
@@ -63,20 +72,21 @@ const Nav = () => {
     }, {});
   };
 
-  const fetchUnReadMessages = async () => {
-    if (isLoggedIn && userConnect) {
-      const response = await fetchUnreadMessagesFromAPI();
-      console.log({ response });
-      setMessages(response);
-      const groupedBySender = groupMessagesBySender(response);
-
-      const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
-        return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
-      });
-      setGroupedMessages(sortedGroups);
-      setUnreadMessagesCount(response.length);
-    }
-  };
+  // const fetchUnReadMessages = async () => {
+  //   console.log("user id = " + userConnect.id);
+  //   if (isLoggedIn && userConnect) {
+  //     const response = await fetchUnreadMessagesFromAPI();
+  //     console.log({ response });
+  //     setMessages(response);
+  //     const groupedBySender = groupMessagesBySender(response);
+  //
+  //     const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
+  //       return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
+  //     });
+  //     setGroupedMessages(sortedGroups);
+  //     setUnreadMessagesCount(response.length);
+  //   }
+  // };
 
   const handleItemClick = async (group) => {
     console.log({ group });
@@ -98,6 +108,29 @@ const Nav = () => {
 
   useEffect(() => {
     fetchUnReadMessages();
+  }, [isLoggedIn, userConnect]);
+
+  useEffect(() => {
+    const groupedBySender = groupMessagesBySender(messages);
+    const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
+      return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
+    });
+    setGroupedMessages(sortedGroups);
+  }, [messages]);
+
+  useEffect(() => {
+    const handleNotification = (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+      setUnreadMessagesCount((prevCount) => prevCount + 1);
+    };
+
+    if (isLoggedIn && userConnect) {
+      connect(userConnect.id, null, handleNotification);
+    }
+
+    return () => {
+      disconnect();
+    };
   }, [isLoggedIn, userConnect]);
 
   const onRedirect = () => {

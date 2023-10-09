@@ -2,6 +2,8 @@ package com.azoudmustafa.model;
 
 import com.azoudmustafa.enums.RouteStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.locationtech.jts.geom.Point;
@@ -30,6 +32,8 @@ public class Route {
     private String arrivalAddress;
 
     @Column(name = "available_seat")
+    @Min(1)
+    @Max(6)
     private int availableSeat;
     @ManyToOne
     @JoinColumn(name = "driver_id")

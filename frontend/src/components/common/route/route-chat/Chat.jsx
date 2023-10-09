@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getRouteById } from "../../../../service/route.js";
 import { getMessages } from "../../../../service/message.js";
-import {
-  connect,
-  disconnect,
-  sendMessage,
-} from "../../../../service/webSocket.js";
+import { connect, sendMessage } from "../../../../service/webSocket.js";
 import { getUserById } from "../../../../service/user.js";
 import dayjs from "dayjs";
 import RouteItem from "../RouteItem.jsx";
@@ -58,10 +54,7 @@ const Chat = () => {
 
   useEffect(() => {
     fetchRouteAndMessages();
-    connect(userConnectedId, handleNewMessage);
-    return () => {
-      disconnect();
-    };
+    connect(userConnectedId, handleNewMessage, null);
   }, [routeId, senderId]);
 
   const handleSendMessage = () => {

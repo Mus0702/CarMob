@@ -11,6 +11,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RouteService {
+
+    RoutePostDTO save(RoutePostDTO dto);
+
+
     Page<RouteGetOverviewDTO> findAllBy(String departureAddress,
                                         String arrivalAddress,
                                         LocalDate departureDate,
@@ -19,7 +23,7 @@ public interface RouteService {
 
     RouteGetOverviewDTO findById(Integer id);
 
-    RoutePostDTO save(RoutePostDTO dto);
+
     List<RoutePostDTO> getRoutesForUser(Integer userId);
 
     Route cancelRouteAsDriver(Integer routeId);

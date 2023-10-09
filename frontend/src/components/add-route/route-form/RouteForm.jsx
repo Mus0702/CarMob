@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DepartureAddress from "../departure-address/DepartureAddress.jsx";
 import ArrivalAddress from "../arrival-address/ArrivalAddress.jsx";
 import DepartureDate from "../DepartureDate.jsx";
@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 const RouteForm = () => {
   const userConnectedId = sessionStorage.getItem("connectedUserId");
   const userConnectedString = sessionStorage.getItem("userConnected");
-  console.log("user id " + userConnectedId);
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

@@ -4,8 +4,6 @@ import com.azoudmustafa.dto.message.MessageDTO;
 import com.azoudmustafa.dto.message.MessageGetListDTO;
 import com.azoudmustafa.model.Message;
 import com.azoudmustafa.service.message.MessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -35,7 +33,13 @@ public class ChatController {
         Message savedMessage = messageService.save(chatMessageDTO);
 
         simpMessagingTemplate.convertAndSend("/user/" + chatMessageDTO.getReceiverId().toString() + "/private", savedMessage);
+        sendNotification(chatMessageDTO.getReceiverId());
         return savedMessage;
+    }
+    public void sendNotification(Integer userId) {
+        int unreadMessageCount = messageService.findAllUnreadMessagesByUserId(userId).size();
+
+        simpMessagingTemplate.convertAndSend("/user/" + userId.toString() + "/notifications", unreadMessageCount);
     }
 
     @GetMapping("/conversation")

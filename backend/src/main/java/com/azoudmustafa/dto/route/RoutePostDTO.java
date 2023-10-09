@@ -2,6 +2,8 @@ package com.azoudmustafa.dto.route;
 
 import com.azoudmustafa.dto.user.UserGetWithNamesDTO;
 import com.azoudmustafa.dto.user.UserWithFirstnameDTO;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +31,8 @@ public class RoutePostDTO {
     @NotNull
     private Integer driverId;
     @NotNull
+    @Min(1)
+    @Max(6)
     private Integer availableSeat;
     private Double distance;
     @NotNull
