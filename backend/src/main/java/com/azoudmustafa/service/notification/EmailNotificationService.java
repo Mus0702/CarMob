@@ -19,7 +19,7 @@ public class EmailNotificationService {
     @Autowired
     private EmailService emailService;
 
-  @Scheduled(cron = "0 5 15 * * ?")
+  @Scheduled(cron = "0 30 11 * * ?")
     public void sendRatingEmailsForPreviousDayTrips() {
        LocalDate currentDate = LocalDate.now();
         List<Booking> bookings = bookingRepository.findBookingsToNotify(currentDate);
