@@ -1,19 +1,49 @@
+version: '3'
+
 services:
-  db:
-    container_name: postgres2
-    image: kartoza/postgis:15-3.3
-    environment:
-      - POSTGRES_DB=car_mob
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - PGDATA:/data/postgres
-    volumes:
-      - db:/data/postgres
-    ports:
-      - "5433:5432"
-    networks:
-      - db
-    restart: unless-stopped
+    app:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      container_name: spring-boot-container
+      ports:
+        - "8080:8080"
+      depends_on:
+        - database
+      environment:
+        - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      volumes:
+        - ./.env:/.env
+    
+           
+
+    frontend:
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+      ports:
+        - "5173:5173"
+      links:
+        - app
+
+    database:
+      container_name: postgres2
+      image: kartoza/postgis:15-3.3
+      environment:
+        - POSTGRES_DB=car_mob
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - PGDATA:/data/postgres
+      volumes:
+        - db:/data/postgres
+      ports:
+        - "5433:5432"
+      networks:
+        - db
+      restart: unless-stopped
 networks:
   db:
     driver: bridge

@@ -226,14 +226,14 @@ const RouteDetails = () => {
         </div>
 
         <div className="col-md-6">
-          {/*<GoogleMap*/}
-          {/*  mapContainerStyle={{ width: "100%", height: "500px" }}*/}
-          {/*  center={{ lat: 50.8503, lng: 4.3517 }}*/}
-          {/*  zoom={10}*/}
-          {/*  ref={mapRef}*/}
-          {/*>*/}
-          {/*  {directions && <DirectionsRenderer directions={directions} />}*/}
-          {/*</GoogleMap>*/}
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "500px" }}
+            center={{ lat: 50.8503, lng: 4.3517 }}
+            zoom={10}
+            ref={mapRef}
+          >
+            {directions && <DirectionsRenderer directions={directions} />}
+          </GoogleMap>
         </div>
       </div>
     </div>

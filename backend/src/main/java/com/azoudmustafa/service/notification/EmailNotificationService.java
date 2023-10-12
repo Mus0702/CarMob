@@ -35,9 +35,6 @@ public class EmailNotificationService {
             }
         }
 
-
-        //emailService.sendRatingEmail("azoud@homail.com", "Notez votre trajet!", "saluut bébé");
-
     }
 }
 
