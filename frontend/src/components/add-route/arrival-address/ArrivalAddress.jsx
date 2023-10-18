@@ -39,16 +39,6 @@ const ArrivalAddress = ({ nextStep, prevStep, handleChange, values }) => {
             value={values.arrivalAddress}
           />
         </StandaloneSearchBox>
-
-        {/*<input*/}
-        {/*  type="text"*/}
-        {/*  onChange={handleChange("arrivalAddress")}*/}
-        {/*  value={values.arrivalAddress}*/}
-        {/*  className="form-control"*/}
-        {/*  placeholder="Departure address"*/}
-        {/*  id="form3Example4c"*/}
-        {/*  style={{ width: "50%" }}*/}
-        {/*/>*/}
       </div>
       <div className="d-flex justify-content-center mt-3">
         <button

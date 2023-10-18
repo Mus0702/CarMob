@@ -1,7 +1,5 @@
-import React, { useRef, useState } from "react";
-import "./DepartureAddress.css";
-import { useLoadScript, StandaloneSearchBox } from "@react-google-maps/api";
-import dayjs from "dayjs";
+import React, { useRef } from "react";
+import { StandaloneSearchBox, useLoadScript } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
@@ -43,16 +41,6 @@ const DepartureAddress = ({ nextStep, handleChange, values }) => {
             value={values.departureAddress}
           />
         </StandaloneSearchBox>
-
-        {/*<input*/}
-        {/*  type="text"*/}
-        {/*  onChange={handleChange("departureAddress")}*/}
-        {/*  value={values.departureAddress}*/}
-        {/*  className="form-control"*/}
-        {/*  placeholder="Departure address"*/}
-        {/*  id="form3Example4c"*/}
-        {/*  style={{ width: "50%" }}*/}
-        {/*/>*/}
       </div>
       <button
         className="btn btn-success mt-3 d-grid gap-2 col-4 mx-auto"

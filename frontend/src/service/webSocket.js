@@ -20,9 +20,9 @@ export const connect = (userId, onMessageReceived, onNotificationReceived) => {
     });
 
     stompClient.subscribe(`/user/${userId}/notifications`, (notification) => {
-      console.log({ notification });
       if (onNotificationReceived) {
         onNotificationReceived(JSON.parse(notification.body));
+        console.log({ notification });
       }
     });
   };
@@ -41,7 +41,7 @@ export const sendMessage = (message) => {
     );
     return;
   }
-  console.log({ message });
+  console.log("message dans webConfig ", message);
   stompClient.send("/app/chat", {}, JSON.stringify(message));
 };
 

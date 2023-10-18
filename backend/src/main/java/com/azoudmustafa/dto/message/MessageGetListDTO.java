@@ -20,7 +20,6 @@ public class MessageGetListDTO {
     private UserWithFirstnameDTO sender;
     private UserWithFirstnameDTO receiver;
     private String content;
-//    private LocalDateTime timestamp;
     private ZonedDateTime timestamp=  LocalDateTime.now().atZone(ZoneId.of("UTC"));
     private Boolean isRead;
 }

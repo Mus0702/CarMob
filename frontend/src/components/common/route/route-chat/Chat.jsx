@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getRouteById } from "../../../../service/route.js";
 import { getMessages } from "../../../../service/message.js";
-import { connect, sendMessage } from "../../../../service/webSocket.js";
+import {
+  connect,
+  disconnect,
+  sendMessage,
+} from "../../../../service/webSocket.js";
 import { getUserById } from "../../../../service/user.js";
 import dayjs from "dayjs";
 import RouteItem from "../RouteItem.jsx";
@@ -14,6 +18,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const { routeId, senderId } = useParams();
   const userConnectedId = sessionStorage.getItem("connectedUserId");
+  const userConnected = JSON.parse(sessionStorage.getItem("userConnected"));
   const today = new Date().toISOString();
 
   const fetchRouteAndMessages = async () => {
@@ -41,15 +46,15 @@ const Chat = () => {
   };
 
   const determineReceiverAndSender = () => {
-    let receiverId, senderMsgId;
+    let receiver, senderMsg;
     if (route && Number(userConnectedId) === route.driver.id) {
-      receiverId = Number(senderId);
-      senderMsgId = Number(userConnectedId);
+      receiver = potentialPassenger;
+      senderMsg = userConnected;
     } else {
-      receiverId = route.driver.id;
-      senderMsgId = Number(userConnectedId);
+      receiver = route.driver;
+      senderMsg = userConnected;
     }
-    return { receiverId, senderMsgId };
+    return { receiver, senderMsg };
   };
 
   useEffect(() => {
@@ -58,15 +63,16 @@ const Chat = () => {
   }, [routeId, senderId]);
 
   const handleSendMessage = () => {
-    const { receiverId, senderMsgId } = determineReceiverAndSender();
+    const { receiver, senderMsg } = determineReceiverAndSender();
     const messageSent = {
       content: message,
-      senderId: senderMsgId,
-      receiverId: receiverId,
-      routeId: +routeId,
+      sender: senderMsg,
+      receiver: receiver,
+      route: route,
       timestamp: today,
     };
     sendMessage(messageSent);
+    console.log({ messageSent });
     setMessages((prevMessages) => [...prevMessages, messageSent]);
     setMessage("");
   };

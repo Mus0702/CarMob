@@ -1,27 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
+
 const DepartureTIme = ({ nextStep, prevStep, handleChange, values }) => {
   const today = new Date().toISOString().slice(0, 10);
-  // let currentTime;
-  // let nextHour;
-
   let minTime = "00:00";
-  let disabled = false;
 
+  // eslint-disable-next-line react/prop-types
   if (values.departureDate === today) {
     const currentTime = new Date();
     const nextHourTime = new Date(currentTime);
     nextHourTime.setHours(currentTime.getHours() + 1);
     minTime = nextHourTime;
-    // currentTime = new Date().toLocaleString();
-    // nextHour = currentTime.setHours(currentTime.getHours) + 1;
-    // if (nextHour >= 24) {
-    //     disabled = true;
-    // } else {
-    //     const minutes = currentTime.getMinutes();
-    //
-    //     // Formate l'heure au format HH:mm
-    //
-    // }
   }
 
   const handleTimeChange = (e) => {
@@ -42,7 +30,7 @@ const DepartureTIme = ({ nextStep, prevStep, handleChange, values }) => {
           value={values.departureTime}
           onChange={handleTimeChange}
           placeholder="00:00"
-          min="12:00"
+          min={minTime}
           style={{ width: "25%" }}
           required
         />

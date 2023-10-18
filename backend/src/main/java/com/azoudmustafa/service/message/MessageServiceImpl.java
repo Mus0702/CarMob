@@ -31,8 +31,8 @@ public class MessageServiceImpl implements MessageService {
     private final MessageMapper messageMapper;
 
 
-    public Message save(MessageDTO messageDTO) {
-        Message messageEntity = MessageMapper.INSTANCE.messageDtoToMessage(messageDTO);
+    public Message save(MessageGetListDTO messageDTO) {
+        Message messageEntity = MessageMapper.INSTANCE.messageGetListDTOToEntity(messageDTO);
         return messageRepository.save(messageEntity);
     }
 

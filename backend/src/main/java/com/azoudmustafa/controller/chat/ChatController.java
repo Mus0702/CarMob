@@ -29,17 +29,17 @@ public class ChatController {
     }
 
     @MessageMapping("/chat")
-    public Message sendMessage(@Payload MessageDTO chatMessageDTO) {
+    public Message sendMessage(@Payload MessageGetListDTO chatMessageDTO) {
         Message savedMessage = messageService.save(chatMessageDTO);
 
-        simpMessagingTemplate.convertAndSend("/user/" + chatMessageDTO.getReceiverId().toString() + "/private", savedMessage);
-        sendNotification(chatMessageDTO.getReceiverId());
+        simpMessagingTemplate.convertAndSend("/user/" + chatMessageDTO.getReceiver().getId().toString() + "/private", savedMessage);
+        sendNotification(chatMessageDTO.getReceiver().getId(),savedMessage);
         return savedMessage;
     }
-    public void sendNotification(Integer userId) {
-        int unreadMessageCount = messageService.findAllUnreadMessagesByUserId(userId).size();
+    public void sendNotification(Integer userId,Message chatMessage) {
+       // List<MessageGetListDTO> unreadMessage = messageService.findAllUnreadMessagesByUserId(userId);
 
-        simpMessagingTemplate.convertAndSend("/user/" + userId.toString() + "/notifications", unreadMessageCount);
+        simpMessagingTemplate.convertAndSend("/user/" + userId.toString() + "/notifications", chatMessage );
     }
 
     @GetMapping("/conversation")

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MessageService {
 
-    Message save(MessageDTO messageDTO);
+    Message save(MessageGetListDTO messageDTO);
 
     List<MessageGetListDTO> findAllByRouteAndUser(Integer routeId, Integer user1Id, Integer User2Id);
 

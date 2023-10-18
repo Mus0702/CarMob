@@ -33,10 +33,12 @@ const Nav = () => {
   const [readNotifications, setReadNotifications] = useState(new Set());
 
   const fetchUnReadMessages = async () => {
+    console.log("id du user connecté : " + userConnect.id);
     if (isLoggedIn && userConnect) {
       try {
         const response = await getAllUnReadMessages(userConnect.id);
         setMessages(response.data);
+        console.log({ response });
         setUnreadMessagesCount(response.data.length);
       } catch (e) {
         console.log(e);
@@ -44,32 +46,34 @@ const Nav = () => {
     }
   };
   const groupMessagesBySender = (messages) => {
-    return messages.reduce((acc, message) => {
-      if (!message.sender || !message.route) {
-        console.warn("Message mal formé :", message);
+    if (messages) {
+      return messages.reduce((acc, message) => {
+        if (!message.sender || !message.route) {
+          console.warn("Message mal formé :", message);
+          return acc;
+        }
+
+        if (!acc[message.sender.id]) {
+          acc[message.sender.id] = {
+            count: 0,
+            sender: message.sender.firstname,
+            routeId: message.route.id,
+            messages: [],
+            latestTimestamp: null,
+          };
+        }
+        acc[message.sender.id].count += 1;
+        acc[message.sender.id].messages.push(message);
+
+        if (
+          !acc[message.sender.id].latestTimestamp ||
+          message.timestamp > acc[message.sender.id].latestTimestamp
+        ) {
+          acc[message.sender.id].latestTimestamp = message.timestamp;
+        }
         return acc;
-      }
-
-      if (!acc[message.sender.id]) {
-        acc[message.sender.id] = {
-          count: 0,
-          sender: message.sender.firstname,
-          routeId: message.route.id,
-          messages: [],
-          latestTimestamp: null,
-        };
-      }
-      acc[message.sender.id].count += 1;
-      acc[message.sender.id].messages.push(message);
-
-      if (
-        !acc[message.sender.id].latestTimestamp ||
-        message.timestamp > acc[message.sender.id].latestTimestamp
-      ) {
-        acc[message.sender.id].latestTimestamp = message.timestamp;
-      }
-      return acc;
-    }, {});
+      }, {});
+    }
   };
 
   // const fetchUnReadMessages = async () => {
@@ -89,7 +93,8 @@ const Nav = () => {
   // };
 
   const handleItemClick = async (group) => {
-    console.log({ group });
+    console.log("group count " + group.count);
+    console.log("unreadmessage count " + unreadMessagesCount);
     setUnreadMessagesCount(unreadMessagesCount - group.count);
     try {
       for (const message of group.messages) {
@@ -111,11 +116,15 @@ const Nav = () => {
   }, [isLoggedIn, userConnect]);
 
   useEffect(() => {
-    const groupedBySender = groupMessagesBySender(messages);
-    const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
-      return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
-    });
-    setGroupedMessages(sortedGroups);
+    console.log({ messages });
+    if (messages && messages.length > 0) {
+      console.log("ca rentre ici");
+      const groupedBySender = groupMessagesBySender(messages);
+      const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
+        return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
+      });
+      setGroupedMessages(sortedGroups);
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -199,25 +208,28 @@ const Nav = () => {
                       className="dropdown-menu"
                       aria-labelledby="notificationsDropdown"
                     >
-                      {groupedMessages.map((group, index) => (
-                        <li key={index}>
-                          <a
-                            className={`dropdown-item ${
-                              readNotifications.has(group.messages[0].sender.id)
-                                ? ""
-                                : "fw-bold"
-                            }`}
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleItemClick(group);
-                            }}
-                          >
-                            You have {group.count} unread message(s) from{" "}
-                            {group.sender} about route {group.routeId}
-                          </a>
-                        </li>
-                      ))}
+                      {groupedMessages &&
+                        groupedMessages.map((group, index) => (
+                          <li key={index}>
+                            <a
+                              className={`dropdown-item ${
+                                readNotifications.has(
+                                  group.messages[0].sender.id,
+                                )
+                                  ? ""
+                                  : "fw-bold"
+                              }`}
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleItemClick(group);
+                              }}
+                            >
+                              You have {unreadMessagesCount} unread message(s)
+                              from {group.sender} about route {group.routeId}
+                            </a>
+                          </li>
+                        ))}
                     </ul>
                   </li>
                   <li className="nav-item">

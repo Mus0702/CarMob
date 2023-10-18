@@ -11,7 +11,7 @@ const RoutePrice = ({ nextStep, prevStep, handleChange, values }) => {
       <div className="d-flex justify-content-center ml-5">
         <input
           type="number"
-          min={1}
+          min={4}
           max={6}
           onChange={handleChange("routePrice")}
           value={values.routePrice}

@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { getUserById } from "../../service/user.js";
-import { userConnectedId } from "../../utils/userConnectedId.js";
+import React from "react";
+
 const AvailableSeats = ({ nextStep, prevStep, handleChange, values }) => {
-  // const [userConnected, setUserConnected] = useState(null);
   const userConnected = JSON.parse(sessionStorage.getItem("userConnected"));
-  console.log({ userConnected });
-  // useEffect(() => {
-  //   getUserConnected();
-  // }, [userConnectedId]);
+
   return (
     <div className="container mt-5 d-flex flex-column justify-content-center mt-n3">
       <div className="text-center mb-3">
@@ -24,11 +19,6 @@ const AvailableSeats = ({ nextStep, prevStep, handleChange, values }) => {
           value={values.availableSeat}
           className="form-control"
           id="form3Example4c"
-          onKeyPress={(event) => {
-            if (!/[0-9]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
           style={{ width: "50%" }}
         />
       </div>
