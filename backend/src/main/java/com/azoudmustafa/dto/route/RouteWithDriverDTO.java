@@ -1,6 +1,5 @@
 package com.azoudmustafa.dto.route;
 
-import com.azoudmustafa.dto.user.UserWithFirstnameDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class RouteWithDriverDTO {
-
     private Integer id;
-
 }

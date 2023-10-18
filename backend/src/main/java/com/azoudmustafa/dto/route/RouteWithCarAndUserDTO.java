@@ -1,6 +1,5 @@
 package com.azoudmustafa.dto.route;
 
-import com.azoudmustafa.dto.car.CarDTO;
 import com.azoudmustafa.dto.user.UserGetWithNamesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

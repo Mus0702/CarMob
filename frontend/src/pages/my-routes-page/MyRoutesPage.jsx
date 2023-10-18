@@ -3,7 +3,6 @@ import { getMyRoutes } from "../../service/route.js";
 import Loader from "../../components/common/loader/Loader.jsx";
 import SearchBar from "../../components/common/search-bar/SearchBar.jsx";
 import RoutesList from "../../components/common/route/RoutesList.jsx";
-import RoutesContext from "../../context/RoutesContext.jsx";
 
 const MyRoutesPage = () => {
   const [routes, setRoutes] = useState([]);
@@ -18,7 +17,6 @@ const MyRoutesPage = () => {
     try {
       const response = await getMyRoutes(+userConnectedId);
       setRoutes(response.data);
-      console.log({ routes: response.data });
       setIsLoading(false);
     } catch (e) {
       console.log(e);

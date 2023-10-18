@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RatingDTO {
-
     private Integer id;
     @NotNull
     private Integer routeId;

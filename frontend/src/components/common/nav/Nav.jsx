@@ -21,24 +21,20 @@ import { connect, disconnect } from "../../../service/webSocket.js";
 const Nav = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
-  // const userConnect = JSON.parse(sessionStorage.getItem("userConnected"));
   const userConnect = useMemo(() => {
     return JSON.parse(sessionStorage.getItem("userConnected"));
   }, [sessionStorage.getItem("userConnected")]);
 
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-  const [unreadMessages, setUnreadMessages] = useState("");
   const [groupedMessages, setGroupedMessages] = useState([]);
   const [messages, setMessages] = useState([]);
   const [readNotifications, setReadNotifications] = useState(new Set());
 
   const fetchUnReadMessages = async () => {
-    console.log("id du user connecté : " + userConnect.id);
     if (isLoggedIn && userConnect) {
       try {
         const response = await getAllUnReadMessages(userConnect.id);
         setMessages(response.data);
-        console.log({ response });
         setUnreadMessagesCount(response.data.length);
       } catch (e) {
         console.log(e);
@@ -76,25 +72,7 @@ const Nav = () => {
     }
   };
 
-  // const fetchUnReadMessages = async () => {
-  //   console.log("user id = " + userConnect.id);
-  //   if (isLoggedIn && userConnect) {
-  //     const response = await fetchUnreadMessagesFromAPI();
-  //     console.log({ response });
-  //     setMessages(response);
-  //     const groupedBySender = groupMessagesBySender(response);
-  //
-  //     const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
-  //       return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);
-  //     });
-  //     setGroupedMessages(sortedGroups);
-  //     setUnreadMessagesCount(response.length);
-  //   }
-  // };
-
   const handleItemClick = async (group) => {
-    console.log("group count " + group.count);
-    console.log("unreadmessage count " + unreadMessagesCount);
     setUnreadMessagesCount(unreadMessagesCount - group.count);
     try {
       for (const message of group.messages) {
@@ -116,9 +94,7 @@ const Nav = () => {
   }, [isLoggedIn, userConnect]);
 
   useEffect(() => {
-    console.log({ messages });
     if (messages && messages.length > 0) {
-      console.log("ca rentre ici");
       const groupedBySender = groupMessagesBySender(messages);
       const sortedGroups = Object.values(groupedBySender).sort((a, b) => {
         return new Date(b.latestTimestamp) - new Date(a.latestTimestamp);

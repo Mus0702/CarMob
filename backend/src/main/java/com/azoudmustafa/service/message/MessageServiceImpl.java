@@ -1,23 +1,18 @@
 package com.azoudmustafa.service.message;
 
-import com.azoudmustafa.dto.message.MessageDTO;
 import com.azoudmustafa.dto.message.MessageGetListDTO;
 import com.azoudmustafa.mapper.message.MessageMapper;
 import com.azoudmustafa.model.Message;
-import com.azoudmustafa.model.Route;
-import com.azoudmustafa.model.User;
 import com.azoudmustafa.repository.message.MessageRepository;
 import com.azoudmustafa.repository.route.RouteRepository;
 import com.azoudmustafa.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

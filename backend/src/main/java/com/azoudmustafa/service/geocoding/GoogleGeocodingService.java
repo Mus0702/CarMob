@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoogleGeocodingService {
     Dotenv dotenv = Dotenv.load();
-
-
     private final String API_KEY = Dotenv.load().get("GOOGLE_MAP_API_KEY");
 
     @Cacheable(value = "geocodingResults", key = "{#address}")

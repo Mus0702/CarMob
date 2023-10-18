@@ -1,4 +1,3 @@
-// ModifyRouteModal.jsx
 import React, { useRef, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,7 +28,6 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
 
   const today = new Date().toISOString().split("T")[0];
   const onDeparturePlacesChanged = () => {
-    console.log("oucoucocu");
     const places = departureSearchBoxRef.current.getPlaces();
     if (places && places.length === 1) {
       setFormData((prevData) => ({
@@ -68,10 +66,6 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>Departure Address</Form.Label>
-            {/*<StandaloneSearchBox*/}
-            {/*  onLoad={(ref) => (departureSearchBoxRef.current = ref)}*/}
-            {/*  onPlacesChanged={onDeparturePlacesChanged}*/}
-            {/*>*/}
             <Form.Control
               type="text"
               name="departureAddress"
@@ -79,7 +73,6 @@ const ModifyRouteModal = ({ show, handleClose, routeDetails, onSubmit }) => {
               placeholder="Departure address"
               onChange={handleChange}
             />
-            {/*</StandaloneSearchBox>*/}
           </Form.Group>
 
           <Form.Group className="mb-3">

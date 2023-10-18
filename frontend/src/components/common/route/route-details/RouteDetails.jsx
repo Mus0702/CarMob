@@ -15,19 +15,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import dayjs from "dayjs";
 
-import {
-  DirectionsRenderer,
-  GoogleMap,
-  LoadScript,
-} from "@react-google-maps/api";
+import { DirectionsRenderer, GoogleMap } from "@react-google-maps/api";
 
 const RouteDetails = () => {
   const [routeDetail, setRouteDetail] = useState();
   const { routeId } = useParams();
-  const today = new Date();
   const mapRef = useRef(null);
   const [directions, setDirections] = useState(null);
-  const [mapsLoaded, setMapsLoaded] = useState(false);
   const { isLoaded, loadError } = useGoogleMaps();
 
   const numberOfSelectedSeats = localStorage.getItem("numberOfSelectedSeats");
@@ -48,10 +42,7 @@ const RouteDetails = () => {
     try {
       const response = await getRouteByIdNotAuth(routeId);
       const totalPrice = numberOfSelectedSeats * response.data.routePrice;
-      console.log("total price " + numberOfSelectedSeats);
       setPriceToDisplay(totalPrice);
-
-      console.log({ response });
       setRouteDetail(response.data);
 
       const DirectionsService = new window.google.maps.DirectionsService();

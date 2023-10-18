@@ -25,6 +25,4 @@ public class ApiError {
         this();
         this.status = status;
     }
-
-
 }

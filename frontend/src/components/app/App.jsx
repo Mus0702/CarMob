@@ -57,9 +57,9 @@ export default function Myapp() {
           <Route element={<RequiredAuth />}>
             <Route path="/message-success" element={<MessageSuccessPage />} />
           </Route>
-          {/*<Route element={<RequiredAuth />}>*/}
-          <Route path="/rating/:routeId" element={<RatingPage />} />
-          {/*</Route>*/}
+          <Route element={<RequiredAuth />}>
+            <Route path="/rating/:routeId" element={<RatingPage />} />
+          </Route>
           <Route element={<RequiredAuth />}>
             <Route path="/add-route" element={<RouteForm />} />
           </Route>
@@ -70,9 +70,6 @@ export default function Myapp() {
           <Route element={<RequiredAuth />}>
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
-          {/*<Route element={<RequiredAuth/>}>*/}
-          {/*  *mettre ici la page où le user doit etre connecté*/}
-          {/*</Route>*/}
           <Route path="/restricted" element={<RestrictedPage />} />
           <Route element={<NotFound />} />
         </Routes>

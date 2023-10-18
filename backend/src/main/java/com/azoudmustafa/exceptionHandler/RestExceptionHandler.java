@@ -26,7 +26,6 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
@@ -60,18 +59,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-//    @Override
-//    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-//        ApiError apiError = new ApiError(UNPROCESSABLE_ENTITY);
-//        apiError.setMessage(ex.getMessage());
-//        return buildResponseEntity(apiError);
-//    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ApiError apiError = new ApiError();
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
-
 }

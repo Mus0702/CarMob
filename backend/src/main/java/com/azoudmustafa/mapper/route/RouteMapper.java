@@ -17,6 +17,7 @@ public interface RouteMapper {
     RouteMapper INSTANCE = Mappers.getMapper(RouteMapper.class);
 
     Route routePostDTOToEntity(RoutePostDTO routePostDTO);
+
     @Mapping(source = "passengers", target = "passengersDTO")
     @Mapping(source = "driver.id", target = "driverId")
     RoutePostDTO RouteEntityToRoutePostDTO(Route entity);
@@ -28,15 +29,8 @@ public interface RouteMapper {
     @Mapping(source = "passengers", target = "passengersDTO")
     RouteGetOverviewDTO toDTO(Route entity);
 
-
     Route routeWithCarAndUserToEntity(RouteWithCarAndUserDTO dto);
 
     @Mapping(source = "driver", target = "driver", qualifiedByName = "toGetWithNamesDTO")
     RouteWithCarAndUserDTO routeEntityToDTO(Route entity);
-
-
-
-//    Route toEntityWithDriver(RouteWithDriverDTO dto);
-//    RouteWithDriverDTO toRouteDriverDTO(Route entity);
-//    Route toEntityDriverDTO(RouteWithDriverDTO dto);
 }

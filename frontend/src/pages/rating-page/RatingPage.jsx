@@ -1,5 +1,4 @@
 import React from "react";
-import Rating from "../../components/rating/Rating.jsx";
 import RatingComp from "../../components/rating/RatingComp.jsx";
 
 const RatingPage = () => {

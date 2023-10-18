@@ -1,6 +1,5 @@
 package com.azoudmustafa.controller.chat;
 
-import com.azoudmustafa.dto.message.MessageDTO;
 import com.azoudmustafa.dto.message.MessageGetListDTO;
 import com.azoudmustafa.model.Message;
 import com.azoudmustafa.service.message.MessageService;
@@ -19,7 +18,6 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class ChatController {
-
     private final MessageService messageService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
@@ -37,8 +35,6 @@ public class ChatController {
         return savedMessage;
     }
     public void sendNotification(Integer userId,Message chatMessage) {
-       // List<MessageGetListDTO> unreadMessage = messageService.findAllUnreadMessagesByUserId(userId);
-
         simpMessagingTemplate.convertAndSend("/user/" + userId.toString() + "/notifications", chatMessage );
     }
 

@@ -28,8 +28,6 @@ public class RouteController {
     public ResponseEntity<RoutePostDTO> createOrUpdate(@Valid @RequestBody RoutePostDTO dto) {
         return new ResponseEntity<>(routeService.save(dto), HttpStatus.CREATED);
     }
-
-
     @GetMapping("/search")
     public ResponseEntity<Page<RouteGetOverviewDTO>> searchRoutes(
             @RequestParam String departureAddress,

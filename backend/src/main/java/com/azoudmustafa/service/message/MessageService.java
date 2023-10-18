@@ -1,6 +1,5 @@
 package com.azoudmustafa.service.message;
 
-import com.azoudmustafa.dto.message.MessageDTO;
 import com.azoudmustafa.dto.message.MessageGetListDTO;
 import com.azoudmustafa.model.Message;
 
@@ -15,5 +14,6 @@ public interface MessageService {
     List<MessageGetListDTO> findAllUnreadMessagesByUserId(Integer receiverId);
 
     List<MessageGetListDTO> findAllMessageFromSenderId(Integer senderId, Integer receiverId, Integer routeId);
-Message updateStatus(MessageGetListDTO messageDTO);
+
+    Message updateStatus(MessageGetListDTO messageDTO);
 }

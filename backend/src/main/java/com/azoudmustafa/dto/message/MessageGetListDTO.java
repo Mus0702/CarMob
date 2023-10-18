@@ -16,7 +16,6 @@ import java.time.ZonedDateTime;
 public class MessageGetListDTO {
     private Integer id;
     private RouteWithDriverDTO route;
-
     private UserWithFirstnameDTO sender;
     private UserWithFirstnameDTO receiver;
     private String content;

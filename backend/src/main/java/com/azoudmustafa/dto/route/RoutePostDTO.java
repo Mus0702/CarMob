@@ -1,6 +1,5 @@
 package com.azoudmustafa.dto.route;
 
-import com.azoudmustafa.dto.user.UserGetWithNamesDTO;
 import com.azoudmustafa.dto.user.UserWithFirstnameDTO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

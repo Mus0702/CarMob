@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class RouteGetOverviewDTO {
-
     private Integer id;
     private String departureAddress;
     private String arrivalAddress;

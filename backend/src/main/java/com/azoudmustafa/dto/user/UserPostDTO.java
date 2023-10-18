@@ -12,21 +12,13 @@ import java.time.LocalDate;
 
 @Builder
 public record UserPostDTO(
-
         Integer id,
-
         String lastname,
-
         String firstname,
-
         String email,
-
         String password,
-
         LocalDate birthdate,
-
         String phoneNumber,
-
         Role role
 
 ) {

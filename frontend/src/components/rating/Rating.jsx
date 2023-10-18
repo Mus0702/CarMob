@@ -8,7 +8,6 @@ import { createRating } from "../../service/rating.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Rating.css";
-import RouteItem from "../common/route/RouteItem.jsx";
 
 const Rating = () => {
   const [route, setRoute] = useState();
@@ -23,8 +22,6 @@ const Rating = () => {
     if (isLoggedIn) {
       try {
         const response = await getRouteById(routeId);
-        console.log({ response });
-        console.log({ userConnectedId });
         setRoute(response.data);
         setIsLoading(false);
       } catch (e) {
@@ -42,7 +39,6 @@ const Rating = () => {
   }, [routeId]);
 
   const onRate = async () => {
-    console.log({ route });
     const rating = {
       routeId: routeId,
       passengerId: userConnectedId,
@@ -59,7 +55,6 @@ const Rating = () => {
       }
     } catch (e) {
       const errorMessage = e.response.data || "Something went wrong!";
-      console.log({ errorMessage });
       toast.error(errorMessage, {
         position: toast.POSITION.BOTTOM_CENTER,
       });
@@ -73,18 +68,6 @@ const Rating = () => {
         <Loader />
       ) : (
         <div className="text-center text-color">
-          {/*{route && (*/}
-          {/*  <RouteItem*/}
-          {/*    route={route}*/}
-          {/*    style={{*/}
-          {/*      width: "50%",*/}
-          {/*      height: "25%",*/}
-          {/*      marginBottom: "200px",*/}
-          {/*      marginLeft: "auto",*/}
-          {/*      marginRight: "auto",*/}
-          {/*    }}*/}
-          {/*  />*/}
-          {/*)}*/}
           {route && <h2> Please rate the driver {route.driver.firstname}</h2>}
           <input
             type="number"

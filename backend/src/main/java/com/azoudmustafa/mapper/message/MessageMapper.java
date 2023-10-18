@@ -11,7 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring",uses = {UserMapper.class, RouteMapper.class})
 public interface MessageMapper {
-
     MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
 
     @Mapping(source = "route.id", target = "routeId")
@@ -25,6 +24,5 @@ public interface MessageMapper {
     Message messageDtoToMessage(MessageDTO messageDTO);
 
     MessageGetListDTO toMessageGetListDTO(Message message);
-//    @Mapping(source = "route", target = "route", qualifiedByName = "toEntityWithDriver")
     Message messageGetListDTOToEntity(MessageGetListDTO messageGetListDTO);
 }

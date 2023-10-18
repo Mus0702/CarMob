@@ -56,7 +56,6 @@ export default function Login() {
       const response = await sendLoginRequest(credentials);
       setEmail("");
       setPassword("");
-      console.log("reponse ", response);
       if (response && response.data) {
         setLocalStorageItem(response);
         setIsLoggedIn(true);
@@ -68,9 +67,7 @@ export default function Login() {
           JSON.stringify(userConnected.data),
         );
 
-        /*if (localStorage.getItem("role") === "ROLE_ADMIN") {
-          navigate("/admin");
-        } else*/ if (redirectToChat) {
+        if (redirectToChat) {
           navigate(`/chat/${redirectToChat}`);
           localStorage.removeItem("redirectToChat");
         } else if (redirectedToRouteDetails) {

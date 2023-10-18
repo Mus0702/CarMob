@@ -3,16 +3,19 @@ import "./RouteItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import dayjs from "dayjs";
-import { saveRoute } from "../../../service/route.js";
-import { cancelRouteAsPassenger } from "../../../service/route.js";
-import { cancelRouteAsDriver } from "../../../service/route.js";
+import {
+  cancelRouteAsDriver,
+  cancelRouteAsPassenger,
+  saveRoute,
+} from "../../../service/route.js";
 
 import ModifyRouteModal from "../../modal/ModifyRouteModal.jsx";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import RoutesContext from "../../../context/RoutesContext.jsx";
+
 const RouteItem = ({
   route,
   buttonView,
@@ -41,7 +44,6 @@ const RouteItem = ({
   }
   const handleOnUpdate = async (formData) => {
     try {
-      console.log({ formData });
       const response = await saveRoute(formData);
       updateRoute(response.data);
       setShowModal(false);
@@ -49,7 +51,6 @@ const RouteItem = ({
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (e) {
-      console.log(e.response.data);
       toast.error(e.response.data, {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -77,7 +78,6 @@ const RouteItem = ({
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (e) {
-      console.log(e.response?.data || e.message);
       toast.error(e.response?.data || "Failed to cancel as driver", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -93,7 +93,6 @@ const RouteItem = ({
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (e) {
-      console.log(e.response?.data || e.message);
       toast.error(e.response?.data || "Failed to cancel as passenger", {
         position: toast.POSITION.TOP_CENTER,
       });

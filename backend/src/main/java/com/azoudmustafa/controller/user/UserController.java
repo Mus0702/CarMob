@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
-
-    private final UserMapper userMapper;
     private final UserService userService;
-
 
     @GetMapping("/{id}")
     public ResponseEntity<UserGetDTO> getUserById(@PathVariable(value = "id") Integer id) {
@@ -43,6 +40,4 @@ public class UserController {
             return ResponseEntity.ok("Email is available");
         }
     }
-
-
 }

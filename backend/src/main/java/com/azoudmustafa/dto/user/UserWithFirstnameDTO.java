@@ -6,7 +6,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 public class UserWithFirstnameDTO {
-
     private Integer id;
     private String firstname;
 }

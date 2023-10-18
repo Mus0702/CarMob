@@ -30,8 +30,6 @@ public class Message {
     LocalDateTime localNow = LocalDateTime.now();
     @Column(name = "time_stamp")
     private ZonedDateTime timestamp=  localNow.atZone(ZoneId.of("UTC"));
-
-
     @Column(name = "is_read")
     private Boolean isRead;
 

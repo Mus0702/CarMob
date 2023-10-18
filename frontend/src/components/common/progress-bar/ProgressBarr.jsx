@@ -14,19 +14,6 @@ const ProgressBarr = (step) => {
         variant="success"
       />
     </div>
-    // <div
-    //   className=" container progress"
-    //   role="progressbar"
-    //   aria-label="Route Progress"
-    //   aria-valuenow={progressPercentage}
-    //   aria-valuemin="0"
-    //   aria-valuemax="100"
-    // >
-    //   <div
-    //     className="progress-bar bg-success"
-    //     style={{ width: `${progressPercentage}%` }}
-    //   ></div>
-    // </div>
   );
 };
 export default ProgressBarr;

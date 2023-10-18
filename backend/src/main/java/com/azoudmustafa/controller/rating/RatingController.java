@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rating")
 @RestController
 public class RatingController {
-
     private final RatingService ratingService;
 
     @PostMapping
@@ -23,7 +22,7 @@ public class RatingController {
     }
 
     @GetMapping("/hasRated")
-    public ResponseEntity<?> hasUserRatedRoute(@RequestParam Integer routeId,@RequestParam Integer driverId, @RequestParam Integer passengerId) {
+    public ResponseEntity<?> hasUserRatedRoute(@RequestParam Integer routeId, @RequestParam Integer driverId, @RequestParam Integer passengerId) {
         boolean hasRated = ratingService.hasUserRatedDriverForRoute(routeId, driverId, passengerId);
         return ResponseEntity.ok().body(hasRated);
     }

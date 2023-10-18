@@ -44,7 +44,6 @@ const Register = () => {
         birthdate: dayjs(birthdate).format("YYYY-MM-DD"),
         phoneNumber: phoneNumber,
       };
-      console.log({ data });
       const emailResponse = await isEmailExist(email);
       if (emailResponse.status === 200) {
         const registerResponse = await registerService(data);
@@ -54,7 +53,6 @@ const Register = () => {
         sessionStorage.setItem("isLoggedIn", "true");
         setIsLoggedIn(true);
         navigate("/");
-        console.log({ response: registerResponse });
       } else if (emailResponse.status === 409) {
         setEmailExists(true);
       } else {

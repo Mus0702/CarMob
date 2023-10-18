@@ -24,10 +24,8 @@ const RoutesList = ({
   );
 
   const cancelRoute = (routeId) => {
-    console.log("routes dans on cancel = ", routes);
     if (!routeId) return;
     const newRoutes = allRoutes.filter((route) => route.id !== routeId);
-    console.log("new route = ", newRoutes);
     setRoutes(newRoutes);
   };
   const updateRoute = (updatedRoute) => {

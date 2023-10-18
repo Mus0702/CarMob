@@ -4,11 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getRouteById } from "../../service/route.js";
 import { useAuth } from "../../hooks/useAuth.jsx";
 import Loader from "../common/loader/Loader.jsx";
-import { createRating } from "../../service/rating.js";
+import { createRating, hasRated } from "../../service/rating.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RouteItem from "../common/route/RouteItem.jsx";
-import { hasRated } from "../../service/rating.js";
 import dayjs from "dayjs";
 
 const RatingComp = () => {
@@ -26,8 +25,6 @@ const RatingComp = () => {
     if (isLoggedIn) {
       try {
         const response = await getRouteById(routeId);
-        console.log({ response });
-        console.log({ userConnectedId });
         setRoute(response.data);
         setIsLoading(false);
         const hasRatedResponse = await hasRated(
@@ -35,7 +32,6 @@ const RatingComp = () => {
           response.data.driver.id,
           +userConnectedId,
         );
-        console.log({ hasRatedResponse });
         if (response.data.departureDate > today) {
           navigate("/");
           toast.error("You can note rate a driver of a future route");
@@ -77,7 +73,6 @@ const RatingComp = () => {
   };
 
   const onRate = async () => {
-    console.log({ route });
     const rating = {
       routeId: routeId,
       passengerId: userConnectedId,
@@ -86,7 +81,6 @@ const RatingComp = () => {
     };
     try {
       const response = await createRating(rating);
-      console.log({ response });
       if (response) {
         navigate("/message-success", {
           state: { message: "Your evaluation has been sent correctly." },
@@ -94,7 +88,6 @@ const RatingComp = () => {
       }
     } catch (e) {
       const errorMessage = e.response.data || "Something went wrong!";
-      console.log({ errorMessage });
       toast.error(errorMessage, {
         position: toast.POSITION.TOP_CENTER,
       });

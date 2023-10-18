@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import SearchBanner from "../../components/common/banner/search-banner/SearchBanner.jsx";
 import { getSearchRoutes } from "../../service/route.js";
@@ -35,7 +35,6 @@ const RoutesResultsPage = () => {
       setTotalElements(response.data.totalElements);
       setTotalPages(response.data.totalPages);
       setIsLoading(false);
-      console.log({ response });
     } catch (e) {
       console.log(e);
       setIsLoading(false);
@@ -43,7 +42,6 @@ const RoutesResultsPage = () => {
   };
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    console.log("current page dans handlPagechange " + currentPage);
     fetchRouteResults(page);
   };
 

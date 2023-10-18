@@ -149,6 +149,4 @@ public class RouteServiceImpl implements RouteService {
         route.getPassengers().remove(passenger);
         routeRepository.save(route);
     }
-
-
 }
