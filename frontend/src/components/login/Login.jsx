@@ -61,6 +61,8 @@ export default function Login() {
         setIsLoggedIn(true);
 
         const userConnected = await getUserByMail(response.data.email);
+        console.log({ userConnected });
+
         sessionStorage.setItem("connectedUserId", userConnected.data.id);
         sessionStorage.setItem(
           "userConnected",
@@ -68,7 +70,7 @@ export default function Login() {
         );
 
         if (redirectToChat) {
-          navigate(`/chat/${redirectToChat}`);
+          navigate(`/chat/${redirectToChat}/${userConnected.data.id}`);
           localStorage.removeItem("redirectToChat");
         } else if (redirectedToRouteDetails) {
           navigate(`/routeDetails/${redirectedToRouteDetails}`);

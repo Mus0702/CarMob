@@ -35,7 +35,7 @@ public class RouteController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
             @RequestParam Integer numberOfSeats,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "5") Integer size
+            @RequestParam(defaultValue = "20") Integer size
 
     ) {
         Pageable pageable = PageRequest.of(page, size);

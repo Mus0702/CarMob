@@ -120,7 +120,7 @@ const SearchRoute = () => {
           placeholder="number of passengers"
         />
 
-        <button className="btn btn-success" onClick={handleSearchClick}>
+        <button className="btn btn-success mb-2" onClick={handleSearchClick}>
           Search
         </button>
       </div>

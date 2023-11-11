@@ -30,7 +30,7 @@ const RoutesResultsPage = () => {
       const sortedRoutes = response.data.content.sort(
         (a, b) => a.distance - b.distance,
       );
-
+      console.log({ response });
       setRoutes(sortedRoutes);
       setTotalElements(response.data.totalElements);
       setTotalPages(response.data.totalPages);
@@ -63,11 +63,11 @@ const RoutesResultsPage = () => {
             isDriver={true}
             isInFuture={true}
           />
-          <PaginationButtons
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {/*<PaginationButtons*/}
+          {/*  currentPage={currentPage}*/}
+          {/*  totalPages={totalPages}*/}
+          {/*  onPageChange={handlePageChange}*/}
+          {/*/>*/}
         </>
       )}
     </>

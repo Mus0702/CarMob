@@ -18,7 +18,7 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             "LEFT JOIN FETCH r.passengers " +
             "WHERE FUNCTION('ST_DWithin', r.departureLocation, " +
             "FUNCTION('ST_SetSRID', FUNCTION('ST_MakePoint', :selectDepartureAddressLong, :selectedDepartureAddressLat), 4326), " +
-            "5000) = TRUE " +
+            "10000) = TRUE " +
             "AND FUNCTION('ST_DWithin', r.arrivalLocation, " +
             "FUNCTION('ST_SetSRID', FUNCTION('ST_MakePoint', :selectedArrivalAddressLong, :selectedArrivalAddressLat), 4326), " +
             "3000) = TRUE " +

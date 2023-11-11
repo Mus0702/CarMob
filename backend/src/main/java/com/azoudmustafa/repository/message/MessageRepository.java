@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
-    @Query("SELECT m FROM Message m WHERE m.route.id = :routeId AND ((m.sender.id = :userId1 AND m.receiver.id = :userId2) OR (m.sender.id = :userId2 AND m.receiver.id = :userId1))")
+    @Query("SELECT m FROM Message m WHERE m.route.id = :routeId AND ((m.sender.id = :userId1 AND m.receiver.id = :userId2) OR (m.sender.id = :userId2 AND m.receiver.id = :userId1)) order by m.id")
     List<Message> findConversationForRouteAndUsers(@Param("routeId") Integer routeId, @Param("userId1") Integer userId1, @Param("userId2") Integer userId2);
 
     @Query("SELECT m FROM Message m WHERE m.receiver.id=:receiverId and m.isRead =false")
